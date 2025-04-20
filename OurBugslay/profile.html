@@ -1,0 +1,1831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BugSlay - Profile</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+       /* Profile Page Specific Styles */
+:root {
+    --primary: #25CD6B;
+    --primary-dark: #25CD6B;
+    --primary-glow: rgba(37, 205, 107, 0.3);
+    --dark: #0a0a0a;
+    --darker: #050505;
+    --gray: #333333;
+    --light-gray: #444444;
+    --lighter-gray: #666666;
+    --text: #ffffff;
+    --text-secondary: #cccccc;
+    
+    --badge-legendary: #ff9500;
+    --badge-epic: #a335ee;
+    --badge-rare: #0070dd;
+    --badge-common: #25CD6B;
+}
+
+/* Profile Header */
+.profile-header {
+    position: relative;
+    margin-top: 80px;
+    padding: 0;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+    background-color: var(--gray);
+    margin-bottom: 30px;
+    
+}
+
+.profile-cover {
+    height: 200px;
+    background: linear-gradient(135deg, var(--dark) 0%, var(--primary-dark) 100%);
+    position: relative;
+    overflow: hidden;
+    
+}
+
+.profile-cover::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 75% 50%, var(--primary-glow) 0%, transparent 50%);
+}
+
+.profile-info {
+    position: relative;
+    display: flex;
+    padding: 20px 30px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.profile-avatar {
+    position: relative;
+    margin-top: -80px;
+    margin-right: 30px;
+}
+
+.profile-avatar img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 4px solid var(--dark);
+    box-shadow: 0 0 20px var(--primary-glow);
+    object-fit: cover;
+    background-color: var(--gray);
+}
+
+.level-badge {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background-color: var(--primary);
+    color: var(--dark);
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 14px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.profile-details {
+    flex: 1;
+}
+
+.profile-details h1 {
+    margin: 0 0 5px 0;
+    font-size: 28px;
+    text-align: left;
+}
+
+.profile-details p {
+    margin: 0 0 15px 0;
+    color: var(--primary);
+    font-size: 16px;
+}
+
+.profile-stats {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: var(--dark);
+    border-radius: 8px;
+    min-width: 100px;
+}
+
+.stat i {
+    font-size: 20px;
+    color: var(--primary);
+    margin-bottom: 5px;
+}
+
+.stat span {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 2px;
+}
+
+.stat strong {
+    font-size: 18px;
+    color: var(--text);
+}
+
+.profile-actions {
+    margin-left: auto;
+}
+
+.edit-profile-btn {
+    background-color: transparent;
+    border: 2px solid var(--primary);
+    color: var(--primary);
+    padding: 8px 15px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.edit-profile-btn:hover {
+    background-color: var(--primary);
+    color: var(--dark);
+    transform: translateY(-2px);
+}
+
+/* Profile Container */
+.profile-container {
+    display: grid;
+    grid-template-columns: minmax(250px, 1fr) 3fr;
+    gap: 30px;
+    margin: 0 20px 40px 20px;
+    -webkit-text-fill-color: #cccccc;
+}
+
+@media (max-width: 992px) {
+    .profile-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Sidebar */
+.profile-sidebar {
+    background-color: var(--gray);
+    border-radius: 10px;
+    overflow: hidden;
+    animation: fadeIn 1s ease-in;
+    -webkit-text-fill-color: #cccccc;
+}
+
+.sidebar-section {
+    padding: 20px;
+    border-bottom: 1px solid var(--light-gray);
+}
+
+.sidebar-section:last-child {
+    border-bottom: none;
+}
+
+.sidebar-section h3 {
+    color: var(--primary);
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+/* Skills */
+.skill-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    -webkit-text-fill-color: #cccccc;
+}
+
+.skill {
+    width: 100%;
+}
+
+.skill-name {
+    margin-bottom: 5px;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.skill-bar {
+    height: 8px;
+    background-color: var(--light-gray);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.skill-level {
+    height: 100%;
+    background-color: var(--primary);
+    border-radius: 4px;
+    transition: width 1s ease-in-out;
+}
+
+/* Contact List */
+.contact-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.contact-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.contact-list li i {
+    color: var(--primary);
+    width: 20px;
+    text-align: center;
+}
+
+.contact-list li a {
+    color: var(--text);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.contact-list li a:hover {
+    color: var(--primary);
+}
+
+/* Mentor Status */
+.mentor-status {
+    text-align: center;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.status-badge.mentor {
+    background-color: var(--primary-dark);
+    color: var(--text);
+}
+
+.status-badge.not-mentor {
+    background-color: var(--light-gray);
+    color: var(--text-secondary);
+}
+
+/* Main Content */
+.profile-main {
+    background-color: var(--gray);
+    border-radius: 10px;
+    overflow: hidden;
+    animation: fadeIn 1s ease-in;
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    background-color: var(--dark);
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.tabs::-webkit-scrollbar {
+    display: none;
+}
+
+.tab-btn {
+    padding: 15px 20px;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    white-space: nowrap;
+    position: relative;
+}
+
+.tab-btn:hover {
+    color: var(--text);
+}
+
+.tab-btn.active {
+    color: var(--primary);
+}
+
+.tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: var(--primary);
+}
+
+.tab-content {
+    display: none;
+    padding: 30px;
+}
+
+.tab-content.active {
+    display: block;
+    animation: fadeIn 0.5s ease;
+}
+
+.tab-content h2 {
+    margin-top: 0;
+    margin-bottom: 25px;
+    text-align: left;
+    font-size: 22px;
+}
+
+/* Achievements */
+.achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.achievement-card {
+    background-color: var(--dark);
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    gap: 15px;
+    transition: transform 0.3s;
+}
+
+.achievement-card:hover {
+    transform: translateY(-5px);
+}
+
+.achievement-icon {
+    width: 50px;
+    height: 50px;
+    background-color: var(--primary-glow);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.achievement-icon i {
+    font-size: 24px;
+    color: var(--primary);
+}
+
+.achievement-info {
+    flex: 1;
+}
+
+.achievement-info h4 {
+    margin: 0 0 8px 0;
+    font-size: 16px;
+    color: var(--text);
+}
+
+.achievement-info p {
+    margin: 0 0 12px 0;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.progress-bar {
+    height: 6px;
+    background-color: var(--light-gray);
+    border-radius: 3px;
+    margin-bottom: 8px;
+    overflow: hidden;
+}
+
+.progress {
+    height: 100%;
+    background-color: var(--primary);
+    border-radius: 3px;
+}
+
+.achievement-date,
+.achievement-count {
+    font-size: 12px;
+    color: var(--lighter-gray);
+}
+
+/* Activity Timeline */
+.activity-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.activity-item {
+    background-color: var(--dark);
+    border-radius: 8px;
+    padding: 15px;
+    display: flex;
+    gap: 15px;
+    position: relative;
+}
+
+.activity-item::before {
+    content: '';
+    position: absolute;
+    width: 2px;
+    background-color: var(--light-gray);
+    top: 60px;
+    bottom: -20px;
+    left: 30px;
+    z-index: 0;
+}
+
+.activity-item:last-child::before {
+    display: none;
+}
+
+.activity-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    z-index: 1;
+}
+
+.activity-icon.bug-fix {
+    background-color: rgba(255, 99, 71, 0.2);
+    color: tomato;
+}
+
+.activity-icon.comment {
+    background-color: rgba(65, 105, 225, 0.2);  
+    color: royalblue;
+}
+
+.activity-icon.achievement {
+    background-color: rgba(255, 165, 0, 0.2);
+    color: orange;
+}
+
+.activity-icon.mentoring {
+    background-color: rgba(106, 90, 205, 0.2);
+    color: slateblue;
+}
+
+.activity-content {
+    flex: 1;
+}
+
+.activity-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.activity-header h4 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.activity-time {
+    font-size: 12px;
+    color: var(--lighter-gray);
+}
+
+.activity-meta {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.activity-meta span {
+    font-size: 12px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Badges */
+.badges-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 20px;
+}
+
+.badge-card {
+    background-color: var(--dark);
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+.badge-card:hover {
+    transform: translateY(-5px);
+}
+
+.badge-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin: 0 auto 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+}
+
+.badge-icon.legendary {
+    background-color: rgba(255, 149, 0, 0.2);
+    color: var(--badge-legendary);
+}
+
+.badge-icon.epic {
+    background-color: rgba(163, 53, 238, 0.2);
+    color: var(--badge-epic);
+}
+
+.badge-icon.rare {
+    background-color: rgba(0, 112, 221, 0.2);
+    color: var(--badge-rare);
+}
+
+.badge-icon.common {
+    background-color: rgba(30, 255, 0, 0.2);
+    color: var(--badge-common);
+}
+
+.badge-card h4 {
+    margin: 0 0 8px 0;
+    font-size: 14px;
+}
+
+.badge-card p {
+    margin: 0;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* Projects */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.project-card {
+    background-color: var(--dark);
+    border-radius: 8px;
+    padding: 20px;
+    transition: transform 0.3s;
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+}
+
+.project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.project-header h4 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.project-status {
+    padding: 3px 8px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.project-status.completed {
+    background-color: rgba(46, 204, 113, 0.2);
+    color: #25CD6B;
+}
+
+.project-status.in-progress {
+    background-color: rgba(52, 152, 219, 0.2);
+    color: #3498db;
+}
+
+.project-status.planned {
+    background-color: rgba(155, 89, 182, 0.2);
+    color: #9b59b6;
+}
+
+.project-card p {
+    margin: 0 0 15px 0;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.project-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.project-meta span {
+    font-size: 12px;
+    color: var(--lighter-gray);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.project-tags span {
+    background-color: var(--light-gray);
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal.open {
+    display: flex;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+    background-color: var(--gray);
+    border-radius: 10px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid var(--light-gray);
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.close-modal {
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: all 0.3s;
+}
+
+.close-modal:hover {
+    color: var(--primary);
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+/* Form */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: var(--text);
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--light-gray);
+    background-color: var(--dark);
+    color: var(--text);
+    border-radius: 5px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: var(--primary);
+    outline: none;
+}
+
+.avatar-upload {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.avatar-preview {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid var(--primary-dark);
+}
+
+.avatar-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+input[type="file"] {
+    position: absolute;
+    left: -9999px;
+}
+
+.file-upload-btn {
+    display: inline-block;
+    padding: 8px 15px;
+    background-color: var(--light-gray);
+    color: var(--text);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.file-upload-btn:hover {
+    background-color: var(--primary);
+}
+
+.mentor-toggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.toggle-switch {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.toggle-switch input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-switch label {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+    background-color: var(--light-gray);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.toggle-switch label::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: var(--text);
+    top: 2px;
+    left: 2px;
+    transition: all 0.3s;
+}
+
+.toggle-switch input:checked + label {
+    background-color: var(--primary);
+}
+
+.toggle-switch input:checked + label::after {
+    transform: translateX(26px);
+}
+
+.toggle-label {
+    font-size: 14px;
+    color: var(--text);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .profile-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .profile-actions {
+        margin-left: 0;
+        margin-top: 15px;
+        width: 100%;
+    }
+    
+    .profile-details {
+        margin-top: 15px;
+    }
+    
+    .edit-profile-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .achievements-grid,
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .badges-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/* Notification System - Add to profile.css */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    max-width: 350px;
+    background-color: var(--gray);
+    border-left: 4px solid var(--primary);
+    border-radius: 4px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    z-index: 9999;
+    transform: translateX(120%);
+    transition: transform 0.3s ease;
+}
+
+.notification.active {
+    transform: translateX(0);
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.notification-content i {
+    font-size: 20px;
+}
+
+.notification.success {
+    border-left-color: #25CD6B;
+}
+
+.notification.success i {
+    color: #25CD6B;
+}
+
+.notification.error {
+    border-left-color: #e74c3c;
+}
+
+.notification.error i {
+    color: #e74c3c;
+}
+
+.notification.warning {
+    border-left-color: #f39c12;
+}
+
+.notification.warning i {
+    color: #f39c12;
+}
+
+.notification.info {
+    border-left-color: #3498db;
+}
+
+.notification.info i {
+    color: #3498db;
+}
+
+.notification-close {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 20px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.notification-close:hover {
+    color: var(--text);
+}
+
+/* Active menu item */
+.nav-links a.active {
+    color: var(--primary);
+}
+
+.nav-links a.active::after {
+    width: 100%;
+}
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <img src="logo.png" alt="BugSlay Logo" height="100" width="200">
+        <ul class="nav-links">
+          <li><a href="main.html">Home</a></li>
+          <li><a href="code.html">Code</a></li>
+          <li><a href="forum.html">Community</a></li>
+          <li><a href="game2.html">Game</a></li>
+          <li><a href="mentor.html">Mentoring</a></li>
+          <li><a href="purchase.html">Subscription</a></li>
+          <li><a href="profile.html" class="active">Profile</a></li>
+          <li><a href="leaderboard.html">Leaderboard</a></li>
+        </ul>
+    </nav>
+
+    <!-- Profile Header -->
+    <section class="profile-header">
+        <div class="profile-cover"></div>
+        <div class="profile-info">
+            <div class="profile-avatar">
+                <img src="data:image/png;base64,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" alt="Profile Avatar">
+                
+            </div>
+            <div class="profile-details">
+                <h1 id="profile-username">BugSlayer</h1>
+                <p id="profile-title">Senior Bug Exterminator</p>
+                <div class="profile-stats">
+                    <div class="stat">
+                        <i class="fas fa-bug"></i>
+                        <span>Bugs Slain</span>
+                        <strong id="bugs-slain">248</strong>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-trophy"></i>
+                        <span>Rank</span>
+                        <strong id="user-rank">Elite</strong>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-code-branch"></i>
+                        <span>Contributions</span>
+                        <strong id="user-contributions">127</strong>
+                    </div>
+                </div>
+            </div>
+            <div class="profile-actions">
+                <button class="edit-profile-btn" id="edit-profile-btn">
+                    <i class="fas fa-edit"></i> Edit Profile
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Profile Content -->
+    <div class="profile-container">
+        <!-- Sidebar -->
+        <div class="profile-sidebar">
+            <div class="sidebar-section">
+                <h3>About Me</h3>
+                <p id="profile-bio">Debugging enthusiast with a passion for clean code. I've been slaying bugs professionally for over 5 years and love sharing knowledge with the community.</p>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3>Skills</h3>
+                <div class="skill-bars">
+                    <div class="skill">
+                        <div class="skill-name">JavaScript</div>
+                        <div class="skill-bar">
+                            <div class="skill-level" style="width: 90%"></div>
+                        </div>
+                    </div>
+                    <div class="skill">
+                        <div class="skill-name">Python</div>
+                        <div class="skill-bar">
+                            <div class="skill-level" style="width: 85%"></div>
+                        </div>
+                    </div>
+                    <div class="skill">
+                        <div class="skill-name">Java</div>
+                        <div class="skill-bar">
+                            <div class="skill-level" style="width: 75%"></div>
+                        </div>
+                    </div>
+                    <div class="skill">
+                        <div class="skill-name">C++</div>
+                        <div class="skill-bar">
+                            <div class="skill-level" style="width: 60%"></div>
+                        </div>
+                    </div>
+                    <div class="skill">
+                        <div class="skill-name">SQL</div>
+                        <div class="skill-bar">
+                            <div class="skill-level" style="width: 70%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3>Contact</h3>
+                <ul class="contact-list">
+                    <li><i class="fas fa-envelope"></i> <span id="profile-email">bug.slayer@example.com</span></li>
+                    <li><i class="fab fa-github"></i> <a href="#" id="profile-github">github.com/bugslayer9000</a></li>
+                    <li><i class="fab fa-linkedin"></i> <a href="#" id="profile-linkedin">linkedin.com/in/bugslayer</a></li>
+                </ul>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3>Mentor Status</h3>
+                <div class="mentor-status">
+                    <div class="status-badge mentor">Available for Mentoring</div>
+                    <p>Mentored <span id="mentored-count">12</span> developers</p>
+                    <button class="btn btn-outline" id="mentor-settings-btn">Mentor Settings</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="profile-main">
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="achievements">Achievements</button>
+                <button class="tab-btn" data-tab="activity">Recent Activity</button>
+                <button class="tab-btn" data-tab="badges">Badges</button>
+                <button class="tab-btn" data-tab="projects">Projects</button>
+            </div>
+            
+            <!-- Achievements Tab -->
+            <div class="tab-content active" id="achievements">
+                <h2>Your Achievements</h2>
+                <div class="achievements-grid">
+                    <div class="achievement-card">
+                        <div class="achievement-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <div class="achievement-info">
+                            <h4>Fast Debugger</h4>
+                            <p>Fixed 10 bugs in under 5 minutes each</p>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 100%"></div>
+                            </div>
+                            <span class="achievement-date">Unlocked: Mar 15, 2025</span>
+                        </div>
+                    </div>
+                    
+                    <div class="achievement-card">
+                        <div class="achievement-icon">
+                            <i class="fas fa-chess-king"></i>
+                        </div>
+                        <div class="achievement-info">
+                            <h4>Bug Terminator</h4>
+                            <p>Fixed 100+ critical severity bugs</p>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 100%"></div>
+                            </div>
+                            <span class="achievement-date">Unlocked: Jan 23, 2025</span>
+                        </div>
+                    </div>
+                    
+                    <div class="achievement-card">
+                        <div class="achievement-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="achievement-info">
+                            <h4>Community Hero</h4>
+                            <p>Helped 50+ developers in the forum</p>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 78%"></div>
+                            </div>
+                            <span class="achievement-count">39/50</span>
+                        </div>
+                    </div>
+                    
+                    <div class="achievement-card">
+                        <div class="achievement-icon">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <div class="achievement-info">
+                            <h4>Streak Master</h4>
+                            <p>Debugged for 30 consecutive days</p>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 60%"></div>
+                            </div>
+                            <span class="achievement-count">18/30</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Activity Tab -->
+            <div class="tab-content" id="activity">
+                <h2>Recent Activity</h2>
+                <div class="activity-timeline">
+                    <div class="activity-item">
+                        <div class="activity-icon bug-fix">
+                            <i class="fas fa-bug"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-header">
+                                <h4>Fixed a Critical Bug</h4>
+                                <span class="activity-time">2 hours ago</span>
+                            </div>
+                            <p>Fixed memory leak in authentication module</p>
+                            <div class="activity-meta">
+                                <span><i class="fas fa-code"></i> JavaScript</span>
+                                <span><i class="fas fa-star"></i> +25 XP</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-icon comment">
+                            <i class="fas fa-comment"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-header">
+                                <h4>Commented on Forum Thread</h4>
+                                <span class="activity-time">Yesterday</span>
+                            </div>
+                            <p>Provided solution for "React useState not updating" issue</p>
+                            <div class="activity-meta">
+                                <span><i class="fas fa-thumbs-up"></i> 8 likes</span>
+                                <span><i class="fas fa-star"></i> +10 XP</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-icon achievement">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-header">
+                                <h4>Achievement Unlocked</h4>
+                                <span class="activity-time">3 days ago</span>
+                            </div>
+                            <p>Earned "Database Guru" badge by fixing 50 SQL-related bugs</p>
+                            <div class="activity-meta">
+                                <span><i class="fas fa-certificate"></i> New Badge</span>
+                                <span><i class="fas fa-star"></i> +50 XP</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-icon mentoring">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-header">
+                                <h4>Mentoring Session</h4>
+                                <span class="activity-time">5 days ago</span>
+                            </div>
+                            <p>Completed 1-hour mentoring session with JuniorDev42</p>
+                            <div class="activity-meta">
+                                <span><i class="fas fa-heart"></i> Received positive feedback</span>
+                                <span><i class="fas fa-star"></i> +30 XP</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Badges Tab -->
+            <div class="tab-content" id="badges">
+                <h2>Your Badges</h2>
+                <div class="badges-grid">
+                    <div class="badge-card">
+                        <div class="badge-icon legendary">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <h4>Bug Slayer Legend</h4>
+                        <p>Top 1% of bug fixers</p>
+                    </div>
+                    
+                    <div class="badge-card">
+                        <div class="badge-icon epic">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h4>Security Guardian</h4>
+                        <p>Fixed 20+ security vulnerabilities</p>
+                    </div>
+                    
+                    <div class="badge-card">
+                        <div class="badge-icon rare">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h4>Database Guru</h4>
+                        <p>Fixed 50 SQL-related bugs</p>
+                    </div>
+                    
+                    <div class="badge-card">
+                        <div class="badge-icon common">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h4>JavaScript Ninja</h4>
+                        <p>Fixed 100 JavaScript bugs</p>
+                    </div>
+                    
+                    <div class="badge-card">
+                        <div class="badge-icon rare">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <h4>Mentor Star</h4>
+                        <p>Helped 10+ junior developers</p>
+                    </div>
+                    
+                    <div class="badge-card">
+                        <div class="badge-icon epic">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h4>Performance Wizard</h4>
+                        <p>Improved app performance by 30%+</p>
+                    </div>
+                    
+                    <div class="badge-card">
+                        <div class="badge-icon common">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h4>Community Supporter</h4>
+                        <p>Posted 50+ helpful comments</p>
+                    </div>
+                    
+                    <div class="badge-card">
+                        <div class="badge-icon rare">
+                            <i class="fas fa-glasses"></i>
+                        </div>
+                        <h4>Code Reviewer</h4>
+                        <p>Reviewed 30+ pull requests</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Projects Tab -->
+            <div class="tab-content" id="projects">
+                <h2>Your Projects</h2>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <div class="project-header">
+                            <h4>E-commerce Bug Hunt</h4>
+                            <span class="project-status completed">Completed</span>
+                        </div>
+                        <p>Fixed critical payment processing bugs for an e-commerce platform</p>
+                        <div class="project-meta">
+                            <span><i class="fas fa-calendar"></i> March 2025</span>
+                            <span><i class="fas fa-bug"></i> 17 bugs fixed</span>
+                        </div>
+                        <div class="project-tags">
+                            <span>JavaScript</span>
+                            <span>Node.js</span>
+                            <span>MongoDB</span>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card">
+                        <div class="project-header">
+                            <h4>Banking App Security Audit</h4>
+                            <span class="project-status in-progress">In Progress</span>
+                        </div>
+                        <p>Conducting security testing and implementing fixes for mobile banking app</p>
+                        <div class="project-meta">
+                            <span><i class="fas fa-calendar"></i> April 2025</span>
+                            <span><i class="fas fa-bug"></i> 8/20 bugs fixed</span>
+                        </div>
+                        <div class="project-tags">
+                            <span>Java</span>
+                            <span>Spring</span>
+                            <span>Security</span>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card">
+                        <div class="project-header">
+                            <h4>Bug Tracker Development</h4>
+                            <span class="project-status completed">Completed</span>
+                        </div>
+                        <p>Created a custom bug tracking tool for internal team use</p>
+                        <div class="project-meta">
+                            <span><i class="fas fa-calendar"></i> January 2025</span>
+                            <span><i class="fas fa-code-branch"></i> 45 commits</span>
+                        </div>
+                        <div class="project-tags">
+                            <span>React</span>
+                            <span>Node.js</span>
+                            <span>PostgreSQL</span>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card">
+                        <div class="project-header">
+                            <h4>AI Debugging Assistant</h4>
+                            <span class="project-status planned">Planned</span>
+                        </div>
+                        <p>Building an AI-powered assistant to help identify common coding bugs</p>
+                        <div class="project-meta">
+                            <span><i class="fas fa-calendar"></i> May 2025</span>
+                            <span><i class="fas fa-users"></i> Seeking collaborators</span>
+                        </div>
+                        <div class="project-tags">
+                            <span>Python</span>
+                            <span>TensorFlow</span>
+                            <span>NLP</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Edit Modal -->
+    <div class="modal" id="edit-profile-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit Profile</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="profile-edit-form">
+                    <div class="form-group">
+                        <label for="edit-username">Username</label>
+                        <input type="text" id="edit-username" value="BugSlayer9000">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-title">Title</label>
+                        <input type="text" id="edit-title" value="Senior Bug Exterminator">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-bio">Bio</label>
+                        <textarea id="edit-bio" rows="4">Debugging enthusiast with a passion for clean code. I've been slaying bugs professionally for over 5 years and love sharing knowledge with the community.</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-email">Email</label>
+                        <input type="email" id="edit-email" value="bug.slayer@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-github">GitHub URL</label>
+                        <input type="text" id="edit-github" value="github.com/bugslayer9000">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-linkedin">LinkedIn URL</label>
+                        <input type="text" id="edit-linkedin" value="linkedin.com/in/bugslayer">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-avatar">Profile Picture</label>
+                        <div class="avatar-upload">
+                            <div class="avatar-preview">
+                                <img src="/api/placeholder/150/150" alt="Avatar Preview" id="avatar-preview-img">
+                            </div>
+                            <input type="file" id="edit-avatar" accept="image/*">
+                            <label for="edit-avatar" class="file-upload-btn">Choose Image</label>
+                        </div>
+                    </div>
+                    <div class="form-group mentor-toggle">
+                        <label>Mentoring Status</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="mentor-toggle" checked>
+                            <label for="mentor-toggle"></label>
+                            <span class="toggle-label">Available for mentoring</span>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline" id="cancel-edit">Cancel</button>
+                        <button type="submit" class="btn">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 𝑩𝒖𝒈𝑺𝒍𝒂𝒚. All rights reserved.</p>
+        <p>
+            <a class="text-blue-500" href="#">
+             Subscription Terms
+            </a>
+            |
+            <a class="text-blue-500" href="#">
+             Website Terms of Use
+            </a>
+            |
+            <a class="text-blue-500" href="#">
+             Privacy Statement
+            </a>
+            |
+            <a class="text-blue-500" href="#">
+             Opt Out
+            </a>
+            |
+            <a class="text-blue-500" href="#">
+             Cookie Settings
+            </a>
+        </p>
+        <div class="social-links">
+            <a href="#"><i class="fab fa-github"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-whatsapp"></i></a>
+            <a href="#"><i class="fab fa-facebook"></i></a>
+        </div>
+    </footer>
+
+    <script>document.addEventListener('DOMContentLoaded', function() {
+    // Tab Switching
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+    
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const tabId = this.dataset.tab;
+            
+            // Remove active class from all buttons and contents
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            // Add active class to current button and content
+            this.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        });
+    });
+    
+    // Edit Profile Modal
+    const editProfileBtn = document.getElementById('edit-profile-btn');
+    const editProfileModal = document.getElementById('edit-profile-modal');
+    const closeModal = document.querySelector('.close-modal');
+    const cancelEdit = document.getElementById('cancel-edit');
+    
+    function openModal() {
+        editProfileModal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function closeModalFunction() {
+        editProfileModal.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+    
+    editProfileBtn.addEventListener('click', openModal);
+    closeModal.addEventListener('click', closeModalFunction);
+    cancelEdit.addEventListener('click', closeModalFunction);
+    
+    // Close modal when clicking outside
+    editProfileModal.addEventListener('click', function(e) {
+        if (e.target === editProfileModal) {
+            closeModalFunction();
+        }
+    });
+    
+    // Handle profile form submission
+    const profileEditForm = document.getElementById('profile-edit-form');
+    
+    profileEditForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Get form values
+        const username = document.getElementById('edit-username').value;
+        const title = document.getElementById('edit-title').value;
+        const bio = document.getElementById('edit-bio').value;
+        const email = document.getElementById('edit-email').value;
+        const github = document.getElementById('edit-github').value;
+        const linkedin = document.getElementById('edit-linkedin').value;
+        const mentorStatus = document.getElementById('mentor-toggle').checked;
+        
+        // Update profile with new values
+        document.getElementById('profile-username').textContent = username;
+        document.getElementById('profile-title').textContent = title;
+        document.getElementById('profile-bio').textContent = bio;
+        document.getElementById('profile-email').textContent = email;
+        document.getElementById('profile-github').textContent = github;
+        document.getElementById('profile-linkedin').textContent = github;
+        
+        // Update mentor status if changed
+        const statusBadge = document.querySelector('.status-badge');
+        if (mentorStatus) {
+            statusBadge.textContent = 'Available for Mentoring';
+            statusBadge.classList.remove('not-mentor');
+            statusBadge.classList.add('mentor');
+        } else {
+            statusBadge.textContent = 'Not Available for Mentoring';
+            statusBadge.classList.remove('mentor');
+            statusBadge.classList.add('not-mentor');
+        }
+        
+        // Show success message and close modal
+        showNotification('Profile updated successfully!', 'success');
+        closeModalFunction();
+    });
+    
+    // Profile avatar preview
+    const avatarInput = document.getElementById('edit-avatar');
+    const avatarPreview = document.getElementById('avatar-preview-img');
+    
+    avatarInput.addEventListener('change', function() {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                avatarPreview.src = e.target.result;
+                // Also update the main avatar
+                document.getElementById('profile-avatar-img').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+    
+    // Handle mentor request buttons
+    const requestMentorBtns = document.querySelectorAll('.request-mentor-btn');
+    
+    requestMentorBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const mentorName = this.dataset.mentor;
+            
+            // Format the mentor name for display
+            const formattedName = mentorName.charAt(0).toUpperCase() + mentorName.slice(1);
+            
+            // Show confirmation message
+            showNotification(`Mentorship request sent to ${formattedName}!`, 'success');
+        });
+    });
+    
+    // Handle mentor profile view buttons
+    const mentorProfileBtns = document.querySelectorAll('.mentor-profile-btn');
+    
+    mentorProfileBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const mentorName = this.dataset.mentor;
+            
+            // In a real app, this would navigate to the mentor's profile
+            // For now, show a notification
+            showNotification(`Viewing ${mentorName}'s profile will be available soon!`, 'info');
+        });
+    });
+    
+    // Handle pricing plan buttons
+    const pricingBtns = document.querySelectorAll('.pricing-btn');
+    
+    pricingBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const plan = this.dataset.plan;
+            
+            // Format the plan name for display
+            const formattedPlan = plan.charAt(0).toUpperCase() + plan.slice(1);
+            
+            // Show confirmation message
+            showNotification(`You've selected the ${formattedPlan} plan. Redirecting to payment...`, 'success');
+        });
+    });
+    
+    // Handle apply buttons
+    const applyBtns = document.querySelectorAll('#heroApplyBtn, #ctaApplyBtn');
+    
+    applyBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Show confirmation message
+            showNotification('Application form will open soon!', 'info');
+        });
+    });
+    
+    // Handle schedule demo button
+    const demoBtn = document.getElementById('scheduleDemoBtn');
+    
+    if (demoBtn) {
+        demoBtn.addEventListener('click', function() {
+            // Show confirmation message
+            showNotification('Demo scheduling will be available soon!', 'info');
+        });
+    }
+    
+    // Notification system
+    function showNotification(message, type = 'info') {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.innerHTML = `
+            <div class="notification-content">
+                <i class="fas ${getNotificationIcon(type)}"></i>
+                <span>${message}</span>
+            </div>
+            <button class="notification-close">&times;</button>
+        `;
+        
+        // Append to body
+        document.body.appendChild(notification);
+        
+        // Add active class after a small delay for animation
+        setTimeout(() => {
+            notification.classList.add('active');
+        }, 10);
+        
+        // Auto-remove after 5 seconds
+        const timeout = setTimeout(() => {
+            removeNotification(notification);
+        }, 5000);
+        
+        // Close button functionality
+        const closeBtn = notification.querySelector('.notification-close');
+        closeBtn.addEventListener('click', () => {
+            clearTimeout(timeout);
+            removeNotification(notification);
+        });
+    }
+    
+    function removeNotification(notification) {
+        notification.classList.remove('active');
+        setTimeout(() => {
+            notification.remove();
+        }, 300);
+    }
+    
+    function getNotificationIcon(type) {
+        switch (type) {
+            case 'success':
+                return 'fa-check-circle';
+            case 'error':
+                return 'fa-exclamation-circle';
+            case 'warning':
+                return 'fa-exclamation-triangle';
+            case 'info':
+            default:
+                return 'fa-info-circle';
+        }
+    }
+    
+    // Add notification styles dynamically
+    const notificationStyles = `
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            max-width: 350px;
+            background-color: var(--gray);
+            border-left: 4px solid var(--primary);
+            border-radius: 4px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+            z-index: 9999;
+            transform: translateX(120%);
+            transition: transform 0.3s ease;
+        }
+        
+        .notification.active {
+            transform: translateX(0);
+        }
+        
+        .notification-content {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .notification-content i {
+            font-size: 20px;
+        }
+        
+        .notification.success {
+            border-left-color: #2ecc71;
+        }
+        
+        .notification.success i {
+            color: #2ecc71;
+        }
+        
+        .notification.error {
+            border-left-color: #e74c3c;
+        }
+        
+        .notification.error i {
+            color: #e74c3c;
+        }
+        
+        .notification.warning {
+            border-left-color: #f39c12;
+        }
+        
+        .notification.warning i {
+            color: #f39c12;
+        }
+        
+        .notification.info {
+            border-left-color: #3498db;
+        }
+        
+        .notification.info i {
+            color: #3498db;
+        }
+        
+        .notification-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 20px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .notification-close:hover {
+            color: var(--text);
+        }
+    `;
+    
+    const styleElement = document.createElement('style');
+    styleElement.textContent = notificationStyles;
+    document.head.appendChild(styleElement);
+    
+    // Analytics tracking (simulate)
+    function trackEvent(category, action, label) {
+        console.log(`Analytics Event: ${category} - ${action} - ${label}`);
+    }
+    
+    // Track page view
+    trackEvent('Profile', 'View', 'Profile Page');
+    
+    // Add animation for skill bars when page loads
+    animateSkillBars();
+    
+    function animateSkillBars() {
+        const skillLevels = document.querySelectorAll('.skill-level');
+        
+        skillLevels.forEach(skill => {
+            const width = skill.style.width;
+            skill.style.width = '0%';
+            
+            setTimeout(() => {
+                skill.style.width = width;
+            }, 300);
+        });
+    }
+    
+    // Initialize the application with some custom flair
+    console.log('%c🐞 BugSlay Profile Initialized! 🐞', 'color: #25CD6B; font-size: 16px; font-weight: bold;');
+});</script>
+</body>
+</html>

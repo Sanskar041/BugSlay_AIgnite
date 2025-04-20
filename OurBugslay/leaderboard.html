@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BugSlay - Leaderboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+       
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #1e3323;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: #ffffff;
+        }
+        
+        .logo span {
+            color: #25CD6B;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid #1e3323;
+            background-color: #121e17;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+        }
+        
+        .user-rank {
+            padding: 0.25rem 0.5rem;
+            background-color: #121e17;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+        
+        .stats-container {
+            display: grid;
+            padding-top: 150px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+        
+        .stat-card {
+            background-color: #121e17;
+            padding: 1.25rem;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+        
+        .stat-card:hover {
+            box-shadow: 0 5px 15px rgba(58, 173, 69, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .stat-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #9e9e9e;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            color: #ffffff;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .tab {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .tab:hover {
+            background-color: #1a2e20;
+        }
+        
+        .tab.active {
+            background-color: #1a2e20;
+            color: #ffffff;
+            position: relative;
+        }
+        
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 2px;
+            background-color: #25CD6B;
+        }
+        
+        .filter-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+        
+        select {
+            background-color: #121e17;
+            color: #e0e0e0;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23e0e0e0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 16px;
+            padding-right: 40px;
+            cursor: pointer;
+        }
+        
+        .search-bar {
+            background-color: #121e17;
+            color: #e0e0e0;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            width: 200px;
+        }
+        
+        .search-bar:focus {
+            outline: 1px solid #25CD6B;
+        }
+        
+        .leaderboard {
+            background-color: #121e17;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .leaderboard-header {
+            display: grid;
+            grid-template-columns: 0.5fr 1.5fr 1fr 1fr 1fr;
+            padding: 1rem 1.5rem;
+            font-size: 0.85rem;
+            color: #9e9e9e;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .leaderboard-row {
+            display: grid;
+            grid-template-columns: 0.5fr 1.5fr 1fr 1fr 1fr;
+            padding: 1rem 1.5rem;
+            border-top: 1px solid #1a2e20;
+            transition: all 0.2s ease;
+        }
+        
+        .leaderboard-row:hover {
+            background-color: #162219;
+            box-shadow: 0 0 10px rgba(58, 173, 69, 0.15);
+        }
+        
+        .highlighted {
+            background-color: #162219;
+        }
+        
+        .rank-marker {
+            display: inline-block;
+            margin-right: 10px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: #1e3323;
+            color: #fff;
+            text-align: center;
+            line-height: 24px;
+            font-size: 0.8rem;
+        }
+        
+        .rank-1 .rank-marker {
+            background-color: #FFD700;
+            color: #333;
+        }
+        
+        .rank-2 .rank-marker {
+            background-color: #C0C0C0;
+            color: #333;
+        }
+        
+        .rank-3 .rank-marker {
+            background-color: #CD7F32;
+            color: #333;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 0.1rem 0.4rem;
+            background-color: #1e3323;
+            border: 1px solid #25CD6B;
+            color: #25CD6B;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            margin-left: 0.5rem;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.25rem;
+            margin-top: 1.5rem;
+        }
+        
+        .page-btn {
+            background-color: transparent;
+            color: #9e9e9e;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .page-btn:hover {
+            background-color: #1e3323;
+            color: #ffffff;
+        }
+        
+        .page-btn.active {
+            background-color: #25CD6B;
+            color: #ffffff;
+        }
+        
+        .player-username {
+            font-weight: 500;
+            color: #ffffff;
+        }
+        
+        .you-badge {
+            background-color: rgba(58, 173, 69, 0.2);
+            color: #25CD6B;
+            border-color: transparent;
+        }
+        
+        /* Content visibility classes */
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Time filter classes */
+        .time-filtered {
+            display: none;
+        }
+        
+        .time-week.active {
+            display: grid;
+        }
+        
+        .time-month.active {
+            display: grid;
+        }
+        
+        .time-all.active {
+            display: grid;
+        }
+    </style>
+</head>
+<body>
+   
+    <!-- Navigation -->
+    <nav class="navbar">
+        <img src="logo.png" alt="BugSlay Logo" height="100" width="200">
+        <ul class="nav-links">
+          <li><a href="main.html">Home</a></li>
+          <li><a href="code.html">Code</a></li>
+          <li><a href="forum.html">Community</a></li>
+          <li><a href="game2.html">Game</a></li>
+          <li><a href="mentor.html">Mentoring</a></li>
+          <li><a href="purchase.html">Subscription</a></li>
+          <li><a href="profile.html">Profile</a></li>
+          <li><a href="leaderboard.html">Leaderboard</a></li>
+        </ul>
+      </nav>        
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-label">Bugs Fixed</div>
+                <div class="stat-value">187</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Points</div>
+                <div class="stat-value">3,420</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Level</div>
+                <div class="stat-value">12</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Win Rate</div>
+                <div class="stat-value">78%</div>
+            </div>
+        </div>
+        
+        <div class="tabs">
+            <div class="tab active" data-tab="global">Global</div>
+            <div class="tab" data-tab="friends">Friends</div>
+            <div class="tab" data-tab="weekly">Weekly Challenge</div>
+        </div>
+        
+        <div class="filter-container">
+            <select id="time-filter">
+                <option value="week">This Week</option>
+                <option value="month">This Month</option>
+                <option value="all">All Time</option>
+            </select>
+            <input type="text" class="search-bar" id="player-search" placeholder="Search players...">
+        </div>
+        
+        <!-- Global Tab Content -->
+        <div class="tab-content active" id="global-tab">
+            <div class="leaderboard">
+                <div class="leaderboard-header">
+                    <div>Rank</div>
+                    <div>Player</div>
+                    <div>Bugs Fixed</div>
+                    <div>Level</div>
+                    <div>Points</div>
+                </div>
+                
+                <!-- Week data -->
+                <div class="leaderboard-row rank-1 time-filtered time-week active" data-player="DebugMaster">
+                    <div><span class="rank-marker">1</span></div>
+                    <div class="player-username">DebugMaster <span class="badge">Pro</span></div>
+                    <div>152</div>
+                    <div>28</div>
+                    <div>3,450</div>
+                </div>
+                <div class="leaderboard-row rank-2 time-filtered time-week active" data-player="BugHunter99">
+                    <div><span class="rank-marker">2</span></div>
+                    <div class="player-username">BugHunter99</div>
+                    <div>143</div>
+                    <div>25</div>
+                    <div>3,020</div>
+                </div>
+                <div class="leaderboard-row rank-3 time-filtered time-week active" data-player="CodeNinja">
+                    <div><span class="rank-marker">3</span></div>
+                    <div class="player-username">CodeNinja</div>
+                    <div>129</div>
+                    <div>24</div>
+                    <div>2,870</div>
+                </div>
+                <div class="leaderboard-row time-filtered time-week active" data-player="JavaGenius">
+                    <div><span class="rank-marker">4</span></div>
+                    <div class="player-username">JavaGenius</div>
+                    <div>121</div>
+                    <div>22</div>
+                    <div>2,630</div>
+                </div>
+                <div class="leaderboard-row time-filtered time-week active" data-player="PythonWizard">
+                    <div><span class="rank-marker">5</span></div>
+                    <div class="player-username">PythonWizard</div>
+                    <div>112</div>
+                    <div>21</div>
+                    <div>2,350</div>
+                </div>
+                <div class="leaderboard-row highlighted time-filtered time-week active" data-player="CodingHero">
+                    <div><span class="rank-marker">18</span></div>
+                    <div class="player-username">CodingHero <span class="badge you-badge">You</span></div>
+                    <div>64</div>
+                    <div>12</div>
+                    <div>1,230</div>
+                </div>
+                
+                <!-- Month data -->
+                <div class="leaderboard-row rank-1 time-filtered time-month" data-player="DebugMaster">
+                    <div><span class="rank-marker">1</span></div>
+                    <div class="player-username">DebugMaster <span class="badge">Pro</span></div>
+                    <div>487</div>
+                    <div>28</div>
+                    <div>7,890</div>
+                </div>
+                <div class="leaderboard-row rank-2 time-filtered time-month" data-player="CodeNinja">
+                    <div><span class="rank-marker">2</span></div>
+                    <div class="player-username">CodeNinja</div>
+                    <div>452</div>
+                    <div>24</div>
+                    <div>6,980</div>
+                </div>
+                <div class="leaderboard-row rank-3 time-filtered time-month" data-player="BugHunter99">
+                    <div><span class="rank-marker">3</span></div>
+                    <div class="player-username">BugHunter99</div>
+                    <div>436</div>
+                    <div>25</div>
+                    <div>6,740</div>
+                </div>
+                <div class="leaderboard-row time-filtered time-month" data-player="PythonWizard">
+                    <div><span class="rank-marker">4</span></div>
+                    <div class="player-username">PythonWizard</div>
+                    <div>382</div>
+                    <div>21</div>
+                    <div>5,830</div>
+                </div>
+                <div class="leaderboard-row time-filtered time-month" data-player="JavaGenius">
+                    <div><span class="rank-marker">5</span></div>
+                    <div class="player-username">JavaGenius</div>
+                    <div>367</div>
+                    <div>22</div>
+                    <div>5,490</div>
+                </div>
+                <div class="leaderboard-row highlighted time-filtered time-month" data-player="CodingHero">
+                    <div><span class="rank-marker">31</span></div>
+                    <div class="player-username">CodingHero <span class="badge you-badge">You</span></div>
+                    <div>118</div>
+                    <div>12</div>
+                    <div>2,150</div>
+                </div>
+                
+                <!-- All time data -->
+                <div class="leaderboard-row rank-1 time-filtered time-all" data-player="DebugMaster">
+                    <div><span class="rank-marker">1</span></div>
+                    <div class="player-username">DebugMaster <span class="badge">Pro</span></div>
+                    <div>891</div>
+                    <div>28</div>
+                    <div>12,450</div>
+                </div>
+                <div class="leaderboard-row rank-2 time-filtered time-all" data-player="BugHunter99">
+                    <div><span class="rank-marker">2</span></div>
+                    <div class="player-username">BugHunter99</div>
+                    <div>756</div>
+                    <div>25</div>
+                    <div>10,320</div>
+                </div>
+                <div class="leaderboard-row rank-3 time-filtered time-all" data-player="CodeNinja">
+                    <div><span class="rank-marker">3</span></div>
+                    <div class="player-username">CodeNinja</div>
+                    <div>702</div>
+                    <div>24</div>
+                    <div>9,870</div>
+                </div>
+                <div class="leaderboard-row time-filtered time-all" data-player="JavaGenius">
+                    <div><span class="rank-marker">4</span></div>
+                    <div class="player-username">JavaGenius</div>
+                    <div>651</div>
+                    <div>22</div>
+                    <div>8,930</div>
+                </div>
+                <div class="leaderboard-row time-filtered time-all" data-player="PythonWizard">
+                    <div><span class="rank-marker">5</span></div>
+                    <div class="player-username">PythonWizard</div>
+                    <div>612</div>
+                    <div>21</div>
+                    <div>8,450</div>
+                </div>
+                <div class="leaderboard-row highlighted time-filtered time-all" data-player="CodingHero">
+                    <div><span class="rank-marker">42</span></div>
+                    <div class="player-username">CodingHero <span class="badge you-badge">You</span></div>
+                    <div>187</div>
+                    <div>12</div>
+                    <div>3,420</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Friends Tab Content -->
+        <div class="tab-content" id="friends-tab">
+            <div class="leaderboard">
+                <div class="leaderboard-header">
+                    <div>Rank</div>
+                    <div>Friend</div>
+                    <div>Bugs Fixed</div>
+                    <div>Level</div>
+                    <div>Points</div>
+                </div>
+                <div class="leaderboard-row rank-1" data-player="ErrorEraser">
+                    <div><span class="rank-marker">1</span></div>
+                    <div class="player-username">ErrorEraser</div>
+                    <div>521</div>
+                    <div>18</div>
+                    <div>6,980</div>
+                </div>
+                <div class="leaderboard-row rank-2" data-player="DevDebugger">
+                    <div><span class="rank-marker">2</span></div>
+                    <div class="player-username">DevDebugger</div>
+                    <div>415</div>
+                    <div>16</div>
+                    <div>5,720</div>
+                </div>
+                <div class="leaderboard-row rank-3" data-player="CodeSmith">
+                    <div><span class="rank-marker">3</span></div>
+                    <div class="player-username">CodeSmith</div>
+                    <div>387</div>
+                    <div>15</div>
+                    <div>5,340</div>
+                </div>
+                <div class="leaderboard-row" data-player="BinaryBaron">
+                    <div><span class="rank-marker">4</span></div>
+                    <div class="player-username">BinaryBaron</div>
+                    <div>321</div>
+                    <div>14</div>
+                    <div>4,590</div>
+                </div>
+                <div class="leaderboard-row" data-player="LogixLady">
+                    <div><span class="rank-marker">5</span></div>
+                    <div class="player-username">LogixLady</div>
+                    <div>293</div>
+                    <div>14</div>
+                    <div>4,120</div>
+                </div>
+                <div class="leaderboard-row highlighted" data-player="CodingHero">
+                    <div><span class="rank-marker">6</span></div>
+                    <div class="player-username">CodingHero <span class="badge you-badge">You</span></div>
+                    <div>187</div>
+                    <div>12</div>
+                    <div>3,420</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Weekly Challenge Tab Content -->
+        <div class="tab-content" id="weekly-tab">
+            <div class="leaderboard">
+                <div class="leaderboard-header">
+                    <div>Rank</div>
+                    <div>Player</div>
+                    <div>Bugs Fixed</div>
+                    <div>Time</div>
+                    <div>Points</div>
+                </div>
+                <div class="leaderboard-row rank-1" data-player="JavaGenius">
+                    <div><span class="rank-marker">1</span></div>
+                    <div class="player-username">JavaGenius</div>
+                    <div>37</div>
+                    <div>45m 12s</div>
+                    <div>1,850</div>
+                </div>
+                <div class="leaderboard-row rank-2" data-player="DebugMaster">
+                    <div><span class="rank-marker">2</span></div>
+                    <div class="player-username">DebugMaster <span class="badge">Pro</span></div>
+                    <div>37</div>
+                    <div>46m 03s</div>
+                    <div>1,820</div>
+                </div>
+                <div class="leaderboard-row rank-3" data-player="BugHunter99">
+                    <div><span class="rank-marker">3</span></div>
+                    <div class="player-username">BugHunter99</div>
+                    <div>36</div>
+                    <div>47m 45s</div>
+                    <div>1,750</div>
+                </div>
+                <div class="leaderboard-row" data-player="CodeNinja">
+                    <div><span class="rank-marker">4</span></div>
+                    <div class="player-username">CodeNinja</div>
+                    <div>35</div>
+                    <div>48m 21s</div>
+                    <div>1,690</div>
+                </div>
+                <div class="leaderboard-row" data-player="ErrorEraser">
+                    <div><span class="rank-marker">5</span></div>
+                    <div class="player-username">ErrorEraser</div>
+                    <div>34</div>
+                    <div>48m 55s</div>
+                    <div>1,640</div>
+                </div>
+                <div class="leaderboard-row highlighted" data-player="CodingHero">
+                    <div><span class="rank-marker">12</span></div>
+                    <div class="player-username">CodingHero <span class="badge you-badge">You</span></div>
+                    <div>29</div>
+                    <div>52m 37s</div>
+                    <div>1,350</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="pagination">
+            <div class="page-btn">‹</div>
+            <div class="page-btn active">1</div>
+            <div class="page-btn">2</div>
+            <div class="page-btn">3</div>
+            <div class="page-btn">4</div>
+            <div class="page-btn">5</div>
+            <div class="page-btn">›</div>
+        </div>
+    </div>
+     <!-- Footer -->
+     <footer>
+        <p>© 2025 𝑩𝒖𝒈𝑺𝒍𝒂𝒚. All rights reserved.</p>
+        <p>
+          <a class="text-blue-500" href="#">
+           Subscription Terms
+          </a>
+          |
+          <a class="text-blue-500" href="#">
+           Website Terms of Use
+          </a>
+          |
+          <a class="text-blue-500" href="#">
+           Privacy Statement
+          </a>
+          |
+          <a class="text-blue-500" href="#">
+           Opt Out
+          </a>
+          |
+          <a class="text-blue-500" href="#">
+           Cookie Settings
+          </a>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-github"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-whatsapp"></i></a>
+          <a href="#"><i class="fab fa-facebook"></i></a>
+        </div>
+      </footer>
+  
+
+    <script>
+        // Tab switching functionality
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Update tab UI
+                document.querySelector('.tab.active').classList.remove('active');
+                tab.classList.add('active');
+                
+                // Show corresponding content
+                const tabId = tab.getAttribute('data-tab');
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                document.getElementById(tabId + '-tab').classList.add('active');
+            });
+        });
+        
+        // Time filter functionality
+        const timeFilter = document.getElementById('time-filter');
+        timeFilter.addEventListener('change', () => {
+            const selectedTime = timeFilter.value;
+            
+            // Only apply to global tab
+            if (document.getElementById('global-tab').classList.contains('active')) {
+                document.querySelectorAll('.time-filtered').forEach(row => {
+                    row.classList.remove('active');
+                });
+                
+                document.querySelectorAll('.time-' + selectedTime).forEach(row => {
+                    row.classList.add('active');
+                });
+            }
+        });
+        
+        // Player search functionality
+        const playerSearch = document.getElementById('player-search');
+        playerSearch.addEventListener('input', () => {
+            const searchTerm = playerSearch.value.toLowerCase();
+            
+            // Get all visible rows in the active tab
+            const activeTab = document.querySelector('.tab-content.active');
+            const rows = activeTab.querySelectorAll('.leaderboard-row');
+            
+            rows.forEach(row => {
+                const playerName = row.getAttribute('data-player').toLowerCase();
+                
+                if (playerName.includes(searchTerm)) {
+                    row.style.display = 'grid';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+        
+        // Pagination functionality
+        document.querySelectorAll('.page-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (!btn.classList.contains('active') && btn.innerText !== '‹' && btn.innerText !== '›') {
+                    document.querySelector('.page-btn.active').classList.remove('active');
+                    btn.classList.add('active');
+                    // In a real app, this would load different data
+                }
+            });
+        });
+        
+        // Hover effects for the leaderboard rows
+        document.querySelectorAll('.leaderboard-row').forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                if (!row.classList.contains('highlighted')) {
+                    row.style.boxShadow = '0 0 10px rgba(58, 173, 69, 0.3)';
+                }
+            });
+            
+            row.addEventListener('mouseleave', () => {
+                if (!row.classList.contains('highlighted')) {
+                    row.style.boxShadow = 'none';
+                }
+            });
+        });
+        
+        // Add some hover effects for stat cards
+        document.querySelectorAll('.stat-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.boxShadow = '0 5px 15px rgba(58, 173, 69, 0.3)';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.boxShadow = '0 5px 15px rgba(58, 173, 69, 0.2)';
+            });
+        });
+    </script>
+</body>
+</html>

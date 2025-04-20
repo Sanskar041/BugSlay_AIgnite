@@ -1,0 +1,2003 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BugSlay Quiz</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  </head>
+  <style>
+    :root {
+    --primary: #25CD6B;
+    --primary-light: #4eda89;
+    --primary-dark: #1ca456;
+    --accent: #25CD6B;
+    --background: #000000;
+    --surface: #121212;
+    --surface-variant: #1e1e1e;
+    --error: #CF6679;
+    --on-primary: #000000;
+    --on-background: #FFFFFF;
+    --on-surface: #E1E1E1;
+    --on-surface-variant: #BBBBBB;
+    --gray-800: #333333;
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  
+  
+  
+  /* Main Content */
+  .container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+  }
+  
+  main {
+    min-height: calc(100vh - 280px);
+  }
+  
+  .page-title {
+    text-align: center;
+    margin-bottom: 2rem;
+    position: relative;
+  }
+  
+  .page-title h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(to right, var(--primary-dark), var(--primary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+  }
+  
+  .page-title p {
+    font-size: 1.2rem;
+    color: var(--on-surface);
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  
+  /* Game Selection */
+  .game-selection {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin: 3rem 0;
+  }
+  
+  .game-card {
+    background-color: var(--surface);
+    border-radius: 12px;
+    padding: 2rem;
+    width: 320px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    border: 1px solid transparent;
+  }
+  
+  .game-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(37, 205, 107, 0.3);
+    border-color: var(--primary);
+  }
+  
+  .game-card i {
+    font-size: 3rem;
+    color: var(--primary);
+    margin-bottom: 1rem;
+  }
+  
+  .game-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--on-primary);
+  }
+  
+  .game-card p {
+    margin-bottom: 1.5rem;
+    color: var(--on-surface);
+  }
+  
+  .btn {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    background-color: var(--primary);
+    color: var(--on-primary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .btn:hover {
+    background-color: var(--primary-light);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(37, 205, 107, 0.3);
+  }
+  
+  .btn-secondary {
+    background-color: transparent;
+    border: 2px solid var(--primary);
+    color: var(--primary);
+  }
+  
+  .btn-secondary:hover {
+    background-color: var(--primary);
+    color: var(--on-primary);
+  }
+  
+  .btn-danger {
+    background-color: var(--error);
+    color: var(--on-background);
+  }
+  
+  .btn-danger:hover {
+    background-color: #e57373;
+  }
+  
+  /* Quiz Section */
+  #quiz, #debugging, #codeReview {
+    background-color: var(--surface);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-top: 2rem;
+    box-shadow: var(--shadow);
+    animation: fadeIn 0.5s ease;
+    border: 1px solid var(--surface-variant);
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid rgba(37, 205, 107, 0.2);
+    padding-bottom: 1rem;
+  }
+  
+  .timer-display {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--primary);
+    padding: 0.5rem 1rem;
+    background-color: rgba(37, 205, 107, 0.1);
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .quiz-card {
+    background-color: var(--surface-variant);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid var(--primary);
+  }
+  
+  .quiz-card p {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+  
+  .option-group {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .option-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem;
+    background-color: rgba(255, 255, 255, 0.03);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+  }
+  
+  .option-label:hover {
+    background-color: rgba(37, 205, 107, 0.1);
+    border-color: var(--primary);
+  }
+  
+  .option-label input {
+    cursor: pointer;
+  }
+  
+  .controls {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  /* Code editor */
+  .code-editor {
+    position: relative;
+    margin: 2rem 0;
+  }
+  
+  .code-editor pre {
+    background-color: var(--surface-variant);
+    border-radius: 8px;
+    padding: 1.5rem;
+    overflow-x: auto;
+    color: var(--on-background);
+    font-family: 'Courier New', monospace;
+    line-height: 1.5;
+    border: 1px solid rgba(37, 205, 107, 0.2);
+  }
+  
+  .code-editor textarea {
+    width: 100%;
+    min-height: 200px;
+    background-color: var(--surface-variant);
+    color: var(--on-background);
+    border: 1px solid rgba(37, 205, 107, 0.2);
+    border-radius: 8px;
+    padding: 1.5rem;
+    font-family: 'Courier New', monospace;
+    line-height: 1.5;
+    resize: vertical;
+    margin-top: 1rem;
+  }
+  
+  .code-editor textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+  
+  .result-message {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 8px;
+    font-weight: 500;
+  }
+  
+  .correct {
+    background-color: rgba(37, 205, 107, 0.1);
+    color: var(--primary);
+    border-left: 4px solid var(--primary);
+  }
+  
+  .incorrect {
+    background-color: rgba(255, 0, 0, 0.1);
+    color: var(--error);
+    border-left: 4px solid var(--error);
+  }
+  
+  /* Progress bar */
+  .progress-container {
+    width: 100%;
+    height: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    margin: 1rem 0;
+    overflow: hidden;
+  }
+  
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(to right, var(--primary-dark), var(--primary));
+    border-radius: 5px;
+    transition: width 0.3s ease;
+  }
+  
+  /* Achievement section */
+  .achievement-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  
+  .achievement-card {
+    background-color: var(--surface);
+    border-radius: 12px;
+    padding: 1.5rem;
+    width: 32%;
+    text-align: center;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--surface-variant);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+  }
+  
+  .achievement-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary);
+  }
+  
+  .achievement-icon {
+    font-size: 2rem;
+    color: var(--primary);
+    margin-bottom: 1rem;
+  }
+  
+  .achievement-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: var(--on-background);
+  }
+  
+  .achievement-card p {
+    color: var(--on-surface-variant);
+    font-size: 0.9rem;
+  }
+  
+  /* Difficulty Selection */
+  .difficulty-selector {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .difficulty-btn {
+    padding: 0.6rem 1.2rem;
+    border-radius: 50px;
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--on-surface);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .difficulty-btn:hover {
+    background-color: rgba(37, 205, 107, 0.1);
+    color: var(--primary);
+  }
+  
+  .difficulty-btn.active {
+    background-color: var(--primary);
+    color: var(--on-primary);
+  }
+  
+  /* Hint System */
+  .hint-container {
+    margin: 1rem 0;
+    padding: 1rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    border-left: 4px solid #FFC107;
+  }
+  
+  .hint-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #FFC107;
+    cursor: pointer;
+    font-weight: 500;
+  }
+  
+  .hint-content {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px dashed rgba(255, 255, 255, 0.1);
+    color: var(--on-surface);
+  }
+  
+  /* Footer */
+  footer {
+    background-color: var(--surface);
+    padding: 2rem;
+    text-align: center;
+    margin-top: 4rem;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin: 1rem 0;
+  }
+  
+  .footer-links a {
+    color: var(--on-surface-variant);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .footer-links a:hover {
+    color: var(--primary);
+  }
+  
+  .social-links {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+  }
+  
+  .social-links a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--on-surface-variant);
+    transition: all 0.3s ease;
+  }
+  
+  .social-links a:hover {
+    background-color: var(--primary);
+    color: var(--on-primary);
+    transform: translateY(-3px);
+  }
+  
+  .copyright {
+    color: var(--on-surface-variant);
+    opacity: 0.7;
+  }
+  
+  /* Code Review Section */
+  .code-review-card {
+    background-color: var(--surface-variant);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .code-review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(37, 205, 107, 0.2);
+    padding-bottom: 0.5rem;
+  }
+  
+  .code-review-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .code-review-language {
+    background-color: rgba(37, 205, 107, 0.1);
+    color: var(--primary);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+  
+  .difficulty-badge {
+    background-color: rgba(255, 152, 0, 0.1);
+    color: #FF9800;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+  
+  /* Dark code theme */
+  .code-editor pre, .code-editor textarea {
+    color: #f8f8f2;
+    text-shadow: 0 1px rgba(0, 0, 0, 0.3);
+  }
+  
+  .token.comment,
+  .token.prolog,
+  .token.doctype,
+  .token.cdata {
+    color: #8292a2;
+  }
+  
+  .token.punctuation {
+    color: #f8f8f2;
+  }
+  
+  .token.property,
+  .token.tag,
+  .token.constant,
+  .token.symbol,
+  .token.deleted {
+    color: #ff79c6;
+  }
+  
+  .token.boolean,
+  .token.number {
+    color: #bd93f9;
+  }
+  
+  .token.selector,
+  .token.attr-name,
+  .token.string,
+  .token.char,
+  .token.builtin,
+  .token.inserted {
+    color: #50fa7b;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 900px) {
+    .game-selection {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .game-card {
+      width: 100%;
+      max-width: 400px;
+    }
+  
+    .option-group {
+      grid-template-columns: 1fr;
+    }
+  
+    .achievement-container {
+      flex-direction: column;
+    }
+  
+    .achievement-card {
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .navbar {
+      flex-direction: column;
+      padding: 1rem;
+    }
+  
+    .nav-links {
+      margin-top: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  
+    .page-title h1 {
+      font-size: 2rem;
+    }
+    
+    .controls {
+      justify-content: center;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .container {
+      padding: 0 1rem;
+    }
+    
+    .section-header {
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .timer-display {
+      align-self: flex-end;
+    }
+  }
+
+  </style>
+  <body>
+     <!-- Navigation -->
+     <nav class="navbar">
+      <img src="logo.png" alt="BugSlay Logo" height="100" width="200">
+      <ul class="nav-links">
+        <li><a href="main.html">Home</a></li>
+        <li><a href="code.html">Code</a></li>
+        <li><a href="forum.html">Community</a></li>
+        <li><a href="game2.html">Game</a></li>
+        <li><a href="mentor.html">Mentoring</a></li>
+        <li><a href="purchase.html">Subscription</a></li>
+        <li><a href="profile.html">Profile</a></li>
+        <li><a href="leaderboard.html">Leaderboard</a></li>
+        
+      </ul>
+    </nav>
+     
+
+    <main class="container">
+      <div class="page-title">
+        <h1>BugSlay Challenge Arena</h1>
+        <p>Level up your coding skills through interactive challenges! Choose your preferred mode and start crushing bugs like a pro.</p>
+      </div>
+
+      <!-- Game Selection Cards -->
+      <div class="game-selection">
+        <div class="game-card" onclick="gameManager.showMCQSection()">
+          <i class="fas fa-question-circle" ></i>
+          <h3 style="color: #BBBBBB;">MCQ Quiz</h3>
+          <p>Test your knowledge with multiple-choice questions on programming concepts, debugging techniques, and best practices.</p>
+          <button class="btn">Start Quiz</button>
+        </div>
+
+        <div class="game-card" onclick="gameManager.showDebuggingSection()">
+          <i class="fas fa-bug"></i>
+          <h3 style="color: #BBBBBB;">Debugging Challenge </h3>
+          <p>Find and fix bugs in real code snippets across different programming languages and difficulty levels.</p>
+          <button class="btn">Start Challenge</button>
+        </div>
+
+        <div class="game-card" onclick="gameManager.showCodeReviewSection()">
+          <i class="fas fa-code"></i>
+          <h3 style="color: #BBBBBB;"
+          >Code Review</h3>
+          <p>Analyze code samples, identify issues and suggest improvements to develop your code review skills.</p>
+          <button class="btn">Start Review</button>
+        </div>
+      </div>
+
+      <!-- Achievement Section -->
+      <div class="achievement-container">
+        <div class="achievement-card">
+          <div class="achievement-icon">
+            <i class="fas fa-trophy"></i>
+          </div>
+          <h3>Streak Master</h3>
+          <p>You're on a 5-day streak! Keep going to earn bonus points.</p>
+        </div>
+        <div class="achievement-card">
+          <div class="achievement-icon">
+            <i class="fas fa-level-up-alt"></i>
+          </div>
+          <h3>Next Level: Bug Hunter</h3>
+          <p>Solve 5 more debugging challenges to level up!</p>
+        </div>
+        <div class="achievement-card">
+          <div class="achievement-icon">
+            <i class="fas fa-medal"></i>
+          </div>
+          <h3>Weekly Rank: #42</h3>
+          <p>You're in the top 10% of players this week!</p>
+        </div>
+      </div>
+
+      <!-- MCQ Section -->
+      <section id="quiz" style="display: none">
+        <div class="section-header">
+          <h2>MCQ Quiz Challenge</h2>
+          <div class="timer-display">
+            <i class="fas fa-clock"></i>
+            <span id="timer">5:00</span>
+          </div>
+        </div>
+
+        <div class="difficulty-selector">
+          <button class="difficulty-btn active" onclick="quizManager.setDifficulty('easy')">Easy</button>
+          <button class="difficulty-btn" onclick="quizManager.setDifficulty('medium')">Medium</button>
+          <button class="difficulty-btn" onclick="quizManager.setDifficulty('hard')">Hard</button>
+        </div>
+
+        <div class="progress-container">
+          <div class="progress-bar" id="quizProgress" style="width: 0%"></div>
+        </div>
+
+        <div id="quizContainer">
+          <!-- Quiz content will be generated here -->
+        </div>
+
+        <div class="controls">
+          <button class="btn btn-secondary" onclick="quizManager.previousQuestion()">Previous</button>
+          <button class="btn" onclick="quizManager.nextQuestion()">Next</button>
+          <button class="btn btn-danger" onclick="quizManager.finishQuiz()">Finish Quiz</button>
+        </div>
+      </section>
+
+      <!-- Debugging Section -->
+      <section id="debugging" style="display: none">
+        <div class="section-header">
+          <h2>Debugging Challenge</h2>
+          <div class="timer-display">
+            <i class="fas fa-clock"></i>
+            <span id="debugTimer">30:00</span>
+          </div>
+        </div>
+
+        <div class="difficulty-selector">
+          <button class="difficulty-btn active" onclick="debugManager.setDifficulty('easy')">Easy</button>
+          <button class="difficulty-btn" onclick="debugManager.setDifficulty('medium')">Medium</button>
+          <button class="difficulty-btn" onclick="debugManager.setDifficulty('hard')">Hard</button>
+        </div>
+
+        <div class="progress-container">
+          <div class="progress-bar" id="debugProgress" style="width: 0%"></div>
+        </div>
+
+        <div class="code-review-header">
+          <div class="code-review-meta">
+            <span class="code-review-language" id="currentLanguage">Python</span>
+            <span class="difficulty-badge" id="debugDifficultyBadge">Easy</span>
+          </div>
+          <div>
+            Challenge <span id="challengeCounter">1</span> of <span id="totalChallenges">8</span>
+          </div>
+        </div>
+
+        <div class="code-editor">
+          <pre id="codeBlock"></pre>
+          <textarea id="codeSolution" placeholder="Fix the bug here..."></textarea>
+        </div>
+
+        <div class="hint-container">
+          <div class="hint-toggle" onclick="debugManager.toggleHint()">
+            <i class="fas fa-lightbulb"></i>
+            <span>Need a hint?</span>
+          </div>
+          <div class="hint-content" id="hintContent" style="display: none">
+            This will cost 5 points. Look carefully at the syntax and check for missing characters.
+          </div>
+        </div>
+
+        <div id="debugResult" class="result-message"></div>
+
+        <div class="controls">
+          <button class="btn" onclick="debugManager.submitSolution()">Submit Solution</button>
+          <button class="btn btn-secondary" id="nextDebugButton" onclick="debugManager.nextChallenge()">Next Challenge</button>
+          <button class="btn btn-danger" onclick="debugManager.quitChallenge()">Quit Challenge</button>
+        </div>
+      </section>
+
+      <!-- Code Review Section -->
+      <section id="codeReview" style="display: none">
+        <div class="section-header">
+          <h2>Code Review Challenge</h2>
+          <div class="timer-display">
+            <i class="fas fa-clock"></i>
+            <span id="reviewTimer">45:00</span>
+          </div>
+        </div>
+
+        <div class="difficulty-selector">
+          <button class="difficulty-btn active" onclick="reviewManager.setDifficulty('easy')">Easy</button>
+          <button class="difficulty-btn" onclick="reviewManager.setDifficulty('medium')">Medium</button>
+          <button class="difficulty-btn" onclick="reviewManager.setDifficulty('hard')">Hard</button>
+        </div>
+
+        <div class="progress-container">
+          <div class="progress-bar" id="reviewProgress" style="width: 0%"></div>
+        </div>
+
+        <div class="code-review-card">
+          <div class="code-review-header">
+            <div class="code-review-meta">
+              <span class="code-review-language" id="reviewLanguage">JavaScript</span>
+              <span class="difficulty-badge" id="reviewDifficultyBadge">Medium</span>
+            </div>
+            <div>
+              Review <span id="reviewCounter">1</span> of <span id="totalReviews">5</span>
+            </div>
+          </div>
+
+          <div class="code-editor">
+            <pre id="reviewCodeBlock">function calculateTotal(items) {
+  let total = 0;
+  for(var i = 0; i < items.length; i++) {
+    total += items[i].price;
+  }
+  
+  // Apply discount
+  if(items.length > 5)
+    var discount = 0.1;
+    total = total * (1 - discount);
+  
+  return total;
+}</pre>
+            <textarea id="reviewSolution" placeholder="List the issues you found and how to fix them..."></textarea>
+          </div>
+
+          <div class="hint-container">
+            <div class="hint-toggle" onclick="reviewManager.toggleHint()">
+              <i class="fas fa-lightbulb"></i>
+              <span>Need a hint?</span>
+            </div>
+            <div class="hint-content" id="reviewHintContent" style="display: none">
+              Check the conditional block structure and variable scoping.
+            </div>
+          </div>
+        </div>
+
+        <div id="reviewResult" class="result-message"></div>
+
+        <div class="controls">
+          <button class="btn" onclick="reviewManager.submitReview()">Submit Review</button>
+          <button class="btn btn-secondary" onclick="reviewManager.nextReview()">Next Review</button>
+          <button class="btn btn-danger" onclick="reviewManager.quitReview()">Quit Challenge</button>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+  <footer>
+    <p>© 2025 𝑩𝒖𝒈𝑺𝒍𝒂𝒚. All rights reserved.</p>
+    <p>
+        <a class="text-blue-500" href="#">
+         Subscription Terms
+        </a>
+        |
+        <a class="text-blue-500" href="#">
+         Website Terms of Use
+        </a>
+        |
+        <a class="text-blue-500" href="#">
+         Privacy Statement
+        </a>
+        |
+        <a class="text-blue-500" href="#">
+         Opt Out
+        </a>
+        |
+        <a class="text-blue-500" href="#">
+         Cookie Settings
+        </a>
+    <div class="social-links">
+        <a href="#"><i class="fab fa-github"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-whatsapp"></i></a>
+        <a href="#"><i class="fab fa-facebook"></i></a>
+      
+    </div>
+</footer>
+    
+
+    <script >
+        // Game Manager - Controls overall game section visibility
+const gameManager = {
+    showMCQSection() {
+      document.getElementById('quiz').style.display = 'block';
+      document.getElementById('debugging').style.display = 'none';
+      document.getElementById('codeReview').style.display = 'none';
+      quizManager.initQuiz();
+    },
+    
+    showDebuggingSection() {
+      document.getElementById('quiz').style.display = 'none';
+      document.getElementById('debugging').style.display = 'block';
+      document.getElementById('codeReview').style.display = 'none';
+      debugManager.initChallenge();
+    },
+    
+    showCodeReviewSection() {
+      document.getElementById('quiz').style.display = 'none';
+      document.getElementById('debugging').style.display = 'none';
+      document.getElementById('codeReview').style.display = 'block';
+      reviewManager.initReview();
+    }
+  };
+  
+  // Timer functionality for all challenge types
+  class Timer {
+    constructor(elementId, minutes) {
+      this.element = document.getElementById(elementId);
+      this.totalSeconds = minutes * 60;
+      this.remainingSeconds = this.totalSeconds;
+      this.timerId = null;
+    }
+    
+    start() {
+      this.timerId = setInterval(() => {
+        this.remainingSeconds--;
+        this.updateDisplay();
+        
+        if (this.remainingSeconds <= 0) {
+          this.stop();
+          alert("Time's up!");
+        }
+      }, 1000);
+    }
+    
+    stop() {
+      clearInterval(this.timerId);
+    }
+    
+    reset() {
+      this.stop();
+      this.remainingSeconds = this.totalSeconds;
+      this.updateDisplay();
+    }
+    
+    updateDisplay() {
+      const minutes = Math.floor(this.remainingSeconds / 60);
+      const seconds = this.remainingSeconds % 60;
+      this.element.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    }
+  }
+  
+  // Quiz Manager
+  const quizManager = {
+    currentQuestion: 0,
+    userAnswers: [],
+    quizQuestions: [],
+    timer: new Timer('timer', 5),
+    difficulty: 'easy',
+    
+    // Quiz questions by difficulty
+    questions: {
+      easy: [
+        {
+          question: "What does HTML stand for?",
+          options: [
+            "Hyper Text Markup Language",
+            "Hyperlinks and Text Markup Language",
+            "Home Tool Markup Language",
+            "Hyper Technical Modern Language"
+          ],
+          answer: 0
+        },
+        {
+          question: "Which of the following is NOT a JavaScript data type?",
+          options: [
+            "String",
+            "Boolean",
+            "Character",
+            "Number"
+          ],
+          answer: 2
+        },
+        {
+          question: "Which symbol is used for comments in JavaScript?",
+          options: [
+            "#",
+            "//",
+            "/* */",
+            "Both // and /* */"
+          ],
+          answer: 3
+        },
+        {
+          question: "Which CSS property changes the text color?",
+          options: [
+            "color",
+            "font-color",
+            "text-color",
+            "foreground"
+          ],
+          answer: 0
+        },
+        {
+          question: "What will console.log(typeof []) output in JavaScript?",
+          options: [
+            "array",
+            "object",
+            "list",
+            "undefined"
+          ],
+          answer: 1
+        }
+      ],
+      medium: [
+        {
+          question: "What is the correct syntax for referring to an external script called 'script.js'?",
+          options: [
+            "<script src='script.js'>",
+            "<script href='script.js'>",
+            "<script name='script.js'>",
+            "<script link='script.js'>"
+          ],
+          answer: 0
+        },
+        {
+          question: "Which method can be used to find the length of a string in JavaScript?",
+          options: [
+            "length()",
+            ".size()",
+            ".length",
+            "size"
+          ],
+          answer: 2
+        },
+        {
+          question: "What is the purpose of 'use strict' in JavaScript?",
+          options: [
+            "To use stricter equality operators",
+            "To catch common coding mistakes and throw exceptions",
+            "To enable browser compatibility mode",
+            "To optimize code execution"
+          ],
+          answer: 1
+        },
+        {
+          question: "Which CSS property is used to control the space between elements?",
+          options: [
+            "padding",
+            "margin",
+            "spacing",
+            "gap"
+          ],
+          answer: 1
+        },
+        {
+          question: "What is the result of '5' + 2 in JavaScript?",
+          options: [
+            "7",
+            "'52'",
+            "Error",
+            "undefined"
+          ],
+          answer: 1
+        }
+      ],
+      hard: [
+        {
+          question: "What is a closure in JavaScript?",
+          options: [
+            "A function that has access to variables in its outer scope",
+            "A method to close browser windows",
+            "A way to seal object properties",
+            "A type of event listener"
+          ],
+          answer: 0
+        },
+        {
+          question: "Which of the following is an example of a pure function?",
+          options: [
+            "function add(a, b) { return a + b; }",
+            "function getRandomNum() { return Math.random(); }",
+            "function updateDOM(element) { element.innerHTML = 'New content'; }",
+            "function logTime() { console.log(new Date()); }"
+          ],
+          answer: 0
+        },
+        {
+          question: "What is the time complexity of finding an element in a hash table?",
+          options: [
+            "O(1) average case",
+            "O(n) average case",
+            "O(log n) average case",
+            "O(n²) average case"
+          ],
+          answer: 0
+        },
+        {
+          question: "Which is NOT a valid way to create an object in JavaScript?",
+          options: [
+            "let obj = {};",
+            "let obj = new Object();",
+            "let obj = Object.create(null);",
+            "let obj = Object.make();"
+          ],
+          answer: 3
+        },
+        {
+          question: "What does the 'this' keyword refer to in an arrow function?",
+          options: [
+            "The global window object",
+            "The object that defined the arrow function",
+            "The parent function's this value",
+            "The object that called the function"
+          ],
+          answer: 2
+        }
+      ]
+    },
+    
+    initQuiz() {
+      this.currentQuestion = 0;
+      this.userAnswers = [];
+      this.quizQuestions = this.questions[this.difficulty];
+      this.timer.reset();
+      this.timer.start();
+      this.renderQuestion();
+      this.updateProgressBar();
+    },
+    
+    setDifficulty(level) {
+      // Update difficulty buttons
+      const buttons = document.querySelectorAll('#quiz .difficulty-btn');
+      buttons.forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      
+      this.difficulty = level;
+      this.initQuiz();
+    },
+    
+    renderQuestion() {
+      const question = this.quizQuestions[this.currentQuestion];
+      const quizContainer = document.getElementById('quizContainer');
+      
+      let optionsHTML = '';
+      question.options.forEach((option, index) => {
+        const isChecked = this.userAnswers[this.currentQuestion] === index ? 'checked' : '';
+        optionsHTML += `
+          <label class="option-label">
+            <input type="radio" name="question" value="${index}" ${isChecked}>
+            ${option}
+          </label>
+        `;
+      });
+      
+      quizContainer.innerHTML = `
+        <div class="quiz-card">
+          <p>${this.currentQuestion + 1}. ${question.question}</p>
+          <div class="option-group">
+            ${optionsHTML}
+          </div>
+        </div>
+      `;
+      
+      // Add event listeners to radio buttons
+      const radioButtons = quizContainer.querySelectorAll('input[type="radio"]');
+      radioButtons.forEach(radio => {
+        radio.addEventListener('change', (e) => {
+          this.userAnswers[this.currentQuestion] = parseInt(e.target.value);
+        });
+      });
+    },
+    
+    nextQuestion() {
+      if (this.currentQuestion < this.quizQuestions.length - 1) {
+        this.currentQuestion++;
+        this.renderQuestion();
+        this.updateProgressBar();
+      }
+    },
+    
+    previousQuestion() {
+      if (this.currentQuestion > 0) {
+        this.currentQuestion--;
+        this.renderQuestion();
+        this.updateProgressBar();
+      }
+    },
+    
+    updateProgressBar() {
+      const progressBar = document.getElementById('quizProgress');
+      const progressPercentage = ((this.currentQuestion + 1) / this.quizQuestions.length) * 100;
+      progressBar.style.width = `${progressPercentage}%`;
+    },
+    
+    finishQuiz() {
+      this.timer.stop();
+      
+      // Calculate score
+      let correctAnswers = 0;
+      this.userAnswers.forEach((answer, index) => {
+        if (answer === this.quizQuestions[index].answer) {
+          correctAnswers++;
+        }
+      });
+      
+      const score = Math.round((correctAnswers / this.quizQuestions.length) * 100);
+      
+      // Display result
+      const quizContainer = document.getElementById('quizContainer');
+      quizContainer.innerHTML = `
+        <div class="result-message ${score >= 70 ? 'correct' : 'incorrect'}">
+          <h3>Quiz Completed!</h3>
+          <p>Your score: ${score}%</p>
+          <p>You got ${correctAnswers} out of ${this.quizQuestions.length} questions correct.</p>
+        </div>
+      `;
+    }
+  };
+  
+  // Debugging Manager
+  const debugManager = {
+    currentChallenge: 0,
+    challenges: [],
+    timer: new Timer('debugTimer', 30),
+    difficulty: 'easy',
+    
+    // Debug challenges by difficulty
+    debugChallenges: {
+      easy: [
+        {
+          language: "JavaScript",
+          code: `function calculateSum(a, b) {
+    return a + b
+  }
+  
+  // This function should return the sum of all numbers in the array
+  function sumArray(numbers) {
+    let sum = 0;
+    for (let i = 0; i < numbers.length; i++) {
+      sum = calculateSum(sum, numbers[i]);
+    }
+    // Missing return statement
+  }
+  
+  console.log(sumArray([1, 2, 3, 4, 5]));`,
+          solution: "return sum;",
+          hint: "Look at the function sumArray. Is it returning anything?"
+        },
+        {
+          language: "Python",
+          code: `def greet(name):
+      print("Hello, " + name + "!"
+      
+  # Testing the function
+  greet("Alex")`,
+          solution: ")",
+          hint: "Check the line with the print statement. Is the parenthesis properly closed?"
+        },
+        {
+          language: "Java",
+          code: `public class Main {
+      public static void main(String[] args) {
+          int x = 10;
+          int y = 5;
+          
+          if (x > y) {
+              System.out.println("x is greater than y");
+          } else if (x = y) {  // Bug is here
+              System.out.println("x is equal to y");
+          } else {
+              System.out.println("x is less than y");
+          }
+      }
+  }`,
+          solution: "==",
+          hint: "Look at the comparison operator in the else-if condition. Assignment vs comparison?"
+        }
+      ],
+      medium: [
+        {
+          language: "JavaScript",
+          code: `// This function should filter out duplicate values from an array
+  function removeDuplicates(arr) {
+    const result = [];
+    
+    for (let i = 0; i < arr.length; i++) {
+      if (!result.includes(arr[i])) {
+        result.push(arr[i]);
+      }
+    }
+    
+    return arr; // Bug is here
+  }
+  
+  console.log(removeDuplicates([1, 2, 2, 3, 4, 4, 5]));`,
+          solution: "return result;",
+          hint: "Check what the function is returning. Is it the original array or the filtered array?"
+        },
+        {
+          language: "Python",
+          code: `def calculate_average(numbers):
+      total = 0
+      for num in numbers:
+          total += num
+      return total / len(numbers)
+  
+  # Testing with an empty list
+  result = calculate_average([])
+  print(f"The average is: {result}")`,
+          solution: "if len(numbers) == 0:\n        return 0",
+          hint: "What happens when the function receives an empty list? Division by zero?"
+        },
+        {
+          language: "CSS",
+          code: `.container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .item {
+    color: #333;
+    margin: 10px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  @media (min-width: 768px) {
+    .container {
+      flex-direction: row;
+    }
+    
+    .item {
+      width: 300px;
+      background-color: #f9f9f9
+    }
+  }`,
+          solution: ";",
+          hint: "Look at the CSS properties in the media query. Is there a missing semicolon?"
+        }
+      ],
+      hard: [
+        {
+          language: "JavaScript",
+          code: `class Counter {
+    constructor() {
+      this.count = 0;
+    }
+    
+    increment() {
+      this.count++;
+    }
+    
+    decrement() {
+      this.count--;
+    }
+    
+    getCount() {
+      return this.count;
+    }
+  }
+  
+  const counter = new Counter();
+  const buttons = document.querySelectorAll('.counter-btn');
+  
+  buttons.forEach(button => {
+    button.addEventListener('click', function() {
+      if (this.classList.contains('increment')) {
+        counter.increment();
+      } else if (this.classList.contains('decrement')) {
+        counter.decrement();
+      }
+      
+      document.getElementById('count').textContent = count; // Bug is here
+    });
+  });`,
+          solution: "counter.getCount()",
+          hint: "Look at how the count is being displayed. Is it accessing the count property correctly?"
+        },
+        {
+          language: "Python",
+          code: `class User:
+      def __init__(self, username, email):
+          self.username = username
+          self.email = email
+          self.is_active = True
+      
+      def deactivate(self):
+          self.is_active = False
+          return self
+      
+      def reactivate(self):
+          self.is_active = True
+          return self
+  
+  # Create users and manage them
+  users = {}
+  
+  def create_user(username, email):
+      user = User(username, email)
+      users[username] = user
+  
+  def get_user(username):
+      return users.get(username)
+  
+  # Test functionality
+  create_user("alice", "alice@example.com")
+  user = get_user("alice")
+  user.deactivate()
+  print(user.is_active)  # Should print False
+  
+  create_user("bob", "bob@example.com")
+  get_user("alice").reactivate()
+  print(users["alice"].is_active)  # Should print True, but doesn't work`,
+          solution: "return users[username]",
+          hint: "Look at the get_user function. What does .get() return when the key doesn't exist?"
+        },
+        {
+          language: "React JSX",
+          code: `function UserProfile({ user }) {
+    const [isEditing, setIsEditing] = useState(false);
+    const [name, setName] = useState(user.name);
+    
+    useEffect(() => {
+      // Update local state when user prop changes
+      setName(user.name);
+    }, []);  // Bug is here
+    
+    const handleSave = () => {
+      user.name = name;
+      setIsEditing(false);
+    };
+    
+    return (
+      <div className="user-profile">
+        {isEditing ? (
+          <>
+            <input 
+              value={name} 
+              onChange={(e) => setName(e.target.value)} 
+            />
+            <button onClick={handleSave}>Save</button>
+          </>
+        ) : (
+          <>
+            <h2>{name}</h2>
+            <button onClick={() => setIsEditing(true)}>Edit</button>
+          </>
+        )}
+      </div>
+    );
+  }`,
+          solution: "[user]",
+          hint: "Look at the useEffect dependency array. Will it update when the user prop changes?"
+        }
+      ]
+    },
+    
+    initChallenge() {
+      this.currentChallenge = 0;
+      this.challenges = this.debugChallenges[this.difficulty];
+      this.timer.reset();
+      this.timer.start();
+      this.renderChallenge();
+      this.updateProgressBar();
+      
+      // Update the challenge counter
+      document.getElementById('challengeCounter').textContent = '1';
+      document.getElementById('totalChallenges').textContent = this.challenges.length;
+      document.getElementById('nextDebugButton').style.display = 'none';
+    },
+    
+    setDifficulty(level) {
+      // Update difficulty buttons
+      const buttons = document.querySelectorAll('#debugging .difficulty-btn');
+      buttons.forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      
+      this.difficulty = level;
+      document.getElementById('debugDifficultyBadge').textContent = level.charAt(0).toUpperCase() + level.slice(1);
+      this.initChallenge();
+    },
+    
+    renderChallenge() {
+      const challenge = this.challenges[this.currentChallenge];
+      
+      // Update language badge
+      document.getElementById('currentLanguage').textContent = challenge.language;
+      
+      // Render code
+      document.getElementById('codeBlock').textContent = challenge.code;
+      document.getElementById('codeSolution').value = '';
+      
+      // Clear previous results
+      document.getElementById('debugResult').innerHTML = '';
+      document.getElementById('debugResult').className = 'result-message';
+      
+      // Hide hint
+      document.getElementById('hintContent').style.display = 'none';
+      document.getElementById('hintContent').textContent = challenge.hint;
+    },
+    
+    submitSolution() {
+      const solution = document.getElementById('codeSolution').value.trim();
+      const challenge = this.challenges[this.currentChallenge];
+      
+      // Simple check if solution contains the key part
+      const isCorrect = solution.includes(challenge.solution);
+      
+      const resultElement = document.getElementById('debugResult');
+      if (isCorrect) {
+        resultElement.innerHTML = `
+          <h3>🎉 Correct!</h3>
+          <p>You've successfully fixed the bug. Great job!</p>
+        `;
+        resultElement.className = 'result-message correct';
+        document.getElementById('nextDebugButton').style.display = 'inline-block';
+      } else {
+        resultElement.innerHTML = `
+          <h3>❌ Not quite right</h3>
+          <p>Your solution doesn't fix all the issues. Try again!</p>
+        `;
+        resultElement.className = 'result-message incorrect';
+      }
+    },
+    
+    nextChallenge() {
+      if (this.currentChallenge < this.challenges.length - 1) {
+        this.currentChallenge++;
+        this.renderChallenge();
+        this.updateProgressBar();
+        
+        // Update challenge counter
+        document.getElementById('challengeCounter').textContent = this.currentChallenge + 1;
+        document.getElementById('nextDebugButton').style.display = 'none';
+      } else {
+        // End of challenges
+        this.completeChallenge();
+      }
+    },
+    
+    updateProgressBar() {
+      const progressBar = document.getElementById('debugProgress');
+      const progressPercentage = ((this.currentChallenge + 1) / this.challenges.length) * 100;
+      progressBar.style.width = `${progressPercentage}%`;
+    },
+    
+    toggleHint() {
+      const hintContent = document.getElementById('hintContent');
+      hintContent.style.display = hintContent.style.display === 'none' ? 'block' : 'none';
+    },
+    
+    completeChallenge() {
+      this.timer.stop();
+      
+      const debuggingSection = document.getElementById('debugging');
+      debuggingSection.innerHTML = `
+        <div class="section-header">
+          <h2>Debugging Challenge Completed</h2>
+        </div>
+        
+        <div class="result-message correct">
+          <h3>🏆 Challenge Complete!</h3>
+          <p>You've successfully completed all debugging challenges in the ${this.difficulty} difficulty level!</p>
+          <p>You've earned 150 points and unlocked the "Bug Squasher" badge!</p>
+        </div>
+        
+        <div class="controls">
+          <button class="btn" onclick="gameManager.showDebuggingSection()">Try Another Difficulty</button>
+          <button class="btn btn-secondary" onclick="gameManager.showMCQSection()">Go to Quiz Challenge</button>
+        </div>
+      `;
+    },
+    
+    quitChallenge() {
+      if (confirm("Are you sure you want to quit this challenge? Your progress will be lost.")) {
+        this.timer.stop();
+        document.getElementById('debugging').style.display = 'none';
+      }
+    }
+  };
+  
+  // Code Review Manager
+  const reviewManager = {
+    currentReview: 0,
+    reviews: [],
+    timer: new Timer('reviewTimer', 45),
+    difficulty: 'easy',
+    
+    // Code review challenges by difficulty
+    reviewChallenges: {
+      easy: [
+        {
+          language: "JavaScript",
+          code: `function calculateTotal(items) {
+    let total = 0;
+    for(var i = 0; i < items.length; i++) {
+      total += items[i].price;
+    }
+    
+    // Apply discount
+    if(items.length > 5)
+      var discount = 0.1;
+      total = total * (1 - discount);
+    
+    return total;
+  }`,
+          keyIssues: ["missing braces", "var discount", "indentation"]
+        },
+        {
+          language: "Python",
+          code: `def process_data(data):
+      results = []
+      for i in range(len(data)):
+          item = data[i]
+          # Process the item
+          processed = item * 2
+          results.append(processed)
+      return results
+  
+  data = [1, 2, 3, 4, 5]
+  processed_data = process_data(data)
+  print(processed_data)`,
+          keyIssues: ["inefficient loop", "no docstring", "magic number"]
+        }
+      ],
+      medium: [
+        {
+          language: "JavaScript",
+          code: `// User authentication function
+  function checkLogin(username, password) {
+    // Hard-coded credentials (bad practice!)
+    if (username === "admin" && password === "password123") {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  
+  // Handle form submission
+  document.getElementById("loginForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    var username = document.getElementById("username").value;
+    var password = document.getElementById("password").value;
+    
+    if (checkLogin(username, password)) {
+      alert("Login successful!");
+      window.location = "dashboard.html";
+    } else {
+      alert("Invalid credentials!");
+    }
+  });`,
+          keyIssues: ["hard-coded credentials", "var instead of let/const", "insecure password handling", "direct page navigation"]
+        },
+        {
+          language: "React JSX",
+          code: `function ProductList({ products }) {
+    const [items, setItems] = useState(products);
+    
+    useEffect(() => {
+      document.title = 'Product List: ' + items.length + ' items';
+      
+      // Fetch additional product data
+      const fetchData = async () => {
+        const res = await fetch('/api/products');
+        const data = await res.json();
+        setItems([...items, ...data]);
+      };
+      
+      fetchData();
+    }, []);
+    
+    return (
+      <div>
+        <h1>Products ({items.length})</h1>
+        <ul>
+          {items.map(item => (
+            <li>{item.name} - ${item.price}</li>
+          ))}
+        </ul>
+      </div>
+    );
+  }`,
+          keyIssues: ["missing key prop", "infinite loop in useEffect", "dependency array", "error handling"]
+        }
+      ],
+      hard: [
+        {
+          language: "JavaScript",
+          code: `class UserService {
+    constructor() {
+      this.users = [];
+      this.loggedIn = null;
+      this.init();
+    }
+    
+    async init() {
+      try {
+        const response = await fetch('/api/users');
+        this.users = await response.json();
+      } catch (error) {
+        console.log('Failed to fetch users');
+      }
+    }
+    
+    getUser(id) {
+      return this.users.find(user => user.id === id);
+    }
+    
+    login(username, password) {
+      var user = this.users.find(u => u.username === username && u.password === password);
+      if (user) {
+        this.loggedIn = user;
+        localStorage.setItem('user', JSON.stringify(user));
+        return true;
+      }
+      return false;
+    }
+    
+    logout() {
+      this.loggedIn = null;
+      localStorage.removeItem('user');
+    }
+  }
+  
+  // Usage
+  const userService = new UserService();
+  const loginButton = document.querySelector('#login');
+  
+  loginButton.addEventListener('click', () => {
+    const username = document.querySelector('#username').value;
+    const password = document.querySelector('#password').value;
+    
+    if (userService.login(username, password)) {
+      window.location = 'dashboard.html';
+    } else {
+      alert('Invalid credentials');
+    }
+  });`,
+          keyIssues: ["storing passwords in plain text", "constructor with async code", "error handling", "security vulnerabilities", "var usage"]
+        },
+        {
+          language: "Python",
+          code: `class DataProcessor:
+      def __init__(self, data_source):
+          self.data_source = data_source
+          self.data = self.load_data()
+          
+      def load_data(self):
+          # Load data from source
+          print(f"Loading data from {self.data_source}")
+          # Simulate loading large dataset
+          import time
+          time.sleep(2)
+          return [i for i in range(1000)]
+          
+      def process(self, filter_func=None):
+          results = []
+          for item in self.data:
+              # Apply expensive transformation
+              transformed = self._transform(item)
+              
+              # Apply filter if provided
+              if filter_func is None or filter_func(transformed):
+                  results.append(transformed)
+                  
+          return results
+          
+      def _transform(self, item):
+          # Expensive transformation
+          return item * item
+          
+      def save_results(self, results, output_file):
+          with open(output_file, 'w') as f:
+              for item in results:
+                  f.write(str(item) + '\\n')
+          print(f"Results saved to {output_file}")
+  
+  # Usage
+  processor = DataProcessor("data.csv")
+  results = processor.process(lambda x: x > 5000)
+  processor.save_results(results, "output.txt")`,
+          keyIssues: ["performance issues", "loading in constructor", "error handling", "hard-coded values", "inefficient processing"]
+        }
+      ]
+    },
+    
+    initReview() {
+      this.currentReview = 0;
+      this.reviews = this.reviewChallenges[this.difficulty];
+      this.timer.reset();
+      this.timer.start();
+      this.renderReview();
+      this.updateProgressBar();
+      
+      // Update the review counter
+      document.getElementById('reviewCounter').textContent = '1';
+      document.getElementById('totalReviews').textContent = this.reviews.length;
+    },
+    
+    setDifficulty(level) {
+      // Update difficulty buttons
+      const buttons = document.querySelectorAll('#codeReview .difficulty-btn');
+      buttons.forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      
+      this.difficulty = level;
+      document.getElementById('reviewDifficultyBadge').textContent = level.charAt(0).toUpperCase() + level.slice(1);
+      this.initReview();
+    },
+    
+    renderReview() {
+      const review = this.reviews[this.currentReview];
+      
+      // Update language badge
+      document.getElementById('reviewLanguage').textContent = review.language;
+      
+      // Render code
+      document.getElementById('reviewCodeBlock').textContent = review.code;
+      document.getElementById('reviewSolution').value = '';
+      
+      // Clear previous results
+      document.getElementById('reviewResult').innerHTML = '';
+      document.getElementById('reviewResult').className = 'result-message';
+      
+      // Hide hint
+      document.getElementById('reviewHintContent').style.display = 'none';
+    },
+    
+    submitReview() {
+      const solution = document.getElementById('reviewSolution').value.toLowerCase();
+      const review = this.reviews[this.currentReview];
+      
+      // Check if the solution mentions key issues
+      let identifiedIssues = 0;
+      review.keyIssues.forEach(issue => {
+        if (solution.includes(issue.toLowerCase())) {
+          identifiedIssues++;
+        }
+      });
+      
+      const percentage = Math.round((identifiedIssues / review.keyIssues.length) * 100);
+      
+      const resultElement = document.getElementById('reviewResult');
+      if (percentage >= 70) {
+        resultElement.innerHTML = `
+          <h3>Good Review! (${percentage}%)</h3>
+          <p>You identified ${identifiedIssues} out of ${review.keyIssues.length} key issues.</p>
+          <p>Key issues to look for: ${review.keyIssues.join(', ')}</p>
+        `;
+        resultElement.className = 'result-message correct';
+      } else {
+        resultElement.innerHTML = `
+          <h3>Needs Improvement (${percentage}%)</h3>
+          <p>You identified only ${identifiedIssues} out of ${review.keyIssues.length} key issues.</p>
+          <p>Key issues to look for: ${review.keyIssues.join(', ')}</p>
+        `;
+        resultElement.className = 'result-message incorrect';
+      }
+    },
+    
+    nextReview() {
+      if (this.currentReview < this.reviews.length - 1) {
+        this.currentReview++;
+        this.renderReview();
+        this.updateProgressBar();
+        
+        // Update review counter
+        document.getElementById('reviewCounter').textContent = this.currentReview + 1;
+      } else {
+        // End of reviews
+        this.completeReview();
+      }
+    },
+    
+    updateProgressBar() {
+    const progressBar = document.getElementById('reviewProgress');
+    const progressPercentage = ((this.currentReview + 1) / this.reviews.length) * 100;
+    progressBar.style.width = `${progressPercentage}%`;
+  },
+  
+  toggleHint() {
+    const hintContent = document.getElementById('reviewHintContent');
+    hintContent.style.display = hintContent.style.display === 'none' ? 'block' : 'none';
+  },
+  
+  completeReview() {
+    this.timer.stop();
+    
+    const codeReviewSection = document.getElementById('codeReview');
+    codeReviewSection.innerHTML = `
+      <div class="section-header">
+        <h2>Code Review Challenge Completed</h2>
+      </div>
+      
+      <div class="result-message correct">
+        <h3>🏆 Challenge Complete!</h3>
+        <p>You've successfully completed all code review challenges in the ${this.difficulty} difficulty level!</p>
+        <p>You've earned 200 points and unlocked the "Code Critic" badge!</p>
+      </div>
+      
+      <div class="controls">
+        <button class="btn" onclick="gameManager.showCodeReviewSection()">Try Another Difficulty</button>
+        <button class="btn btn-secondary" onclick="gameManager.showDebuggingSection()">Go to Debugging Challenge</button>
+      </div>
+    `;
+  },
+  
+  quitReview() {
+    if (confirm("Are you sure you want to quit this challenge? Your progress will be lost.")) {
+      this.timer.stop();
+      document.getElementById('codeReview').style.display = 'none';
+    }
+  }
+};
+
+// Initialize the page when DOM content is loaded
+document.addEventListener('DOMContentLoaded', function() {
+  // Syntax highlighting (simulated)
+  const codeBlocks = document.querySelectorAll('pre');
+  codeBlocks.forEach(block => {
+    // This is a simple simulation - for production, use a library like Prism.js or highlight.js
+    const code = block.textContent;
+    // Apply basic highlighting for keywords
+    const keywords = ['function', 'return', 'if', 'else', 'for', 'while', 'var', 'let', 'const', 'class', 'import', 'export', 'async', 'await', 'try', 'catch'];
+    let highlightedCode = code;
+    
+    keywords.forEach(keyword => {
+      // Simple regex to highlight keywords (this is very basic)
+      const regex = new RegExp(`\\b${keyword}\\b`, 'g');
+      highlightedCode = highlightedCode.replace(regex, `<span class="token keyword">${keyword}</span>`);
+    });
+    
+    // Highlight strings (very basic - doesn't handle all cases)
+    highlightedCode = highlightedCode.replace(/(["'])(.*?)\1/g, '<span class="token string">$&</span>');
+    
+    // Highlight numbers
+    highlightedCode = highlightedCode.replace(/\b(\d+)\b/g, '<span class="token number">$&</span>');
+    
+    // Highlight comments (simple cases)
+    highlightedCode = highlightedCode.replace(/(\/\/.*$)/gm, '<span class="token comment">$&</span>');
+    
+    // Set highlighted HTML
+    block.innerHTML = highlightedCode;
+  });
+  
+  // Setup event listeners for game cards
+  const gameCards = document.querySelectorAll('.game-card');
+  gameCards.forEach(card => {
+    card.addEventListener('click', function() {
+      const button = this.querySelector('.btn');
+      if (button) {
+        button.click();
+      }
+    });
+  });
+  
+  // Make difficulty buttons work properly
+  const difficultyButtons = document.querySelectorAll('.difficulty-btn');
+  difficultyButtons.forEach(button => {
+    button.addEventListener('click', function(e) {
+      // Find the parent section to determine which manager to use
+      const section = this.closest('section');
+      
+      if (section.id === 'quiz') {
+        quizManager.setDifficulty(this.textContent.toLowerCase());
+      } else if (section.id === 'debugging') {
+        debugManager.setDifficulty(this.textContent.toLowerCase());
+      } else if (section.id === 'codeReview') {
+        reviewManager.setDifficulty(this.textContent.toLowerCase());
+      }
+      
+      // Update active state
+      const buttons = section.querySelectorAll('.difficulty-btn');
+      buttons.forEach(btn => btn.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+  
+  // Setup the sample code review challenge
+  document.getElementById('reviewCodeBlock').innerHTML = reviewManager.reviewChallenges.easy[0].code;
+  
+  // Implement a simple user score tracking
+  const userScore = {
+    total: 0,
+    
+    add(points) {
+      this.total += points;
+      // This would typically update a UI element or save to localStorage
+      console.log(`Score updated: ${this.total}`);
+    },
+    
+    subtract(points) {
+      this.total = Math.max(0, this.total - points);
+      console.log(`Score updated: ${this.total}`);
+    }
+  };
+  
+  // Add hint system cost
+  const hintToggles = document.querySelectorAll('.hint-toggle');
+  hintToggles.forEach(toggle => {
+    toggle.addEventListener('click', function() {
+      const hintContent = this.nextElementSibling;
+      if (hintContent.style.display === 'none') {
+        // Only subtract points the first time they view a hint
+        userScore.subtract(5);
+      }
+    });
+  });
+  
+  // Add placeholder image for logo
+  const logoImg = document.querySelector('.logo img');
+  if (logoImg && !logoImg.complete) {
+    logoImg.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50"><rect width="50" height="50" fill="%25CD6B"/><text x="25" y="30" font-family="Arial" font-size="20" text-anchor="middle" fill="black">BS</text></svg>';
+  }
+});
+    </script>
+  </body>
+</html>

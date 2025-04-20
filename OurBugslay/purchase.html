@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BugSlay - Purchase</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Reset and Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
+
+    body {
+      background-color: #000;
+      color: #fff;
+      line-height: 1.6;
+    }
+
+ 
+    /* Typography */
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+    }
+
+    h2 {
+      font-size: 1.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    /* Utility Classes */
+    .text-green {
+      color: #25CD6B;
+    }
+
+    .mb-2 {
+      margin-bottom: 0.5rem;
+    }
+
+    .mb-4 {
+      margin-bottom: 1rem;
+    }
+
+    .mb-6 {
+      margin-bottom: 1.5rem;
+    }
+
+    .mb-8 {
+      margin-bottom: 2rem;
+    }
+
+    .mb-12 {
+      margin-bottom: 3rem;
+    }
+
+    .mt-2 {
+      margin-top: 0.5rem;
+    }
+
+    .mt-4 {
+      margin-top: 1rem;
+    }
+
+    .mr-2 {
+      margin-right: 0.5rem;
+    }
+
+    .flex {
+      display: flex;
+    }
+
+    .flex-col {
+      flex-direction: column;
+    }
+
+    .items-center {
+      align-items: center;
+    }
+
+    .justify-between {
+      justify-content: space-between;
+    }
+
+    .justify-center {
+      justify-content: center;
+    }
+
+    .w-full {
+      width: 100%;
+    }
+
+    .text-sm {
+      font-size: 0.875rem;
+    }
+
+    .font-bold {
+      font-weight: 700;
+    }
+
+    .font-medium {
+      font-weight: 500;
+    }
+
+    .text-gray-400 {
+      color: #9ca3af;
+    }
+
+   
+    
+    @media (min-width: 768px) {
+      nav {
+        display: flex;
+        gap: 1.5rem;
+      }
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    nav a:hover {
+      color: #25CD6B;
+    }
+
+    nav a.active {
+      color: #25CD6B;
+      font-weight: 500;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      border-radius: 0.375rem;
+      font-weight: 500;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      font-size: 1rem;
+    }
+
+    .btn-primary {
+      background-color: #25CD6B;
+      color: #000;
+    }
+
+    .btn-primary:hover {
+      background-color: #20b85f;
+    }
+
+    .btn-secondary {
+      background-color: #1f2937;
+      color: #fff;
+    }
+
+    .btn-secondary:hover {
+      background-color: #374151;
+    }
+
+    .btn-block {
+      display: block;
+      width: 100%;
+    }
+
+    /* Main Content */
+    main {
+      padding: 3rem 0;
+    }
+
+    /* Success Message */
+    .success-message {
+      display: flex;
+      align-items: center;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      background-color: rgba(37, 205, 107, 0.1);
+      border: 1px solid #25CD6B;
+      border-radius: 0.375rem;
+      color: #25CD6B;
+    }
+
+    .success-message svg {
+      margin-right: 0.5rem;
+    }
+
+    /* Plans Grid */
+    .plans-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    @media (min-width: 768px) {
+      .plans-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .plan-card {
+      border: 1px solid #333;
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .plan-card:hover {
+      border-color: #25CD6B;
+    }
+
+    .plan-card.selected {
+      border-color: #25CD6B;
+      background-color: rgba(37, 205, 107, 0.1);
+    }
+
+    .plan-price {
+      font-size: 1.875rem;
+      font-weight: bold;
+      color: #25CD6B;
+      margin-bottom: 1rem;
+    }
+
+    .plan-price span {
+      font-size: 0.875rem;
+      color: #9ca3af;
+      font-weight: normal;
+    }
+
+    .features-list {
+      list-style: none;
+      margin-bottom: 1.5rem;
+    }
+
+    .features-list li {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .features-list li svg {
+      color: #25CD6B;
+      margin-right: 0.5rem;
+    }
+
+    /* Checkout Section */
+    .checkout-section {
+      background-color: #111;
+      border-radius: 0.5rem;
+      padding: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .checkout-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    @media (min-width: 768px) {
+      .checkout-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .order-summary {
+      border: 1px solid #333;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+
+    .quantity-selector {
+      display: flex;
+      align-items: center;
+      border: 1px solid #333;
+      border-radius: 0.375rem;
+      margin-left: 0.5rem;
+    }
+
+    .quantity-selector button {
+      background: none;
+      border: none;
+      color: #9ca3af;
+      padding: 0.25rem 0.5rem;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .quantity-selector button:hover {
+      color: #fff;
+    }
+
+    .quantity-selector span {
+      padding: 0 0.5rem;
+    }
+
+    .summary-total {
+      border-top: 1px solid #333;
+      padding-top: 0.5rem;
+      margin-top: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+      font-weight: bold;
+    }
+
+    .summary-total span:last-child {
+      color: #25CD6B;
+    }
+
+    .promo-code {
+      margin-bottom: 1rem;
+    }
+
+    .promo-code-input {
+      display: flex;
+    }
+
+    .promo-code-input input {
+      flex-grow: 1;
+      background-color: #1f2937;
+      border: 1px solid #333;
+      border-right: none;
+      border-radius: 0.375rem 0 0 0.375rem;
+      padding: 0.5rem 1rem;
+      color: #fff;
+    }
+
+    .promo-code-input input:focus {
+      outline: none;
+      border-color: #25CD6B;
+    }
+
+    .promo-code-input button {
+      background-color: #25CD6B;
+      color: #000;
+      border: none;
+      border-radius: 0 0.375rem 0.375rem 0;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background-color 0.2s;
+    }
+
+    .promo-code-input button:hover {
+      background-color: #20b85f;
+    }
+
+    /* Payment Method */
+    .payment-method {
+      border: 1px solid #333;
+      border-radius: 0.5rem;
+      padding: 1rem;
+    }
+
+    .payment-option {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .payment-option input {
+      margin-right: 0.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.25rem;
+      font-size: 0.875rem;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      background-color: #1f2937;
+      border: 1px solid #333;
+      border-radius: 0.375rem;
+      padding: 0.5rem 1rem;
+      color: #fff;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #25CD6B;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    /* Billing Details */
+    .billing-details {
+      border: 1px solid #333;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Terms Checkbox */
+    .terms-checkbox {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .terms-checkbox input {
+      margin-right: 0.5rem;
+    }
+
+    .terms-checkbox label {
+      font-size: 0.875rem;
+    }
+
+    .terms-checkbox a {
+      color: #25CD6B;
+      text-decoration: none;
+    }
+
+    .terms-checkbox a:hover {
+      text-decoration: underline;
+    }
+
+    .secure-payment {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1rem;
+      font-size: 0.875rem;
+      color: #9ca3af;
+    }
+
+    .secure-payment svg {
+      margin-right: 0.5rem;
+    }
+
+    /* FAQ Section */
+    .faq-item {
+      border: 1px solid #333;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+
+    .faq-question {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      background: none;
+      border: none;
+      color: #fff;
+      font-weight: 500;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .faq-question:focus {
+      outline: none;
+    }
+
+    .faq-answer {
+      padding: 0 1rem 1rem;
+      color: #9ca3af;
+      display: none;
+    }
+
+    .faq-answer.open {
+      display: block;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #111;
+      padding: 2rem 0;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (min-width: 768px) {
+      .footer-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .footer-links h4 {
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+
+    .footer-links ul {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-links a {
+      color: #9ca3af;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: #25CD6B;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid #222;
+      padding-top: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    @media (min-width: 768px) {
+      .footer-bottom {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    }
+
+    .footer-bottom .copyright {
+      color: #9ca3af;
+      margin-bottom: 1rem;
+    }
+
+    @media (min-width: 768px) {
+      .footer-bottom .copyright {
+        margin-bottom: 0;
+      }
+    }
+
+    .social-links {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .social-links a {
+      color: #9ca3af;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .social-links a:hover {
+      color: #25CD6B;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+   <!-- Navigation -->
+   <nav class="navbar">
+    <img src="logo.png" alt="BugSlay Logo" height="100" width="200">
+    <ul class="nav-links">
+      <li><a href="main.html">Home</a></li>
+      <li><a href="code.html">Code</a></li>
+      <li><a href="forum.html">Community</a></li>
+      <li><a href="game2.html">Game</a></li>
+      <li><a href="mentor.html">Mentoring</a></li>
+      <li><a href="purchase.html">Subscription</a></li>
+      <li><a href="profile.html">Profile</a></li>
+      <li><a href="leaderboard.html">Leaderboard</a></li>
+    </ul>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="container">
+    <!-- Success Message (hidden by default) -->
+    <div id="successMessage" class="success-message hidden">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+      </svg>
+      Purchase successful! Thank you for choosing BugSlay.
+    </div>
+
+    <h1>Choose Your <span class="text-green">BugSlay</span> Plan</h1>
+    
+    <!-- Plans Grid -->
+    <div class="plans-grid">
+      <!-- Basic Plan -->
+      <div class="plan-card" data-plan="basic" data-price="499">
+        <h3>Basic</h3>
+        <div class="plan-price">₹499<span>/month</span></div>
+        <ul class="features-list">
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            24/7 Support
+          </li>
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            Basic Bug Detection
+          </li>
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            1 Project
+          </li>
+        </ul>
+        <button class="btn btn-secondary btn-block plan-select-btn">Select Plan</button>
+      </div>
+
+      <!-- Professional Plan -->
+      <div class="plan-card selected" data-plan="pro" data-price="799">
+        <h3>Professional</h3>
+        <div class="plan-price">₹799<span>/month</span></div>
+        <ul class="features-list">
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            24/7 Priority Support
+          </li>
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            Advanced Bug Detection
+          </li>
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            5 Projects
+          </li>
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            API Access
+          </li>
+        </ul>
+        <button class="btn btn-primary btn-block plan-select-btn">Selected</button>
+      </div>
+
+      <!-- Enterprise Plan -->
+      <div class="plan-card" data-plan="enterprise" data-price="1299">
+        <h3>Enterprise</h3>
+        <div class="plan-price">₹1299<span>/month</span></div>
+        <ul class="features-list">
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            24/7 Dedicated Support
+          </li>
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            Premium Bug Detection
+          </li>
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            Unlimited Projects
+          </li>
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            Full API Access
+          </li>
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            Custom Integrations
+          </li>
+        </ul>
+        <button class="btn btn-secondary btn-block plan-select-btn">Select Plan</button>
+      </div>
+    </div>
+
+    <!-- Checkout Section -->
+    <div class="checkout-section">
+      <h2>Complete Your Purchase</h2>
+      
+      <div class="checkout-grid">
+        <div>
+          <!-- Order Summary -->
+          <div>
+            <h3 class="mb-4">Order Summary</h3>
+            <div class="order-summary mb-4">
+              <div class="summary-row">
+                <span id="planName">BugSlay Professional</span>
+                <span id="planPrice">₹799</span>
+              </div>
+              <div class="summary-row">
+                <div class="flex items-center">
+                  <span>Licenses</span>
+                  <div class="quantity-selector">
+                    <button id="decreaseQuantity">-</button>
+                    <span id="quantity">1</span>
+                    <button id="increaseQuantity">+</button>
+                  </div>
+                </div>
+                <span id="subtotal">₹799</span>
+              </div>
+              <div class="summary-total">
+                <span>Total</span>
+                <span id="total" class="text-green">₹799</span>
+              </div>
+            </div>
+
+            <div class="promo-code">
+              <label class="mb-2">Promo Code</label>
+              <div class="promo-code-input">
+                <input type="text" placeholder="Enter promo code">
+                <button class="btn">Apply</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Payment Method -->
+          <div>
+            <h3 class="mb-4">Payment Method</h3>
+            <div class="payment-method">
+              <div class="payment-option">
+                <input type="radio" id="card" name="payment" checked>
+                <label for="card" class="flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                    <line x1="1" y1="10" x2="23" y2="10"></line>
+                  </svg>
+                  Credit Card
+                </label>
+              </div>
+              
+              <div class="form-group">
+                <label>Card Number</label>
+                <input type="text" placeholder="1234 5678 9012 3456">
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Expiration Date</label>
+                  <input type="text" placeholder="MM/YY">
+                </div>
+                <div class="form-group">
+                  <label>CVC</label>
+                  <input type="text" placeholder="123">
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label>Name on Card</label>
+                <input type="text" placeholder="John Doe">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <!-- Billing Details -->
+          <div class="mb-6">
+            <h3 class="mb-4">Billing Details</h3>
+            <div class="billing-details">
+              <div class="form-group">
+                <label>Email</label>
+                <input type="email" placeholder="your@email.com">
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label>First Name</label>
+                  <input type="text" placeholder="John">
+                </div>
+                <div class="form-group">
+                  <label>Last Name</label>
+                  <input type="text" placeholder="Doe">
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label>Company (Optional)</label>
+                <input type="text" placeholder="Your Company">
+              </div>
+              
+              <div class="form-group">
+                <label>Address</label>
+                <input type="text" placeholder="123 Main St">
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label>City</label>
+                  <input type="text" placeholder="New York">
+                </div>
+                <div class="form-group">
+                  <label>ZIP Code</label>
+                  <input type="text" placeholder="10001">
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label>Country</label>
+                <select>
+                  <option>United States</option>
+                  <option>Canada</option>
+                  <option>United Kingdom</option>
+                  <option>Australia</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="terms-checkbox mb-4">
+            <input type="checkbox" id="terms">
+            <label for="terms">
+              I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+            </label>
+          </div>
+          
+          <button id="purchaseBtn" class="btn btn-primary btn-block font-bold py-3 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+            Complete Purchase
+          </button>
+          
+          <div class="secure-payment">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+            Secure Payment | 30-Day Money Back Guarantee
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ Section - Complete -->
+<div class="mb-12">
+    <h2>Frequently Asked Questions</h2>
+    
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-question">
+          <span>How does the billing cycle work?</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron-down">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        <div class="faq-answer">
+          Your subscription starts the day you purchase and renews automatically every month. You can cancel anytime from your account dashboard.
+        </div>
+      </div>
+      
+      <div class="faq-item">
+        <button class="faq-question">
+          <span>Can I upgrade or downgrade my plan later?</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron-down">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        <div class="faq-answer">
+          Yes, you can change your plan at any time. When upgrading, you'll be charged the prorated difference. When downgrading, the new rate applies to your next billing cycle.
+        </div>
+      </div>
+      
+      <div class="faq-item">
+        <button class="faq-question">
+          <span>Is there a free trial available?</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron-down">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        <div class="faq-answer">
+          Yes, we offer a 14-day free trial on all plans. No credit card required until you decide to continue.
+        </div>
+      </div>
+      
+      <div class="faq-item">
+        <button class="faq-question">
+          <span>What payment methods do you accept?</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron-down">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        <div class="faq-answer">
+          We accept all major credit cards (Visa, Mastercard, American Express), PayPal, and bank transfers for enterprise customers.
+        </div>
+      </div>
+      
+      <div class="faq-item">
+        <button class="faq-question">
+          <span>Do you offer refunds?</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron-down">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        <div class="faq-answer">
+          Yes, we offer a 30-day money-back guarantee. If you're not satisfied with BugSlay for any reason, contact our support team within 30 days of purchase for a full refund.
+        </div>
+      </div>
+      
+      <div class="faq-item">
+        <button class="faq-question">
+          <span>How many team members can I add?</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron-down">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        <div class="faq-answer">
+          The Basic plan includes 1 user, Professional includes up to 5 team members, and Enterprise allows unlimited team members. Additional seats can be purchased separately if needed.
+        </div>
+      </div>
+      
+      <div class="faq-item">
+        <button class="faq-question">
+          <span>Is technical support included in all plans?</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron-down">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        <div class="faq-answer">
+          Yes, all plans include technical support. Basic plan includes standard support, Professional plan includes priority support, and Enterprise plan includes dedicated support with a personal account manager.
+        </div>
+      </div>
+      
+      <div class="faq-item">
+        <button class="faq-question">
+          <span>Can I use BugSlay on multiple projects?</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron-down">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        <div class="faq-answer">
+          The number of projects depends on your plan. Basic allows 1 project, Professional allows up to 5 projects, and Enterprise offers unlimited projects.
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 𝑩𝒖𝒈𝑺𝒍𝒂𝒚. All rights reserved.</p>
+    <p>
+        <a class="text-blue-500" href="#">
+         Subscription Terms
+        </a>
+        |
+        <a class="text-blue-500" href="#">
+         Website Terms of Use
+        </a>
+        |
+        <a class="text-blue-500" href="#">
+         Privacy Statement
+        </a>
+        |
+        <a class="text-blue-500" href="#">
+         Opt Out
+        </a>
+        |
+        <a class="text-blue-500" href="#">
+         Cookie Settings
+        </a>
+    <div class="social-links">
+        <a href="#"><i class="fab fa-github"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-whatsapp"></i></a>
+        <a href="#"><i class="fab fa-facebook"></i></a>
+      
+    </div>
+</footer>
+    
+  <script>
+    // FAQ Functionality
+document.addEventListener('DOMContentLoaded', function() {
+  const faqQuestions = document.querySelectorAll('.faq-question');
+  
+  faqQuestions.forEach(question => {
+    question.addEventListener('click', function() {
+      // Get the answer container
+      const answer = this.nextElementSibling;
+      
+      // Toggle the open class to show/hide the answer
+      if (answer.classList.contains('open')) {
+        answer.classList.remove('open');
+        this.querySelector('.chevron-down').style.transform = 'rotate(0deg)';
+      } else {
+        answer.classList.add('open');
+        this.querySelector('.chevron-down').style.transform = 'rotate(180deg)';
+      }
+    });
+  });
+});
+document.addEventListener('DOMContentLoaded', function() {
+  // Plan selection functionality
+  const planCards = document.querySelectorAll('.plan-card');
+  let selectedPlan = 'pro';
+  let planPrice = 24.99;
+  let quantity = 1;
+  
+  // Initialize the plan display
+  updatePlanDisplay();
+  
+  // Add event listeners to plan cards
+  planCards.forEach(card => {
+    card.addEventListener('click', function() {
+      // Remove selected class from all cards
+      planCards.forEach(c => {
+        c.classList.remove('selected');
+        c.querySelector('.plan-select-btn').classList.remove('btn-primary');
+        c.querySelector('.plan-select-btn').classList.add('btn-secondary');
+        c.querySelector('.plan-select-btn').textContent = 'Select Plan';
+      });
+      
+      // Add selected class to clicked card
+      this.classList.add('selected');
+      this.querySelector('.plan-select-btn').classList.remove('btn-secondary');
+      this.querySelector('.plan-select-btn').classList.add('btn-primary');
+      this.querySelector('.plan-select-btn').textContent = 'Selected';
+      
+      // Update selected plan and price
+      selectedPlan = this.dataset.plan;
+      planPrice = parseFloat(this.dataset.price);
+      
+      // Update the plan display
+      updatePlanDisplay();
+    });
+  });
+  
+  // Quantity control functionality
+  const increaseBtn = document.getElementById('increaseQuantity');
+  const decreaseBtn = document.getElementById('decreaseQuantity');
+  const quantityElement = document.getElementById('quantity');
+  
+  increaseBtn.addEventListener('click', function() {
+    quantity++;
+    quantityElement.textContent = quantity;
+    updatePlanDisplay();
+  });
+  
+  decreaseBtn.addEventListener('click', function() {
+    if (quantity > 1) {
+      quantity--;
+      quantityElement.textContent = quantity;
+      updatePlanDisplay();
+    }
+  });
+  
+  // Purchase button functionality
+  const purchaseBtn = document.getElementById('purchaseBtn');
+  const successMessage = document.getElementById('successMessage');
+  
+  purchaseBtn.addEventListener('click', function() {
+    // Show loading state
+    purchaseBtn.disabled = true;
+    purchaseBtn.textContent = 'Processing...';
+    
+    // Simulate purchase process (2 second delay)
+    setTimeout(function() {
+      // Show success message
+      successMessage.classList.remove('hidden');
+      purchaseBtn.disabled = false;
+      purchaseBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> Complete Purchase';
+      
+      // Scroll to top to show success message
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+      
+      // Hide success message after 3 seconds
+      setTimeout(function() {
+        successMessage.classList.add('hidden');
+      }, 3000);
+    }, 2000);
+  });
+  
+  // Function to update the plan display
+  function updatePlanDisplay() {
+    const planName = document.getElementById('planName');
+    const planPriceEl = document.getElementById('planPrice');
+    const subtotal = document.getElementById('subtotal');
+    const total = document.getElementById('total');
+    
+    // Get the plan name based on selected plan
+    let name = '';
+    switch(selectedPlan) {
+      case 'basic':
+        name = 'Basic';
+        break;
+      case 'pro':
+        name = 'Professional';
+        break;
+      case 'enterprise':
+        name = 'Enterprise';
+        break;
+    }
+    
+    // Update the elements
+    planName.textContent = `BugSlay ${name}`;
+    planPriceEl.textContent = `$${planPrice.toFixed(2)}`;
+    
+    const subtotalValue = planPrice * quantity;
+    subtotal.textContent = `$${subtotalValue.toFixed(2)}`;
+    total.textContent = `$${subtotalValue.toFixed(2)}`;
+  }
+});
+  </script>
+  
+    
+  </body>
+  </html>

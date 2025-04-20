@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BugSlay with ChatAPI</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <!-- Monaco Editor Scripts - Fixed loading -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs/loader.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+      #editor-container {
+        height: 400px;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid #0e0e0e;
+      }
+      .error {
+        color: #ef4444;
+      }
+      .success {
+        color: #10b981;
+      }
+      #chat-content::-webkit-scrollbar,
+      #output::-webkit-scrollbar {
+        width: 8px;
+      }
+      #chat-content::-webkit-scrollbar-track,
+      #output::-webkit-scrollbar-track {
+        background: #1e293b;
+        border-radius: 8px;
+      }
+      #chat-content::-webkit-scrollbar-thumb,
+      #output::-webkit-scrollbar-thumb {
+        background: #080808;
+        border-radius: 8px;
+      }
+
+      .main-content {
+        flex: 1;
+        padding: 2rem;
+      }
+      /* Animation for the fix button */
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      .pulse-animation {
+        animation: pulse 1.5s infinite;
+      }
+      .hidden {
+        display: none;
+      }
+      /* Tooltip styling */
+      .tooltip {
+        position: relative;
+        display: inline-block;
+      }
+      .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 200px;
+        background-color: #4b5563;
+        color: white;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -100px;
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+      .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+      }
+      /* Improved chat UI styling */
+      .chat-container {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+      .message-container {
+        display: flex;
+        margin-bottom: 10px;
+        width: 100%;
+      }
+      .user-message {
+        margin-left: auto;
+        background-color: #3b82f6;
+        color: white;
+        border-radius: 18px 18px 0 18px;
+        padding: 10px 15px;
+        max-width: 80%;
+        word-break: break-word;
+      }
+      .bot-message {
+        margin-right: auto;
+        background-color: #4b5563;
+        color: #f3f4f6;
+        border-radius: 18px 18px 18px 0;
+        padding: 10px 15px;
+        max-width: 80%;
+        word-break: break-word;
+      }
+      .code-block {
+        background-color: #1f2937;
+        border-radius: 8px;
+        margin: 8px 0;
+        position: relative;
+        overflow: hidden;
+      }
+      .code-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #374151;
+        padding: 5px 10px;
+        font-size: 0.75rem;
+        color: #9ca3af;
+        border-bottom: 1px solid #6b7280;
+      }
+      .code-content {
+        padding: 10px;
+        overflow-x: auto;
+        color: #10b981;
+        font-family: monospace;
+        white-space: pre;
+      }
+      .copy-btn {
+        background-color: #4b5563;
+        color: #f3f4f6;
+        border: none;
+        border-radius: 4px;
+        padding: 2px 6px;
+        font-size: 0.75rem;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+      .copy-btn:hover {
+        background-color: #6b7280;
+      }
+      /* Typing indicator */
+      .typing-indicator {
+        margin-bottom: 10px;
+      }
+      .dot-animation {
+        display: inline-block;
+        animation: dotAnimation 1.5s infinite;
+      }
+      @keyframes dotAnimation {
+        0% {
+          opacity: 0.2;
+        }
+        20% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0.2;
+        }
+      }
+      /* Documentation panel */
+      .documentation-panel {
+        position: absolute;
+        z-index: 10;
+        background-color: #1e293b;
+        border: 1px solid #4b5563;
+        border-radius: 8px;
+        padding: 12px;
+        color: #e5e7eb;
+        font-size: 0.85rem;
+        max-width: 350px;
+        max-height: 200px;
+        overflow-y: auto;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        display: none;
+      }
+      .doc-title {
+        font-weight: bold;
+        margin-bottom: 4px;
+        color: #10b981;
+      }
+      .doc-content {
+        margin-bottom: 8px;
+      }
+      .doc-example {
+        background-color: #374151;
+        padding: 4px 8px;
+        border-radius: 4px;
+        margin-top: 4px;
+        font-family: monospace;
+      }
+      /* Navigation menu styles */
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 2rem;
+        background-color: #1f2937;
+        color: #f3f4f6;
+      }
+      .nav-links {
+        display: flex;
+        list-style: none;
+        gap: 1.5rem;
+      }
+      .nav-links a {
+        color: #f3f4f6;
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+      .nav-links a:hover {
+        color: #10b981;
+      }
+      
+
+      @media (max-width: 768px) {
+        .navbar {
+          flex-direction: column;
+          padding: 1rem;
+        }
+        .nav-links {
+          margin-top: 1rem;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+        .grid-cols-1 {
+          grid-template-columns: 1fr !important;
+        }
+        .user-message,
+        .bot-message {
+          max-width: 90%;
+        }
+      }
+    </style>
+  </head>
+  <body >
+    <!-- Navigation -->
+    <nav class="navbar" style="background-color: #080808;">
+      <img src="logo.png" alt="BugSlay Logo" height="100" width="200">
+      <ul class="nav-links">
+        <li><a href="main.html">Home</a></li>
+        <li><a href="code.html">Code</a></li>
+        <li><a href="forum.html">Community</a></li>
+        <li><a href="game2.html">Game</a></li>
+        <li><a href="mentor.html">Mentoring</a></li>
+        <li><a href="purchase.html">Subscription</a></li>
+        <li><a href="profile.html">Profile</a></li>
+        <li><a href="leaderboard.html">Leaderboard</a></li>
+      </ul>
+    </nav>
+
+    <div class="main-content">
+      <div class="max-w-7xl mx-auto">
+        <h1 class="text-3xl font-bold text-center text-green-400 mb-6">
+          Code Execution and Chat Assistant
+        </h1>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Chat Section -->
+          <div class="bg-gray-800 rounded-2xl shadow-xl">
+            <div class="p-4 text-white h-full flex flex-col">
+              <div class="flex justify-between">
+                <span class="text-lg font-semibold">Coding Assistant</span>
+                <div class="space-x-2">
+                  <span
+                    class="w-3 h-3 bg-red-500 rounded-full inline-block"
+                  ></span>
+                  <span
+                    class="w-3 h-3 bg-yellow-500 rounded-full inline-block"
+                  ></span>
+                  <span
+                    class="w-3 h-3 bg-green-500 rounded-full inline-block"
+                  ></span>
+                </div>
+              </div>
+              <div
+                id="chat-content"
+                class="mt-4 flex-grow overflow-y-auto p-3 bg-gray-700 rounded-lg"
+                style="height: 450px"
+              >
+                <div class="chat-container">
+                  <div class="message-container">
+                    <div class="bot-message">
+                      Hello! I can help you with coding problems and solutions.
+                      Ask me a question or describe what you'd like to do, and I
+                      can provide code suggestions. 😊
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <form id="chat-form" class="mt-4 flex">
+                <input
+                  id="user-input"
+                  type="text"
+                  placeholder="Ask about code solutions..."
+                  class="flex-1 p-2 rounded-lg text-gray-900"
+                />
+                <button
+                  type="submit"
+                  class="ml-2 bg-blue-500 px-4 py-2 text-white rounded-lg hover:bg-blue-600 transition"
+                >
+                  Send
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Code Execution Section -->
+          <div class="bg-gray-800 rounded-2xl shadow-xl p-4">
+            <div class="flex justify-between items-center mb-4">
+              <div class="flex items-center">
+                <span class="text-lg font-semibold mr-2">Code Execution</span>
+                <div class="tooltip">
+                  <i class="fas fa-info-circle text-blue-400"></i>
+                  <span class="tooltiptext">
+                    Now with real-time code suggestions! Press Ctrl+Space for
+                    suggestions.
+                  </span>
+                </div>
+              </div>
+              <div class="flex">
+                <label for="language" class="mr-2 self-center">Language:</label>
+                <select
+                  id="language"
+                  class="bg-gray-700 text-white rounded-lg p-2"
+                >
+                  <option value="javascript">JavaScript</option>
+                  <option value="typescript">TypeScript</option>
+                  <option value="python">Python</option>
+                  <option value="csharp">C#</option>
+                  <option value="java">Java</option>
+                  <option value="html">HTML</option>
+                  <option value="css">CSS</option>
+                </select>
+              </div>
+            </div>
+
+            <div
+              id="editor-container"
+              class="rounded-lg overflow-hidden mb-4"
+            ></div>
+
+            <div class="flex justify-between">
+              <button
+                id="run-code-btn"
+                class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition"
+              >
+                <i class="fas fa-play mr-2"></i>Run Code
+              </button>
+              <button
+                id="use-code-btn"
+                class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
+              >
+                <i class="fas fa-code mr-2"></i>Use Code from Chat
+              </button>
+            </div>
+
+            <div
+              id="fix-code-container"
+              class="mt-4 flex justify-center hidden"
+            >
+              <button
+                id="fix-code-btn"
+                class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition pulse-animation"
+              >
+                <i class="fas fa-magic mr-2"></i>Fix Code
+              </button>
+              <div class="tooltip ml-2">
+                <i class="fas fa-info-circle text-blue-400 self-center"></i>
+                <span class="tooltiptext">
+                  Our AI will analyze your code and fix any syntax or logical
+                  errors
+                </span>
+              </div>
+            </div>
+
+            <!-- Documentation Panel -->
+            <div id="documentation-panel" class="documentation-panel mt-4">
+              <div class="doc-title">Loading documentation...</div>
+              <div class="doc-content"></div>
+            </div>
+
+            <div
+              id="output"
+              class="mt-4 p-4 bg-gray-700 rounded-lg h-32 overflow-y-auto whitespace-pre-wrap"
+            >
+              Output will appear here.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <p>© 2025 𝑩𝒖𝒈𝑺𝒍𝒂𝒚. All rights reserved.</p>
+      <p>
+        <a class="text-blue-500" href="#"> Subscription Terms </a>
+        |
+        <a class="text-blue-500" href="#"> Website Terms of Use </a>
+        |
+        <a class="text-blue-500" href="#"> Privacy Statement </a>
+        |
+        <a class="text-blue-500" href="#"> Opt Out </a>
+        |
+        <a class="text-blue-500" href="#"> Cookie Settings </a>
+      </p>
+
+      <div class="social-links">
+        <a href="#"><i class="fab fa-github"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-whatsapp"></i></a>
+        <a href="#"><i class="fab fa-facebook"></i></a>
+      </div>
+    </footer>
+
+    <script>
+      // Global variables
+      let editor;
+      let monaco;
+      let hasError = false;
+      let currentLanguage = "javascript";
+      let editorInitialized = false;
+
+      // DOM elements
+      const fixCodeContainer = document.getElementById("fix-code-container");
+      const chatContainer = document.querySelector(".chat-container");
+      const docPanel = document.getElementById("documentation-panel");
+      const languageSelect = document.getElementById("language");
+      const runCodeBtn = document.getElementById("run-code-btn");
+      const useCodeBtn = document.getElementById("use-code-btn");
+      const fixCodeBtn = document.getElementById("fix-code-btn");
+
+      // Initialize Monaco Editor with proper loading path
+      function initMonaco() {
+        // Configure require.js paths
+        require.config({
+          paths: {
+            vs: "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs",
+          },
+        });
+
+        // Wait for Monaco to load before initializing the editor
+        require(["vs/editor/editor.main"], function () {
+          monaco = window.monaco;
+
+          if (!editorInitialized) {
+            // Create the editor instance
+            editor = monaco.editor.create(
+              document.getElementById("editor-container"),
+              {
+                value:
+                  "// Write your code here...\n// Press Ctrl+Space for suggestions\n",
+                language: "javascript",
+                theme: "vs-dark",
+                automaticLayout: true,
+                minimap: { enabled: false },
+                scrollBeyondLastLine: false,
+                fontSize: 14,
+                tabSize: 2,
+                suggestOnTriggerCharacters: true,
+                wordBasedSuggestions: true,
+              }
+            );
+
+            editorInitialized = true;
+
+            // Set up editor features
+            setupSuggestionProviders();
+            setupEditorListeners();
+          }
+        });
+      }
+
+      // Set up custom suggestion providers
+      function setupSuggestionProviders() {
+        // JavaScript specific suggestions
+        monaco.languages.registerCompletionItemProvider("javascript", {
+          provideCompletionItems: function (model, position) {
+            const suggestions = [
+              {
+                label: "function",
+                kind: monaco.languages.CompletionItemKind.Keyword,
+                insertText: "function ${1:name}(${2:params}) {\n\t${3}\n}",
+                insertTextRules:
+                  monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+              },
+              {
+                label: "if",
+                kind: monaco.languages.CompletionItemKind.Keyword,
+                insertText: "if (${1:condition}) {\n\t${2}\n}",
+                insertTextRules:
+                  monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+              },
+              {
+                label: "for",
+                kind: monaco.languages.CompletionItemKind.Keyword,
+                insertText:
+                  "for (let ${1:i} = 0; ${1:i} < ${2:array}.length; ${1:i}++) {\n\t${3}\n}",
+                insertTextRules:
+                  monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+              },
+              {
+                label: "forEach",
+                kind: monaco.languages.CompletionItemKind.Method,
+                insertText: "forEach((${1:item}) => {\n\t${2}\n})",
+                insertTextRules:
+                  monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+              },
+              {
+                label: "console.log",
+                kind: monaco.languages.CompletionItemKind.Method,
+                insertText: "console.log(${1:message})",
+                insertTextRules:
+                  monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+              },
+            ];
+
+            return { suggestions: suggestions };
+          },
+        });
+
+        // Python specific suggestions
+        monaco.languages.registerCompletionItemProvider("python", {
+          provideCompletionItems: function (model, position) {
+            const suggestions = [
+              {
+                label: "def",
+                kind: monaco.languages.CompletionItemKind.Keyword,
+                insertText:
+                  "def ${1:function_name}(${2:parameters}):\n\t${3:pass}",
+                insertTextRules:
+                  monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+              },
+              {
+                label: "for",
+                kind: monaco.languages.CompletionItemKind.Keyword,
+                insertText: "for ${1:item} in ${2:iterable}:\n\t${3:pass}",
+                insertTextRules:
+                  monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+              },
+              {
+                label: "if",
+                kind: monaco.languages.CompletionItemKind.Keyword,
+                insertText: "if ${1:condition}:\n\t${2:pass}",
+                insertTextRules:
+                  monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+              },
+              {
+                label: "print",
+                kind: monaco.languages.CompletionItemKind.Function,
+                insertText: "print(${1:message})",
+                insertTextRules:
+                  monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+              },
+            ];
+
+            return { suggestions: suggestions };
+          },
+        });
+
+        // HTML specific suggestions
+        monaco.languages.registerCompletionItemProvider("html", {
+          provideCompletionItems: function (model, position) {
+            const suggestions = [
+              {
+                label: "html5",
+                kind: monaco.languages.CompletionItemKind.Snippet,
+                insertText:
+                  '<!DOCTYPE html>\n<html lang="en">\n<head>\n\t<meta charset="UTF-8">\n\t<meta name="viewport" content="width=device-width, initial-scale=1.0">\n\t<title>${1:Document}</title>\n</head>\n<body>\n\t${2}\n</body>\n</html>',
+                insertTextRules:
+                  monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+              },
+              {
+                label: "div",
+                kind: monaco.languages.CompletionItemKind.Snippet,
+                insertText: '<div${1: class="${2:className}"}>\n\t${3}\n</div>',
+                insertTextRules:
+                  monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+              },
+            ];
+
+            return { suggestions: suggestions };
+          },
+        });
+      }
+
+      // Set up editor event listeners
+      function setupEditorListeners() {
+        // Show/hide documentation panel on hover
+        editor.onMouseMove(function (e) {
+          if (e.target.type === monaco.editor.MouseTargetType.CONTENT_TEXT) {
+            const word = editor.getModel().getWordAtPosition(e.target.position);
+
+            if (word) {
+              showDocumentation(word.word, e.target.position);
+            } else {
+              hideDocumentation();
+            }
+          } else {
+            hideDocumentation();
+          }
+        });
+
+        // Listen for language changes
+        languageSelect.addEventListener("change", function () {
+          changeLanguage();
+        });
+      }
+
+      // Change editor language
+      function changeLanguage() {
+        const language = languageSelect.value;
+        currentLanguage = language;
+
+        if (editorInitialized && editor) {
+          monaco.editor.setModelLanguage(editor.getModel(), language);
+        }
+      }
+
+      // Show documentation based on word
+      function showDocumentation(word, position) {
+        const commonDocs = {
+          function: {
+            title: "Function",
+            content: "Defines a reusable block of code.",
+          },
+          for: {
+            title: "For Loop",
+            content:
+              "Creates a loop that executes code for each element in a collection.",
+          },
+          if: {
+            title: "Conditional Statement",
+            content:
+              "Executes code based on whether a condition is true or false.",
+          },
+        };
+
+        if (commonDocs[word]) {
+          showDocumentationContent(
+            commonDocs[word].title,
+            commonDocs[word].content
+          );
+        }
+      }
+
+      // Show documentation panel with content
+      function showDocumentationContent(title, content, example = null) {
+        const panel = document.getElementById("documentation-panel");
+        panel.innerHTML = `
+          <div class="doc-title">${title}</div>
+          <div class="doc-content">${content}</div>
+          ${example ? `<div class="doc-example">${example}</div>` : ""}
+        `;
+        panel.style.display = "block";
+      }
+
+      // Hide documentation panel
+      function hideDocumentation() {
+        docPanel.style.display = "none";
+      }
+
+      // Execute code function
+      async function executeCode() {
+        if (!editorInitialized || !editor) {
+          alert(
+            "Editor not initialized yet. Please wait a moment and try again."
+          );
+          return;
+        }
+
+        const code = editor.getValue();
+        const language = languageSelect.value;
+        const outputElement = document.getElementById("output");
+
+        outputElement.textContent = "Executing code...";
+        outputElement.className = "";
+
+        // Hide fix button initially
+        fixCodeContainer.classList.add("hidden");
+        hasError = false;
+
+        try {
+          const response = await fetch(
+            "https://emkc.org/api/v2/piston/execute",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                language,
+                version: "*",
+                files: [{ content: code }],
+              }),
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error(
+              `Error: ${response.status} - ${response.statusText}`
+            );
+          }
+
+          const result = await response.json();
+
+          // Check if there's an error in the output
+          if (result.run && result.run.stderr) {
+            hasError = true;
+            outputElement.className = "error";
+            fixCodeContainer.classList.remove("hidden");
+          } else {
+            outputElement.className = "success";
+          }
+
+          outputElement.textContent = `Output: ${
+            result.run?.output || "No output"
+          }\nError: ${result.run?.stderr || "No errors"}`;
+        } catch (error) {
+          outputElement.textContent = `Error: ${error.message}`;
+          outputElement.className = "error";
+          hasError = true;
+          fixCodeContainer.classList.remove("hidden");
+        }
+      }
+
+      // Fix code function
+      async function fixCode() {
+        if (!editorInitialized || !editor) {
+          alert(
+            "Editor not initialized yet. Please wait a moment and try again."
+          );
+          return;
+        }
+
+        const code = editor.getValue();
+        const language = languageSelect.value;
+        const outputElement = document.getElementById("output");
+
+        // Show loading state
+        outputElement.textContent = "Analyzing and fixing your code...";
+        outputElement.className = "";
+
+        // Construct the prompt for the AI to fix the code
+        const prompt = `I have some ${language} code that has errors. Please fix it and return ONLY the fixed code without explanations. Here's the code:\n\n${code}`;
+
+        try {
+          // Use the chat API to get the fixed code
+          const response = await fetch(
+            "https://backend.buildpicoapps.com/aero/run/llm-api?pk=v1-Z0FBQUFBQm5IZkJDMlNyYUVUTjIyZVN3UWFNX3BFTU85SWpCM2NUMUk3T2dxejhLSzBhNWNMMXNzZlp3c09BSTR6YW1Sc1BmdGNTVk1GY0liT1RoWDZZX1lNZlZ0Z1dqd3c9PQ==",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                prompt: prompt,
+              }),
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error(`Error: ${response.statusText}`);
+          }
+
+          const data = await response.json();
+
+          if (data.status === "success") {
+            // Extract the code from the response
+            const fixedCode = extractCodeFromAIResponse(data.text, language);
+
+            // Set the fixed code in the editor
+            editor.setValue(fixedCode);
+
+            // Hide the fix button after successful fix
+            fixCodeContainer.classList.add("hidden");
+
+            // Update output
+            outputElement.textContent =
+              "Code has been fixed! You can now run it again.";
+            outputElement.className = "success";
+          } else {
+            throw new Error("Failed to fix the code");
+          }
+        } catch (error) {
+          outputElement.textContent = `Error fixing code: ${error.message}`;
+          outputElement.className = "error";
+        }
+      }
+
+      // Helper function to extract code from AI response
+      function extractCodeFromAIResponse(response, language) {
+        // Try to extract code block if it exists
+        const codeBlockRegex = /```(?:[a-zA-Z]*\n)?([\s\S]*?)```/g;
+        const match = codeBlockRegex.exec(response);
+
+        if (match && match[1]) {
+          return match[1].trim();
+        }
+
+        // If no code block is found, use the entire response
+        // but remove explanations if they exist
+        let cleanedResponse = response;
+
+        // Remove common explanation phrases at the beginning
+        cleanedResponse = cleanedResponse
+          .replace(
+            /^(Here's the fixed code:|Fixed code:|The fixed code is:|Certainly! Here's the fixed version:|Here's the corrected code:)/i,
+            ""
+          )
+          .trim();
+
+        return cleanedResponse;
+      }
+
+      // Chat Functions
+      const chatContent = document.getElementById("chat-content");
+      const chatForm = document.getElementById("chat-form");
+      const userInput = document.getElementById("user-input");
+
+      // Add message to chat
+      function addMessage(message, isUser) {
+        const messageContainer = document.createElement("div");
+        messageContainer.className = "message-container";
+
+        const messageDiv = document.createElement("div");
+        messageDiv.className = isUser ? "user-message" : "bot-message";
+
+        if (!isUser && message.includes("```")) {
+          // Format message with code blocks
+          const parts = parseCodeBlocks(message);
+
+          parts.forEach((part) => {
+            if (part.type === "text") {
+              const textNode = document.createElement("div");
+              textNode.textContent = part.content.trim();
+              if (textNode.textContent) {
+                messageDiv.appendChild(textNode);
+              }
+            } else if (part.type === "code") {
+              const codeBlock = document.createElement("div");
+              codeBlock.className = "code-block";
+
+              const codeHeader = document.createElement("div");
+              codeHeader.className = "code-header";
+
+              // Language indicator
+              const langIndicator = document.createElement("span");
+              langIndicator.textContent = part.language || "code";
+              codeHeader.appendChild(langIndicator);
+
+              // Copy button
+              const copyBtn = document.createElement("button");
+              copyBtn.className = "copy-btn";
+              copyBtn.textContent = "Copy";
+              copyBtn.addEventListener("click", () => {
+                copyToClipboard(part.content);
+                copyBtn.textContent = "Copied!";
+                setTimeout(() => {
+                  copyBtn.textContent = "Copy";
+                }, 2000);
+              });
+              codeHeader.appendChild(copyBtn);
+              codeBlock.appendChild(codeHeader);
+
+              const codeContent = document.createElement("div");
+              codeContent.className = "code-content";
+              codeContent.textContent = part.content;
+              codeBlock.appendChild(codeContent);
+
+              messageDiv.appendChild(codeBlock);
+            }
+          });
+        } else {
+          messageDiv.textContent = message;
+        }
+
+        messageContainer.appendChild(messageDiv);
+        chatContainer.appendChild(messageContainer);
+        chatContent.scrollTop = chatContent.scrollHeight;
+      }
+
+      // Copy text to clipboard
+      function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).catch((err) => {
+          console.error("Could not copy text: ", err);
+        });
+      }
+
+      // Parse code blocks in message
+      function parseCodeBlocks(message) {
+        const parts = [];
+        const codeBlockRegex = /```([\w]*)\n([\s\S]*?)```/g;
+
+        let lastIndex = 0;
+        let match;
+
+        while ((match = codeBlockRegex.exec(message)) !== null) {
+          // Add text before the code block
+          if (match.index > lastIndex) {
+            parts.push({
+              type: "text",
+              content: message.substring(lastIndex, match.index),
+            });
+          }
+
+          // Add the code block
+          parts.push({
+            type: "code",
+            language: match[1] || "code",
+            content: match[2],
+          });
+
+          lastIndex = match.index + match[0].length;
+        }
+
+        // Add remaining text after all code blocks
+        if (lastIndex < message.length) {
+          parts.push({
+            type: "text",
+            content: message.substring(lastIndex),
+          });
+        }
+
+        return parts;
+      }
+
+      // Show typing indicator
+      function showTypingIndicator() {
+        const typingContainer = document.createElement("div");
+        typingContainer.className = "message-container typing-indicator";
+
+        const typingIndicator = document.createElement("div");
+        typingIndicator.className = "bot-message";
+        typingIndicator.innerHTML =
+          'Thinking <span class="dot-animation">.</span><span class="dot-animation" style="animation-delay: 0.2s">.</span><span class="dot-animation" style="animation-delay: 0.4s">.</span>';
+
+        typingContainer.appendChild(typingIndicator);
+        chatContainer.appendChild(typingContainer);
+        chatContent.scrollTop = chatContent.scrollHeight;
+
+        return typingContainer;
+      }
+
+      // Remove typing indicator
+      function removeTypingIndicator(indicator) {
+        if (indicator && indicator.parentNode) {
+          indicator.parentNode.removeChild(indicator);
+        }
+      }
+
+      // Process user chat input
+      async function processUserInput(userMessage) {
+        // Add user message to chat
+        addMessage(userMessage, true);
+
+        // Show typing indicator
+        const typingIndicator = showTypingIndicator();
+
+        try {
+          // Send user message to API
+          const response = await fetch(
+            "https://backend.buildpicoapps.com/aero/run/llm-api?pk=v1-Z0FBQUFBQm5IZkJDMlNyYUVUTjIyZVN3UWFNX3BFTU85SWpCM2NUMUk3T2dxejhLSzBhNWNMMXNzZlp3c09BSTR6YW1Sc1BmdGNTVk1GY0liT1RoWDZZX1lNZlZ0Z1dqd3c9PQ==",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                prompt: `You are a helpful coding assistant that specializes in ${currentLanguage}. User's question: ${userMessage}`,
+              }),
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error(`Server error: ${response.status}`);
+          }
+
+          const data = await response.json();
+
+          // Remove typing indicator
+          removeTypingIndicator(typingIndicator);
+
+          if (data.status === "success") {
+            // Add bot message to chat
+            addMessage(data.text, false);
+          } else {
+            throw new Error("Failed to get response");
+          }
+        } catch (error) {
+          // Remove typing indicator
+          removeTypingIndicator(typingIndicator);
+
+          // Add error message to chat
+          addMessage(
+            `Sorry, I couldn't process your request: ${error.message}`,
+            false
+          );
+        }
+      }
+
+      // Use code from chat function
+      function useCodeFromChat() {
+        const codeBlocks = document.querySelectorAll(".code-content");
+
+        if (codeBlocks.length > 0) {
+          // Use the most recent code block
+          const latestCode = codeBlocks[codeBlocks.length - 1].textContent;
+
+          if (editor && editorInitialized) {
+            editor.setValue(latestCode);
+          }
+        } else {
+          alert("No code found in the chat!");
+        }
+      }
+
+      // Initialize application when document is loaded
+      document.addEventListener("DOMContentLoaded", function () {
+        // Initialize Monaco editor
+        initMonaco();
+
+        // Set up event listeners
+        runCodeBtn.addEventListener("click", executeCode);
+        fixCodeBtn.addEventListener("click", fixCode);
+        useCodeBtn.addEventListener("click", useCodeFromChat);
+
+        chatForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+          const message = userInput.value.trim();
+
+          if (message) {
+            processUserInput(message);
+            userInput.value = "";
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

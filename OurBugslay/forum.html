@@ -1,0 +1,1752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BugSlay Forums</title>
+    <link rel="stylesheet" href="styles.css">
+  
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+   /* Base styles */
+:root {
+  --primary-color: #25CD6B;
+  --primary-hover: #25CD6B;
+  --secondary-color: #38b2ac;
+  --accent-color: #f6ad55;
+  --dark-color: #fcfdff;
+  --light-color: #f7fafc;
+  --text-color: #eceef3;
+  --text-muted: #fbfcfc;
+  --border-color: #0eef68;
+  --danger-color: #e53e3e;
+  --success-color: #25CD6B;
+  --warning-color: #ed8936;
+  --card-bg: #3f3d3d;
+  --bg-color: #0f0f0f;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --radius: 0.375rem;
+  --transition: all 0.3s ease;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+a:hover {
+  color: var(--primary-hover);
+}
+
+ul {
+  list-style: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* Container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Navigation */
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  color: var(--text-color);
+}
+
+/* Forum Header */
+.forum-header {
+  padding: 2rem 0;
+  background-color: rgb(10, 10, 10);
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 2rem;
+}
+
+.header-content {
+  margin-bottom: 1.5rem;
+}
+
+.forum-header h1 {
+  font-size: 2rem;
+  color: var(--dark-color);
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+}
+
+.search-container {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  background-color: rgb(34, 32, 32);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 0.25rem 0.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.search-icon {
+  color: var(--text-muted);
+  margin-right: 0.5rem;
+}
+
+.search-bar input {
+  flex: 1;
+  border: none;
+  padding: 0.7rem 0.5rem;
+  font-size: 1rem;
+  outline: none;
+}
+
+.search-bar button {
+  background-color: var(--primary-color);
+  color: rgba(228, 228, 228, 0.813);
+  border: none;
+  border-radius: var(--radius);
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.search-bar button:hover {
+  background-color: var(--primary-hover);
+}
+
+/* Forum Main Content */
+.forum-main {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+/* Forum Sidebar */
+.forum-sidebar {
+  position: sticky;
+  top: 80px;
+  height: fit-content;
+}
+
+.sidebar-section {
+  background-color: rgb(18, 18, 18);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.sidebar-section h3 {
+  font-size: 1.1rem;
+  color: var(--dark-color);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.category-list li {
+  padding: 0.6rem 0.5rem;
+  margin-bottom: 0.25rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.category-list li:hover {
+  background-color: var(--bg-color);
+  color: var(--primary-color);
+}
+
+.category-list li.active {
+  background-color: var(--primary-color);
+  color: white;
+  font-weight: 500;
+}
+
+.tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tag {
+  display: inline-block;
+  background-color: var(--bg-color);
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  transition: var(--transition);
+}
+
+.tag:hover {
+  background-color: var(--border-color);
+}
+
+.stats-section h3 {
+  margin-bottom: 1rem;
+}
+
+.stats-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 1rem;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.stat-item i {
+  font-size: 1.25rem;
+  color: var(--primary-color);
+}
+
+.stat-value {
+  display: block;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--dark-color);
+}
+
+.stat-label {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+/* Forum Content */
+.forum-content {
+  background-color: white;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 1.5rem;
+}
+
+.content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.button {
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius);
+  font-weight: 500;
+  transition: var(--transition);
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.primary-button {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.primary-button:hover {
+  background-color: var(--primary-hover);
+}
+
+.secondary-button {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.secondary-button:hover {
+  background-color: var(--border-color);
+}
+
+.content-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.sort-by {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sort-by select {
+  padding: 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  background-color: white;
+}
+
+.view-toggle {
+  display: flex;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.view-btn {
+  padding: 0.5rem 0.75rem;
+  background: none;
+  border: none;
+  transition: var(--transition);
+}
+
+.view-btn:hover {
+  background-color: var(--bg-color);
+}
+
+.view-btn.active {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* Topic Cards */
+.topics-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.topic-card {
+  display: flex;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: var(--transition);
+}
+
+.topic-card:hover {
+  box-shadow: var(--shadow);
+  transform: translateY(-2px);
+}
+
+.card-status {
+  width: 8px;
+  background-color: var(--border-color);
+}
+
+.card-status.solved {
+  background-color: var(--success-color);
+}
+
+.card-status.urgent {
+  background-color: var(--danger-color);
+}
+
+.card-status.popular {
+  background-color: var(--warning-color);
+}
+
+.card-content {
+  flex: 1;
+  padding: 1.5rem;
+}
+
+.topic-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.topic-title {
+  font-size: 1.1rem;
+  color: var(--dark-color);
+  margin-right: 1rem;
+}
+
+.topic-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.topic-time {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.topic-stats {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.topic-stats i {
+  margin-right: 0.25rem;
+}
+
+.topic-excerpt {
+  color: var(--text-color);
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.topic-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.topic-author {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+
+.author-name {
+  font-weight: 500;
+  color: var(--dark-color);
+}
+
+.topic-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tag.solved {
+  background-color: var(--success-color);
+  color: white;
+}
+
+.tag.urgent {
+  background-color: var(--danger-color);
+  color: white;
+}
+
+.tag.popular {
+  background-color: var(--warning-color);
+  color: white;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+  gap: 0.5rem;
+}
+
+.page-numbers {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.page-btn,
+.page-arrow {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius);
+  background-color: white;
+  border: 1px solid var(--border-color);
+  transition: var(--transition);
+}
+
+.page-btn:hover,
+.page-arrow:hover {
+  background-color: var(--bg-color);
+}
+
+.page-btn.active {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+}
+
+.modal.active {
+  display: block;
+}
+
+.modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  position: relative;
+  background-color: white;
+  width: 90%;
+  max-width: 600px;
+  margin: 50px auto;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.modal-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 {
+  font-size: 1.25rem;
+  color: var(--dark-color);
+}
+
+.close-modal {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  color: var(--text-muted);
+  transition: var(--transition);
+}
+
+.close-modal:hover {
+  color: var(--danger-color);
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--dark-color);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  font-size: 1rem;
+  transition: var(--transition);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(74, 107, 255, 0.1);
+}
+
+.form-group textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+/* Toast Notifications */
+#toast-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.toast {
+  background-color: #333;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 4px;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+  min-width: 250px;
+  max-width: 450px;
+}
+
+.toast.success {
+  background-color: var(--success-color);
+}
+
+.toast.error {
+  background-color: var(--danger-color);
+}
+
+.toast.info {
+  background-color: var(--primary-color);
+}
+
+
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.topic-card {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.highlight {
+  background-color: #ffeb3b;
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+/* Toast animations */
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(100%); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.toast {
+  animation: slideIn 0.3s ease-out;
+  transition: all 0.3s ease;
+}
+
+.toast.hide {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+/* Modal animations */
+@keyframes fadeInModal {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.modal.active {
+  animation: fadeInModal 0.3s ease-out;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .forum-main {
+      grid-template-columns: 1fr;
+  }
+  
+  .forum-sidebar {
+      position: static;
+      margin-bottom: 2rem;
+  }
+  
+  .sidebar-section {
+      margin-bottom: 1rem;
+  }
+  
+  .sidebar-section.stats-section {
+      display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      background-color: white;
+      flex-direction: column;
+      padding: 1rem 0;
+      box-shadow: var(--shadow);
+      gap: 0;
+  }
+  
+  .nav-links.active {
+      display: flex;
+  }
+  
+  .nav-links li {
+      width: 100%;
+  }
+  
+  .nav-links a {
+      display: block;
+      padding: 0.75rem 1.5rem;
+  }
+  
+  .nav-links a.active::after {
+      display: none;
+  }
+  
+  .mobile-menu-btn {
+      display: block;
+  }
+  
+  .content-header {
+      flex-direction: column;
+      gap: 1rem;
+      align-items: flex-start;
+  }
+  
+  .content-controls {
+      width: 100%;
+      justify-content: space-between;
+  }
+  
+  .topic-header {
+      flex-direction: column;
+  }
+  
+  .topic-meta {
+      align-items: flex-start;
+      margin-top: 0.5rem;
+  }
+  
+  .topic-info {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+  }
+  
+  .topic-tags {
+      margin-top: 0.5rem;
+  }
+  
+  
+}
+
+@media (max-width: 576px) {
+  .forum-header {
+      padding: 1.5rem 0;
+  }
+  
+  .search-bar {
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 0.5rem;
+  }
+  
+  .search-bar input {
+      width: 100%;
+  }
+  
+  .search-bar button {
+      width: 100%;
+  }
+  
+  .page-numbers {
+      display: none;
+  }
+}
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <img src="logo.png" alt="BugSlay Logo" height="100" width="200">
+        <ul class="nav-links">
+            <li><a href="main.html">Home</a></li>
+            <li><a href="code.html">Code</a></li>
+            <li><a href="forum.html">Community</a></li>
+            <li><a href="game2.html">Game</a></li>
+            <li><a href="mentor.html">Mentoring</a></li>
+            <li><a href="purchase.html">Subscription</a></li>
+            <li><a href="profile.html">Profile</a></li>
+            <li><a href="leaderboard.html">Leaderboard</a></li>
+        </ul>
+    </nav>
+    <button class="mobile-menu-btn">
+        <i class="fas fa-bars"></i>
+    </button>
+</div>
+</nav>
+
+<main class="container">
+<div class="forum-header">
+    <div class="header-content">
+        <h1>BugSlay Community</h1>
+        <p class="subtitle">Join the conversation, solve problems together</p>
+    </div>
+    
+    <div class="search-container">
+        <div class="search-bar">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" placeholder="Search discussions...">
+            <button id="searchBtn">Search</button>
+        </div>
+    </div>
+</div>
+
+<div class="forum-main">
+    <div class="forum-sidebar">
+        <div class="sidebar-section">
+            <h3>Categories</h3>
+            <ul class="category-list">
+                <li class="category active" data-category="all">All Topics</li>
+                <li class="category" data-category="bugs">Bug Reports</li>
+                <li class="category" data-category="solutions">Solutions</li>
+                <li class="category" data-category="features">Feature Requests</li>
+                <li class="category" data-category="announcements">Announcements</li>
+                <li class="category" data-category="general">General Discussion</li>
+                <li class="category" data-category="help">Help & Support</li>
+            </ul>
+        </div>
+        
+        <div class="sidebar-section">
+            <h3>Popular Tags</h3>
+            <div class="tag-cloud">
+                <span class="tag">JavaScript</span>
+                <span class="tag">React</span>
+                <span class="tag">Node.js</span>
+                <span class="tag">CSS</span>
+                <span class="tag">Python</span>
+                <span class="tag">API</span>
+                <span class="tag">Database</span>
+            </div>
+        </div>
+        
+        <div class="sidebar-section stats-section">
+            <h3>Community Stats</h3>
+            <div class="stats-container">
+                <div class="stat-item">
+                    <i class="fas fa-users"></i>
+                    <div class="stat-info">
+                        <span class="stat-value">8.2k</span>
+                        <span class="stat-label">Members</span>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-comments"></i>
+                    <div class="stat-info">
+                        <span class="stat-value">15.4k</span>
+                        <span class="stat-label">Topics</span>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-reply-all"></i>
+                    <div class="stat-info">
+                        <span class="stat-value">127k</span>
+                        <span class="stat-label">Replies</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="forum-content">
+        <div class="content-header">
+            <button class="button primary-button" id="newTopicBtn">
+                <i class="fas fa-plus"></i> New Topic
+            </button>
+            
+            <div class="content-controls">
+                <div class="sort-by">
+                    <label for="sortSelect">Sort by: </label>
+                    <select id="sortSelect">
+                        <option value="newest">Newest</option>
+                        <option value="activity">Most Activity</option>
+                        <option value="popular">Most Popular</option>
+                        <option value="solved">Solved Issues</option>
+                    </select>
+                </div>
+                
+                <div class="view-toggle">
+                    <button class="view-btn active" data-view="cards">
+                        <i class="fas fa-th-large"></i>
+                    </button>
+                    <button class="view-btn" data-view="list">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+       
+                  
+                </div>
+            </div>
+            
+            <div class="topic-card">
+                <div class="card-status urgent"></div>
+                <div class="card-content">
+                    <div class="topic-header">
+                        <h3 class="topic-title">Database connection failing in production</h3>
+                        <div class="topic-meta">
+                            <span class="topic-time">1 day ago</span>
+                            <div class="topic-stats">
+                                <span><i class="fas fa-reply"></i> 32</span>
+                                <span><i class="fas fa-eye"></i> 517</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="topic-excerpt">Our app works fine in development but keeps losing database connection in production. We've checked connection strings and environment variables but can't identify the issue...</p>
+                    <div class="topic-info">
+                        <div class="topic-author">
+                            <div class="avatar">
+                                <span>BW</span>
+                            </div>
+                            <span class="author-name">Bob Williams</span>
+                        </div>
+                        <div class="topic-tags">
+                            <span class="tag">Database</span>
+                            <span class="tag">Production</span>
+                            <span class="tag urgent">Urgent</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="topic-card">
+                <div class="card-status popular"></div>
+                <div class="card-content">
+                    <div class="topic-header">
+                        <h3 class="topic-title">New feature suggestion: Dark mode support</h3>
+                        <div class="topic-meta">
+                            <span class="topic-time">3 days ago</span>
+                            <div class="topic-stats">
+                                <span><i class="fas fa-reply"></i> 48</span>
+                                <span><i class="fas fa-eye"></i> 802</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="topic-excerpt">I think it would be great if the app supported a native dark mode that syncs with system preferences. This would improve accessibility and provide a better experience for night-time coding sessions...</p>
+                    <div class="topic-info">
+                        <div class="topic-author">
+                            <div class="avatar">
+                                <span>EJ</span>
+                            </div>
+                            <span class="author-name">Emma Johnson</span>
+                        </div>
+                        <div class="topic-tags">
+                            <span class="tag">Feature Request</span>
+                            <span class="tag">UI/UX</span>
+                            <span class="tag popular">Popular</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="topic-card">
+                <div class="card-status"></div>
+                <div class="card-content">
+                    <div class="topic-header">
+                        <h3 class="topic-title">Can't install dependencies on macOS Monterey</h3>
+                        <div class="topic-meta">
+                            <span class="topic-time">2 hours ago</span>
+                            <div class="topic-stats">
+                                <span><i class="fas fa-reply"></i> 24</span>
+                                <span><i class="fas fa-eye"></i> 342</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="topic-excerpt">I'm facing an issue where npm install keeps failing with a weird error about dependencies. I've already tried clearing the cache and reinstalling npm but no luck...</p>
+                    <div class="topic-info">
+                        <div class="topic-author">
+                            <div class="avatar">
+                                <span>JD</span>
+                            </div>
+                            <span class="author-name">John Doe</span>
+                        </div>
+                        <div class="topic-tags">
+                            <span class="tag">npm</span>
+                            <span class="tag">macOS</span>
+                            <span class="tag">dependencies</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="topic-card">
+                <div class="card-status"></div>
+                <div class="card-content">
+                    <div class="topic-header">
+                        <h3 class="topic-title">Authentication fails after latest update</h3>
+                        <div class="topic-meta">
+                            <span class="topic-time">4 days ago</span>
+                            <div class="topic-stats">
+                                <span><i class="fas fa-reply"></i> 12</span>
+                                <span><i class="fas fa-eye"></i> 147</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="topic-excerpt">Since upgrading to version 3.2.1, users are getting randomly logged out and can't log back in. This is affecting about 15% of our user base...</p>
+                    <div class="topic-info">
+                        <div class="topic-author">
+                            <div class="avatar">
+                                <span>MR</span>
+                            </div>
+                            <span class="author-name">Mike Roberts</span>
+                        </div>
+                        <div class="topic-tags">
+                            <span class="tag">Authentication</span>
+                            <span class="tag">Bug</span>
+                            <span class="tag">v3.2.1</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="pagination">
+            <button class="page-arrow"><i class="fas fa-chevron-left"></i></button>
+            <div class="page-numbers">
+                <button class="page-btn">1</button>
+                <button class="page-btn active">2</button>
+                <button class="page-btn">3</button>
+                <button class="page-btn">4</button>
+                <button class="page-btn">5</button>
+            </div>
+            <button class="page-arrow"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </div>
+</div>
+</main>
+
+    
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 𝑩𝒖𝒈𝑺𝒍𝒂𝒚. All rights reserved.</p>
+        <p>
+            <a class="text-blue-500" href="#">
+             Subscription Terms
+            </a>
+            |
+            <a class="text-blue-500" href="#">
+             Website Terms of Use
+            </a>
+            |
+            <a class="text-blue-500" href="#">
+             Privacy Statement
+            </a>
+            |
+            <a class="text-blue-500" href="#">
+             Opt Out
+            </a>
+            |
+            <a class="text-blue-500" href="#">
+             Cookie Settings
+            </a>
+        <div class="social-links">
+            <a href="#"><i class="fab fa-github"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-whatsapp"></i></a>
+            <a href="#"><i class="fab fa-facebook"></i></a>
+        </div>
+    </footer>
+    
+    <!-- Modals -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 class="modal-title">Login to BugSlay</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="button primary-button">Login</button>
+                <p class="modal-switch">
+                    Don't have an account? <a href="#" id="showSignupModal">Sign up</a>
+                </p>
+            </form>
+        </div>
+    </div>
+    
+    <div class="modal" id="signupModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 class="modal-title">Create a BugSlay Account</h2>
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="signupName">Full Name</label>
+                    <input type="text" id="signupName" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">Email</label>
+                    <input type="email" id="signupEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupConfirmPassword">Confirm Password</label>
+                    <input type="password" id="signupConfirmPassword" required>
+                </div>
+                <button type="submit" class="button primary-button">Sign Up</button>
+                <p class="modal-switch">
+                    Already have an account? <a href="#" id="showLoginModal">Login</a>
+                </p>
+            </form>
+        </div>
+    </div>
+    
+    <div class="modal" id="newTopicModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 class="modal-title">Create New Topic</h2>
+            <form id="newTopicForm">
+                <div class="form-group">
+                    <label for="topicTitle">Title</label>
+                    <input type="text" id="topicTitle" required placeholder="Be specific and descriptive">
+                </div>
+                <div class="form-group">
+                    <label for="topicCategory">Category</label>
+                    <select id="topicCategory" required>
+                        <option value="">Select a category</option>
+                        <option value="bugs">Bug Reports</option>
+                        <option value="solutions">Solutions</option>
+                        <option value="features">Feature Requests</option>
+                        <option value="general">General Discussion</option>
+                        <option value="help">Help & Support</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="topicContent">Content</label>
+                    <textarea id="topicContent" required placeholder="Describe your issue or discussion topic in detail"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="topicTags">Tags (comma separated)</label>
+                    <input type="text" id="topicTags" placeholder="e.g., javascript, react, database">
+                </div>
+                <button type="submit" class="button primary-button">Create Topic</button>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+    // DOM Elements
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    const navLinks = document.querySelector('.nav-links');
+    const newTopicBtn = document.getElementById('newTopicBtn');
+    const newTopicModal = document.getElementById('newTopicModal');
+    const modalOverlay = document.querySelector('.modal-overlay');
+    const closeModalBtn = document.querySelector('.close-modal');
+    const cancelBtn = document.querySelector('.cancel-btn');
+    const newTopicForm = document.getElementById('newTopicForm');
+    const categories = document.querySelectorAll('.category');
+    const viewButtons = document.querySelectorAll('.view-btn');
+    const topicsWrapper = document.querySelector('.topics-wrapper');
+    const sortSelect = document.getElementById('sortSelect');
+    const searchBtn = document.getElementById('searchBtn');
+    const searchInput = document.querySelector('.search-bar input');
+    const pageButtons = document.querySelectorAll('.page-btn');
+    const pageArrows = document.querySelectorAll('.page-arrow');
+    const toastContainer = document.getElementById('toast-container');
+
+    // Mobile menu toggle
+    if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+    }
+
+    // Modal functions
+    function openModal() {
+        newTopicModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        newTopicModal.classList.remove('active');
+        document.body.style.overflow = '';
+        newTopicForm.reset();
+    }
+
+    // Modal event listeners
+    if (newTopicBtn) {
+        newTopicBtn.addEventListener('click', openModal);
+    }
+
+    if (modalOverlay) {
+        modalOverlay.addEventListener('click', closeModal);
+    }
+
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', closeModal);
+    }
+
+    if (cancelBtn) {
+        cancelBtn.addEventListener('click', closeModal);
+    }
+
+    // Form submission
+    if (newTopicForm) {
+        newTopicForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const title = document.getElementById('topicTitle').value;
+            const category = document.getElementById('topicCategory').value;
+            const content = document.getElementById('topicContent').value;
+            const tags = document.getElementById('topicTags').value.split(',').map(tag => tag.trim());
+            
+            // In a real application, you would send this data to a server
+            console.log('New Topic:', { title, category, content, tags });
+            
+            // Show success message
+            showToast('Topic created successfully!', 'success');
+            
+            // Close modal
+            closeModal();
+            
+            // Create a new topic card and add it to the top of the topics list
+            createNewTopicCard(title, content, tags);
+        });
+    }
+
+    // Create a new topic card
+    function createNewTopicCard(title, content, tags) {
+        const topicCard = document.createElement('div');
+        topicCard.className = 'topic-card';
+        topicCard.innerHTML = `
+            <div class="card-status"></div>
+            <div class="card-content">
+                <div class="topic-header">
+                    <h3 class="topic-title">${title}</h3>
+                    <div class="topic-meta">
+                        <span class="topic-time">Just now</span>
+                        <div class="topic-stats">
+                            <span><i class="fas fa-reply"></i> 0</span>
+                            <span><i class="fas fa-eye"></i> 1</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="topic-excerpt">${content.substring(0, 150)}${content.length > 150 ? '...' : ''}</p>
+                <div class="topic-info">
+                    <div class="topic-author">
+                        <div class="avatar">
+                            <span>ME</span>
+                        </div>
+                        <span class="author-name">Current User</span>
+                    </div>
+                    <div class="topic-tags">
+                        ${tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Add the new topic card to the beginning of the topics list
+        topicsWrapper.insertBefore(topicCard, topicsWrapper.firstChild);
+        
+        // Animate the new topic entry
+        topicCard.style.animation = 'fadeIn 0.5s ease-in-out';
+    }
+
+    // Toast notification system
+    function showToast(message, type = 'info') {
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.innerHTML = `
+            <div class="toast-content">
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : 
+                               type === 'error' ? 'fa-exclamation-circle' : 
+                               'fa-info-circle'}"></i>
+                <div class="toast-message">${message}</div>
+            </div>
+            <button class="toast-close"><i class="fas fa-times"></i></button>
+        `;
+        
+        toastContainer.appendChild(toast);
+        
+        // Automatically remove toast after 5 seconds
+        setTimeout(() => {
+            toast.classList.add('hide');
+            setTimeout(() => {
+                toast.remove();
+            }, 500);
+        }, 5000);
+        
+        // Close toast on click
+        toast.querySelector('.toast-close').addEventListener('click', () => {
+            toast.classList.add('hide');
+            setTimeout(() => {
+                toast.remove();
+            }, 500);
+        });
+    }
+
+    // Category filtering
+    categories.forEach(category => {
+        category.addEventListener('click', function() {
+            // Remove active class from all categories
+            categories.forEach(cat => cat.classList.remove('active'));
+            
+            // Add active class to clicked category
+            this.classList.add('active');
+            
+            const selectedCategory = this.getAttribute('data-category');
+            
+            // In a real application, you would fetch topics by category from the server
+            console.log('Selected Category:', selectedCategory);
+            
+            // For demo purposes, let's simulate filtering
+            filterTopics(selectedCategory);
+        });
+    });
+
+    // Simulate topic filtering
+    function filterTopics(category) {
+        const allTopics = document.querySelectorAll('.topic-card');
+        
+        // Show all topics if "all" is selected
+        if (category === 'all') {
+            allTopics.forEach(topic => {
+                topic.style.display = 'flex';
+                topic.style.animation = 'fadeIn 0.3s ease-in-out';
+            });
+            return;
+        }
+        
+        // Filter topics based on category (this is just a simulation)
+        allTopics.forEach(topic => {
+            const tags = Array.from(topic.querySelectorAll('.topic-tags .tag'))
+                .map(tag => tag.textContent.toLowerCase());
+            
+            // Check if any tag matches the category or if the topic has a specific category-related class
+            const hasCategory = tags.some(tag => 
+                tag.includes(category.toLowerCase()) || 
+                tag === category.toLowerCase()
+            );
+            
+            // For demo purposes, show/hide based on random logic plus any matching tags
+            const shouldShow = hasCategory || Math.random() > 0.5;
+            
+            topic.style.display = shouldShow ? 'flex' : 'none';
+            if (shouldShow) {
+                topic.style.animation = 'fadeIn 0.3s ease-in-out';
+            }
+        });
+        
+        showToast(`Filtered by ${category}`, 'info');
+    }
+
+    // View toggle (cards/list)
+    viewButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Remove active class from all view buttons
+            viewButtons.forEach(btn => btn.classList.remove('active'));
+            
+            // Add active class to clicked button
+            this.classList.add('active');
+            
+            const viewType = this.getAttribute('data-view');
+            
+            // Toggle view type
+            topicsWrapper.classList.remove('card-view', 'list-view');
+            topicsWrapper.classList.add(`${viewType}-view`);
+            
+            // In a real application, you might save this preference
+            console.log('View Type:', viewType);
+        });
+    });
+
+    // Sort functionality
+    if (sortSelect) {
+        sortSelect.addEventListener('change', function() {
+            const sortBy = this.value;
+            
+            // In a real application, you would fetch topics sorted by the selected criteria
+            console.log('Sort By:', sortBy);
+            
+            // For demo purposes, just show a notification
+            showToast(`Topics sorted by: ${sortBy}`, 'info');
+            
+            // Simulate sorting with DOM movement
+            simulateSort(sortBy);
+        });
+    }
+
+    // Simulate sorting by rearranging DOM elements
+    function simulateSort(sortBy) {
+        const topics = Array.from(document.querySelectorAll('.topic-card'));
+        
+        // Sort based on different criteria
+        switch(sortBy) {
+            case 'newest':
+                // Randomize for demo (in real app, would sort by date)
+                shuffleArray(topics);
+                break;
+            case 'activity':
+                // Sort by reply count (for demo)
+                topics.sort((a, b) => {
+                    const repliesA = parseInt(a.querySelector('.topic-stats span:first-child').textContent.match(/\d+/)[0]);
+                    const repliesB = parseInt(b.querySelector('.topic-stats span:first-child').textContent.match(/\d+/)[0]);
+                    return repliesB - repliesA;
+                });
+                break;
+            case 'popular':
+                // Sort by view count (for demo)
+                topics.sort((a, b) => {
+                    const viewsA = parseInt(a.querySelector('.topic-stats span:last-child').textContent.match(/\d+/)[0]);
+                    const viewsB = parseInt(b.querySelector('.topic-stats span:last-child').textContent.match(/\d+/)[0]);
+                    return viewsB - viewsA;
+                });
+                break;
+            case 'solved':
+                // Move solved topics to the top
+                topics.sort((a, b) => {
+                    const isSolvedA = a.querySelector('.tag.solved') !== null;
+                    const isSolvedB = b.querySelector('.tag.solved') !== null;
+                    return isSolvedB - isSolvedA;
+                });
+                break;
+        }
+        
+        // Reappend sorted topics
+        topics.forEach(topic => {
+            topic.style.animation = 'fadeIn 0.3s ease-in-out';
+            topicsWrapper.appendChild(topic);
+        });
+    }
+
+    // Helper function to shuffle array
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    // Search functionality
+    if (searchBtn && searchInput) {
+        searchBtn.addEventListener('click', function() {
+            const searchTerm = searchInput.value.trim().toLowerCase();
+            if (searchTerm === '') {
+                showToast('Please enter a search term', 'error');
+                return;
+            }
+            
+            // In a real application, you would search the database
+            console.log('Search Term:', searchTerm);
+            
+            // Simulate search by filtering visible topics
+            searchTopics(searchTerm);
+        });
+        
+        // Also trigger search on Enter key
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchBtn.click();
+            }
+        });
+    }
+
+    // Simulate topic search
+    function searchTopics(searchTerm) {
+        const allTopics = document.querySelectorAll('.topic-card');
+        let matchCount = 0;
+        
+        allTopics.forEach(topic => {
+            const title = topic.querySelector('.topic-title').textContent.toLowerCase();
+            const excerpt = topic.querySelector('.topic-excerpt').textContent.toLowerCase();
+            const tags = Array.from(topic.querySelectorAll('.topic-tags .tag'))
+                .map(tag => tag.textContent.toLowerCase());
+            
+            // Check if search term appears in title, excerpt, or tags
+            const matchesSearch = 
+                title.includes(searchTerm) || 
+                excerpt.includes(searchTerm) || 
+                tags.some(tag => tag.includes(searchTerm));
+            
+            topic.style.display = matchesSearch ? 'flex' : 'none';
+            if (matchesSearch) {
+                matchCount++;
+                topic.style.animation = 'fadeIn 0.3s ease-in-out';
+                
+                // Highlight matching text (for demonstration)
+                highlightText(topic.querySelector('.topic-title'), searchTerm);
+                highlightText(topic.querySelector('.topic-excerpt'), searchTerm);
+            }
+        });
+        
+        showToast(`Found ${matchCount} matching topics`, matchCount > 0 ? 'success' : 'info');
+    }
+
+    // Highlight matching text
+    function highlightText(element, searchTerm) {
+        const originalText = element.textContent;
+        const lowerText = originalText.toLowerCase();
+        
+        if (lowerText.includes(searchTerm.toLowerCase())) {
+            const startIndex = lowerText.indexOf(searchTerm.toLowerCase());
+            const endIndex = startIndex + searchTerm.length;
+            
+            const before = originalText.substring(0, startIndex);
+            const match = originalText.substring(startIndex, endIndex);
+            const after = originalText.substring(endIndex);
+            
+            element.innerHTML = `${before}<span class="highlight">${match}</span>${after}`;
+        }
+    }
+
+    // Pagination
+    pageButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Remove active class from all page buttons
+            pageButtons.forEach(btn => btn.classList.remove('active'));
+            
+            // Add active class to clicked button
+            this.classList.add('active');
+            
+            const pageNumber = this.textContent;
+            
+            // In a real application, you would fetch topics for the selected page
+            console.log('Page Number:', pageNumber);
+            
+            // Scroll to top of topics
+            document.querySelector('.forum-content').scrollIntoView({ behavior: 'smooth' });
+            
+            // Show notification
+            showToast(`Showing page ${pageNumber}`, 'info');
+            
+            // Simulate page change
+            simulatePageChange(pageNumber);
+        });
+    });
+
+    // Page arrow navigation
+    pageArrows.forEach(arrow => {
+        arrow.addEventListener('click', function() {
+            const currentPage = document.querySelector('.page-btn.active');
+            const currentIndex = Array.from(pageButtons).indexOf(currentPage);
+            let newIndex;
+            
+            // Determine whether this is the previous or next button
+            if (this.querySelector('.fa-chevron-left')) {
+                // Previous page
+                newIndex = Math.max(0, currentIndex - 1);
+            } else {
+                // Next page
+                newIndex = Math.min(pageButtons.length - 1, currentIndex + 1);
+            }
+            
+            // Click the button at the new index
+            if (newIndex !== currentIndex) {
+                pageButtons[newIndex].click();
+            }
+        });
+    });
+
+    // Simulate page change by refreshing content
+    function simulatePageChange(pageNumber) {
+        // For demo purposes, apply a loading effect
+        topicsWrapper.style.opacity = '0.5';
+        
+        setTimeout(() => {
+            // In a real app, you'd load new content here
+            // For demo, just shuffle existing content
+            const topics = Array.from(document.querySelectorAll('.topic-card'));
+            shuffleArray(topics);
+            
+            topics.forEach(topic => {
+                topicsWrapper.appendChild(topic);
+                topic.style.display = 'flex'; // Make sure all topics are visible for the new page
+            });
+            
+            topicsWrapper.style.opacity = '1';
+        }, 500);
+    }
+
+    // Add CSS for animations and toast notifications if not already in the CSS file
+    addDynamicStyles();
+
+    function addDynamicStyles() {
+        const styleElement = document.createElement('style');
+        styleElement.textContent = `
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            
+            .topic-card {
+                transition: all 0.3s ease;
+            }
+            
+            .highlight {
+                background-color: #ffeb3b;
+                padding: 0 2px;
+                border-radius: 2px;
+            }
+            
+            /* Toast notifications */
+            #toast-container {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                z-index: 1000;
+            }
+            
+            .toast {
+                background-color: #333;
+                color: white;
+                padding: 12px 20px;
+                border-radius: 4px;
+                margin-top: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+                min-width: 250px;
+                max-width: 450px;
+                animation: slideIn 0.3s ease-out;
+                transition: all 0.3s ease;
+            }
+            
+            .toast.success {
+                background-color: #4caf50;
+            }
+            
+            .toast.error {
+                background-color: #f44336;
+            }
+            
+            .toast.info {
+                background-color: #2196f3;
+            }
+            
+            .toast-content {
+                display: flex;
+                align-items: center;
+                flex: 1;
+            }
+            
+            .toast-content i {
+                margin-right: 10px;
+            }
+            
+            .toast-close {
+                background: none;
+                border: none;
+                color: white;
+                cursor: pointer;
+                padding: 0 0 0 10px;
+            }
+            
+            .toast.hide {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            
+            @keyframes slideIn {
+                from { opacity: 0; transform: translateX(100%); }
+                to { opacity: 1; transform: translateX(0); }
+            }
+            
+            /* Modal animations */
+            .modal {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 1000;
+            }
+            
+            .modal.active {
+                display: block;
+                animation: fadeInModal 0.3s ease-out;
+            }
+            
+            .modal-overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+            }
+            
+            .modal-content {
+                position: relative;
+                background-color: white;
+                width: 90%;
+                max-width: 600px;
+                margin: 50px auto;
+                border-radius: 8px;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+                overflow: hidden;
+            }
+            
+            @keyframes fadeInModal {
+                from { opacity: 0; transform: translateY(-20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(styleElement);
+    }
+});
+    </script>
+</body>
+</html>

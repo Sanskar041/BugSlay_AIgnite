@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bugslay - Mentoring Program</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        :root {
+            --primary: #25CD6B;
+            --dark: #000000;
+            --light: #ffffff;
+            --gray: #333333;
+            --light-gray: #f5f5f5;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--gray);
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 30px;
+        }
+        
+        nav ul li a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: var(--primary);
+        }
+        
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: var(--dark);
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        
+        .btn:hover {
+            background-color: #1faf5a;
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: var(--dark);
+        }
+        
+        .features {
+            padding: 60px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            font-size: 32px;
+        }
+        
+        .section-title span {
+            color: var(--primary);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-box {
+            background-color: var(--gray);
+            padding: 30px;
+            border-radius: 8px;
+            transition: transform 0.3s;
+        }
+        
+        .feature-box:hover {
+            transform: translateY(-10px);
+        }
+        
+        .feature-box h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        
+        .mentors {
+            padding: 60px 0;
+        }
+        
+        .mentors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .mentor-card {
+            background-color: var(--gray);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        
+        .mentor-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .mentor-img {
+            width: 100%;
+            height: 200px;
+            background-color: #444;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .mentor-details {
+            padding: 20px;
+        }
+        
+        .mentor-details h3 {
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+        
+        .mentor-details p.role {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        .mentor-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .testimonials {
+            padding: 60px 0;
+            background-color: #111;
+        }
+        
+        .testimonial-slider {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .testimonial {
+            padding: 30px;
+            background-color: var(--gray);
+            border-radius: 8px;
+            margin: 20px 10px;
+        }
+        
+        .testimonial p {
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .author-name {
+            margin-left: 15px;
+        }
+        
+        .author-name h4 {
+            color: var(--primary);
+        }
+        
+        .author-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #444;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .pricing {
+            padding: 60px 0;
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .pricing-card {
+            background-color: var(--gray);
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .pricing-card.featured {
+            border: 2px solid var(--primary);
+        }
+        
+        .pricing-header {
+            margin-bottom: 20px;
+        }
+        
+        .pricing-header h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .price {
+            font-size: 36px;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .price span {
+            font-size: 16px;
+            color: #ccc;
+        }
+        
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+        
+        .pricing-features li {
+            padding: 10px 0;
+            border-bottom: 1px solid #444;
+        }
+        
+        .pricing-features li:last-child {
+            border-bottom: none;
+        }
+        
+       
+        
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+            
+            header {
+                flex-direction: column;
+            }
+            
+            nav ul {
+                margin-top: 20px;
+            }
+            
+            nav ul li {
+                margin-left: 15px;
+                margin-right: 15px;
+            }
+            
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+     <!-- Navigation -->
+    <nav class="navbar">
+        <img src="logo.png" alt="BugSlay Logo" height="100" width="200">
+        <ul class="nav-links">
+          <li><a href="main.html">Home</a></li>
+          <li><a href="code.html">Code</a></li>
+          <li><a href="forum.html">Community</a></li>
+          <li><a href="game2.html">Game</a></li>
+          <li><a href="mentor.html">Mentoring</a></li>
+          <li><a href="purchase.html">Subscription</a></li>
+          <li><a href="profile.html">Profile</a></li>
+          <li><a href="leaderboard.html">Leaderboard</a></li>
+          
+        </ul>
+      </nav>
+        
+        <section class="hero">
+            <h1>Level Up Your <span>Debugging Skills</span></h1>
+            <p>Join our mentor program and learn from industry experts who have battled and conquered the most challenging bugs in software development.</p>
+            <button class="btn" id="heroApplyBtn">Apply for Mentorship</button>
+        </section>
+        
+        <section class="features">
+            <h2 class="section-title">Why Choose <span>BugSlay</span> Mentoring?</h2>
+            <div class="features-grid">
+                <div class="feature-box">
+                    <h3>1-on-1 Guidance</h3>
+                    <p>Get personalized attention from experienced developers who understand your specific challenges and learning style.</p>
+                </div>
+                <div class="feature-box">
+                    <h3>Real-World Projects</h3>
+                    <p>Work on actual bug fixing scenarios and develop problem-solving skills that translate directly to your career.</p>
+                </div>
+                <div class="feature-box">
+                    <h3>Flexible Schedule</h3>
+                    <p>Our mentoring sessions adapt to your availability, ensuring you can learn without disrupting your work or personal life.</p>
+                </div>
+                <div class="feature-box">
+                    <h3>Community Support</h3>
+                    <p>Connect with fellow mentees and build a network of professionals who share your passion for clean, bug-free code.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="mentors">
+            <h2 class="section-title">Meet Our <span>Expert Mentors</span></h2>
+            <div class="mentors-grid">
+                <div class="mentor-card">
+                    <div class="mentor-img">
+                        <img src="https://img.freepik.com/free-vector/internship-job-training-illustration_23-2148751280.jpg?t=st=1744297644~exp=1744301244~hmac=b1d33e7231afe45fd76428439be3d8974ff1f9f52f44bb36771a93ad79a2ef7d&w=1380" alt="photo" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="mentor-details">
+                        <h3>Alex Chen</h3>
+                        <p class="role">Senior Backend Developer</p>
+                        <p>10+ years of experience debugging complex systems and cloud infrastructure.</p>
+                        <div class="mentor-actions">
+                            <button class="btn btn-outline mentor-profile-btn" data-mentor="alex">View Profile</button>
+                            <button class="btn request-mentor-btn" data-mentor="alex">Request</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="mentor-card">
+                    <div class="mentor-img">
+                        <img src="https://img.freepik.com/free-vector/hand-drawn-life-coaching-illustration_23-2150279257.jpg?t=st=1744297814~exp=1744301414~hmac=3ebc605ef47faec129f34fc346ef9747c2fe348d974a72aa8692ae582fafef8b&w=1380" alt="photo" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="mentor-details">
+                        <h3>Sarah Johnson</h3>
+                        <p class="role">Frontend Specialist</p>
+                        <p>Expert in solving UI/UX bugs and optimizing user interfaces for better performance.</p>
+                        <div class="mentor-actions">
+                            <button class="btn btn-outline mentor-profile-btn" data-mentor="sarah">View Profile</button>
+                            <button class="btn request-mentor-btn" data-mentor="sarah">Request</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="mentor-card">
+                    <div class="mentor-img">
+                        <img src="https://img.freepik.com/free-vector/male-team-concept-illustration_114360-20479.jpg?t=st=1744297965~exp=1744301565~hmac=26ce19b6a0f753c2c5d3395115e41badca2221cb54de94d53d380247229bcdbb&w=1380" alt="photo" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="mentor-details">
+                        <h3>Miguel Hernandez</h3>
+                        <p class="role">Full Stack Developer</p>
+                        <p>Specializes in tracking down hard-to-find bugs across the entire application stack.</p>
+                        <div class="mentor-actions">
+                            <button class="btn btn-outline mentor-profile-btn" data-mentor="miguel">View Profile</button>
+                            <button class="btn request-mentor-btn" data-mentor="miguel">Request</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="mentor-card">
+                    <div class="mentor-img">
+                        <img src="https://img.freepik.com/premium-vector/vector-set-traditions-culture-items-thailand-icons-flag-palm-trees-with-hammock-auto-boat-mask-elephant-olives-isolated-white-background_812561-594.jpg?w=1380" alt="photo" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="mentor-details">
+                        <h3>Priya Patel</h3>
+                        <p class="role">Security Expert</p>
+                        <p>Focused on identifying and fixing security vulnerabilities and privacy issues.</p>
+                        <div class="mentor-actions">
+                            <button class="btn btn-outline mentor-profile-btn" data-mentor="priya">View Profile</button>
+                            <button class="btn request-mentor-btn" data-mentor="priya">Request</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="testimonials">
+            <h2 class="section-title">What Our <span>Mentees Say</span></h2>
+            <div class="testimonial-slider">
+                <div class="testimonial">
+                    <p>"The mentoring program at BugSlay completely transformed my approach to debugging. I went from spending hours on simple bugs to efficiently tackling complex issues in minutes. My mentor was patient, knowledgeable, and truly invested in my growth."</p>
+                    <div class="testimonial-author">
+                        <div class="author-img">
+                            <span style="color: #25CD6B;">JD</span>
+                        </div>
+                        <div class="author-name">
+                            <h4>Jamie Davis</h4>
+                            <p>Junior Developer</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="pricing">
+            <h2 class="section-title">Mentorship <span>Pricing Plans</span></h2>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Starter</h3>
+                        <div class="price">₹1299 <span>/month</span></div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>2 hours of 1-on-1 mentoring per month</li>
+                        <li>Access to bug-fixing resources</li>
+                        <li>Community forum access</li>
+                        <li>Monthly progress review</li>
+                    </ul>
+                    <button class="btn btn-outline pricing-btn" data-plan="starter">Choose Plan</button>
+                </div>
+                <div class="pricing-card featured">
+                    <div class="pricing-header">
+                        <h3>Professional</h3>
+                        <div class="price">₹1999 <span>/month</span></div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>5 hours of 1-on-1 mentoring per month</li>
+                        <li>Priority support for urgent bugs</li>
+                        <li>Access to all resources and workshops</li>
+                        <li>Bi-weekly progress reviews</li>
+                        <li>Resume and portfolio review</li>
+                    </ul>
+                    <button class="btn pricing-btn" data-plan="professional">Choose Plan</button>
+                </div>
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Enterprise</h3>
+                        <div class="price">₹2799 <span>/month</span></div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>10 hours of 1-on-1 mentoring per month</li>
+                        <li>24/7 emergency debugging support</li>
+                        <li>Custom learning path</li>
+                        <li>Weekly progress reviews</li>
+                        <li>Career coaching and job referrals</li>
+                    </ul>
+                    <button class="btn btn-outline pricing-btn" data-plan="enterprise">Choose Plan</button>
+                </div>
+            </div>
+        </section>
+        
+        <section class="cta">
+            <h2>Ready to Become a <span style="color: #25CD6B;">Bug-Slaying Expert</span>?</h2>
+            <p>Take the first step towards mastering the art of debugging and problem-solving. Our mentors are ready to guide you on your journey.</p>
+            <div class="cta-buttons">
+                <button class="btn" id="ctaApplyBtn">Apply for Mentorship</button>
+                <button class="btn btn-outline" id="scheduleDemoBtn">Schedule a Demo</button>
+            </div>
+        </section>
+    </div>
+    
+   <!-- Footer -->
+   <footer>
+    <p>© 2025 𝑩𝒖𝒈𝑺𝒍𝒂𝒚. All rights reserved.</p>
+    <p>
+        <a class="text-blue-500" href="#">
+         Subscription Terms
+        </a>
+        |
+        <a class="text-blue-500" href="#">
+         Website Terms of Use
+        </a>
+        |
+        <a class="text-blue-500" href="#">
+         Privacy Statement
+        </a>
+        |
+        <a class="text-blue-500" href="#">
+         Opt Out
+        </a>
+        |
+        <a class="text-blue-500" href="#">
+         Cookie Settings
+        </a>
+    <div class="social-links">
+        <a href="#"><i class="fab fa-github"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-whatsapp"></i></a>
+        <a href="#"><i class="fab fa-facebook"></i></a>
+      
+    </div>
+</footer>
+
+    
+</body>
+<script>
+ 
+// Wait for the DOM to be fully loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Hero section Apply button
+    const heroApplyBtn = document.getElementById('heroApplyBtn');
+    if (heroApplyBtn) {
+        heroApplyBtn.addEventListener('click', function() {
+            openApplicationModal();
+        });
+    }
+
+    // CTA section Apply button
+    const ctaApplyBtn = document.getElementById('ctaApplyBtn');
+    if (ctaApplyBtn) {
+        ctaApplyBtn.addEventListener('click', function() {
+            openApplicationModal();
+        });
+    }
+
+    // Schedule Demo button
+    const scheduleDemoBtn = document.getElementById('scheduleDemoBtn');
+    if (scheduleDemoBtn) {
+        scheduleDemoBtn.addEventListener('click', function() {
+            openScheduleModal();
+        });
+    }
+
+    // Mentor Profile buttons
+    const mentorProfileBtns = document.querySelectorAll('.mentor-profile-btn');
+    mentorProfileBtns.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            const mentorName = this.getAttribute('data-mentor');
+            openMentorProfileModal(mentorName);
+        });
+    });
+
+    // Request Mentor buttons
+    const requestMentorBtns = document.querySelectorAll('.request-mentor-btn');
+    requestMentorBtns.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            const mentorName = this.getAttribute('data-mentor');
+            requestMentor(mentorName);
+        });
+    });
+
+    // Pricing Plan buttons
+    const pricingBtns = document.querySelectorAll('.pricing-btn');
+    pricingBtns.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            const planName = this.getAttribute('data-plan');
+            selectPricingPlan(planName);
+        });
+    });
+
+    // Testimonial slider functionality
+    initTestimonialSlider();
+    
+    // Create and append modals to the body
+    createModals();
+});
+
+// Modal functionality
+function createModals() {
+    // Application Modal
+    const applicationModal = document.createElement('div');
+    applicationModal.id = 'applicationModal';
+    applicationModal.className = 'modal';
+    applicationModal.innerHTML = `
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Apply for Mentorship</h2>
+            <form id="applicationForm">
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" name="fullName" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="experience">Experience Level</label>
+                    <select id="experience" name="experience">
+                        <option value="beginner">Beginner (0-1 years)</option>
+                        <option value="intermediate">Intermediate (1-3 years)</option>
+                        <option value="advanced">Advanced (3+ years)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="goals">Your Goals</label>
+                    <textarea id="goals" name="goals" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="preferredMentor">Preferred Mentor (Optional)</label>
+                    <select id="preferredMentor" name="preferredMentor">
+                        <option value="">No preference</option>
+                        <option value="alex">Alex Chen</option>
+                        <option value="sarah">Sarah Johnson</option>
+                        <option value="miguel">Miguel Hernandez</option>
+                        <option value="priya">Priya Patel</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn">Submit Application</button>
+            </form>
+        </div>
+    `;
+    document.body.appendChild(applicationModal);
+
+    // Schedule Demo Modal
+    const scheduleModal = document.createElement('div');
+    scheduleModal.id = 'scheduleModal';
+    scheduleModal.className = 'modal';
+    scheduleModal.innerHTML = `
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Schedule a Demo Session</h2>
+            <form id="scheduleForm">
+                <div class="form-group">
+                    <label for="scheduleName">Full Name</label>
+                    <input type="text" id="scheduleName" name="scheduleName" required>
+                </div>
+                <div class="form-group">
+                    <label for="scheduleEmail">Email</label>
+                    <input type="email" id="scheduleEmail" name="scheduleEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="scheduleDate">Preferred Date</label>
+                    <input type="date" id="scheduleDate" name="scheduleDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="scheduleTime">Preferred Time</label>
+                    <select id="scheduleTime" name="scheduleTime">
+                        <option value="morning">Morning (9 AM - 12 PM)</option>
+                        <option value="afternoon">Afternoon (1 PM - 5 PM)</option>
+                        <option value="evening">Evening (6 PM - 9 PM)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="scheduleNotes">Additional Notes</label>
+                    <textarea id="scheduleNotes" name="scheduleNotes" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn">Book Demo</button>
+            </form>
+        </div>
+    `;
+    document.body.appendChild(scheduleModal);
+
+    // Mentor Profile Modal
+    const mentorProfileModal = document.createElement('div');
+    mentorProfileModal.id = 'mentorProfileModal';
+    mentorProfileModal.className = 'modal';
+    mentorProfileModal.innerHTML = `
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div id="mentorProfileContent"></div>
+        </div>
+    `;
+    document.body.appendChild(mentorProfileModal);
+
+    // Success Modal
+    const successModal = document.createElement('div');
+    successModal.id = 'successModal';
+    successModal.className = 'modal';
+    successModal.innerHTML = `
+        <div class="modal-content success-content">
+            <span class="close-modal">&times;</span>
+            <div class="success-icon">✓</div>
+            <h2>Success!</h2>
+            <p id="successMessage">Your submission has been received!</p>
+            <button class="btn close-success-btn">Close</button>
+        </div>
+    `;
+    document.body.appendChild(successModal);
+
+    // Add styles for modals
+    const modalStyles = document.createElement('style');
+    modalStyles.textContent = `
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.8);
+        }
+        
+        .modal-content {
+            background-color: #333;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            position: relative;
+            color: #fff;
+        }
+        
+        .close-modal {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .close-modal:hover {
+            color: #25CD6B;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #555;
+            background-color: #444;
+            color: #fff;
+            font-size: 16px;
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+        }
+        
+        .success-content {
+            text-align: center;
+        }
+        
+        .success-icon {
+            font-size: 48px;
+            color: #25CD6B;
+            margin-bottom: 20px;
+        }
+        
+        .mentor-profile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .mentor-profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        
+        .mentor-profile-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #444;
+            margin-right: 20px;
+            overflow: hidden;
+        }
+        
+        .mentor-profile-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .mentor-bio {
+            margin-bottom: 20px;
+        }
+        
+        .mentor-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        
+        .stat-item {
+            background-color: #444;
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #25CD6B;
+        }
+        
+        .expertise-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .expertise-tag {
+            background-color: #25CD6B;
+            color: #000;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s;
+        }
+    `;
+    document.head.appendChild(modalStyles);
+
+    // Set up event listeners for modals
+    const closeButtons = document.querySelectorAll('.close-modal, .close-success-btn');
+    closeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            closeAllModals();
+        });
+    });
+
+    // Close modal when clicking outside
+    window.addEventListener('click', function(event) {
+        if (event.target.classList.contains('modal')) {
+            closeAllModals();
+        }
+    });
+
+    // Handle form submissions
+    const applicationForm = document.getElementById('applicationForm');
+    if (applicationForm) {
+        applicationForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            // Simulate form submission (would be an AJAX call in production)
+            setTimeout(function() {
+                closeAllModals();
+                showSuccessModal('Your mentorship application has been submitted successfully! We will review your application and contact you within 2 business days.');
+            }, 1000);
+        });
+    }
+
+    const scheduleForm = document.getElementById('scheduleForm');
+    if (scheduleForm) {
+        scheduleForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            // Simulate form submission (would be an AJAX call in production)
+            setTimeout(function() {
+                closeAllModals();
+                showSuccessModal('Your demo session has been scheduled! Check your email for confirmation and meeting details.');
+            }, 1000);
+        });
+    }
+}
+
+// Modal control functions
+function openApplicationModal() {
+    document.getElementById('applicationModal').style.display = 'block';
+    document.getElementById('applicationModal').classList.add('fade-in');
+}
+
+function openScheduleModal() {
+    document.getElementById('scheduleModal').style.display = 'block';
+    document.getElementById('scheduleModal').classList.add('fade-in');
+}
+
+function openMentorProfileModal(mentorName) {
+    const profileData = getMentorProfileData(mentorName);
+    const profileContent = document.getElementById('mentorProfileContent');
+    
+    if (profileData && profileContent) {
+        profileContent.innerHTML = `
+            <div class="mentor-profile">
+                <div class="mentor-profile-header">
+                    <div class="mentor-profile-img">
+                        <img src="${profileData.image}" alt="${profileData.name}">
+                    </div>
+                    <div>
+                        <h2>${profileData.name}</h2>
+                        <p style="color: #25CD6B; font-weight: 500;">${profileData.role}</p>
+                    </div>
+                </div>
+                
+                <div class="mentor-bio">
+                    <h3>About</h3>
+                    <p>${profileData.bio}</p>
+                </div>
+                
+                <div class="mentor-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">${profileData.experience}+</div>
+                        <div class="stat-label">Years Experience</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">${profileData.mentees}</div>
+                        <div class="stat-label">Mentees Guided</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">${profileData.rating}</div>
+                        <div class="stat-label">Average Rating</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">${profileData.availability}</div>
+                        <div class="stat-label">Availability</div>
+                    </div>
+                </div>
+                
+                <h3>Expertise</h3>
+                <div class="expertise-tags">
+                    ${profileData.expertise.map(tag => `<span class="expertise-tag">${tag}</span>`).join('')}
+                </div>
+                
+                <button class="btn request-specific-mentor-btn" data-mentor="${mentorName}">Request as Mentor</button>
+            </div>
+        `;
+        
+        // Add event listener to the Request button inside the modal
+        const requestBtn = profileContent.querySelector('.request-specific-mentor-btn');
+        if (requestBtn) {
+            requestBtn.addEventListener('click', function() {
+                closeAllModals();
+                requestMentor(mentorName);
+            });
+        }
+        
+        document.getElementById('mentorProfileModal').style.display = 'block';
+        document.getElementById('mentorProfileModal').classList.add('fade-in');
+    }
+}
+
+function showSuccessModal(message) {
+    const successMessage = document.getElementById('successMessage');
+    if (successMessage) {
+        successMessage.textContent = message;
+    }
+    document.getElementById('successModal').style.display = 'block';
+    document.getElementById('successModal').classList.add('fade-in');
+}
+
+function closeAllModals() {
+    const modals = document.querySelectorAll('.modal');
+    modals.forEach(modal => {
+        modal.style.display = 'none';
+    });
+}
+
+// Mentor data
+function getMentorProfileData(mentorId) {
+    const mentors = {
+        alex: {
+            name: 'Alex Chen',
+            role: 'Senior Backend Developer',
+            image: 'https://img.freepik.com/free-vector/internship-job-training-illustration_23-2148751280.jpg?t=st=1744297644~exp=1744301244~hmac=b1d33e7231afe45fd76428439be3d8974ff1f9f52f44bb36771a93ad79a2ef7d&w=1380',
+            bio: 'Alex has over 10 years of experience in backend development, specializing in distributed systems and microservices architecture. He has worked at tech giants like Google and Amazon, where he led teams that built robust, scalable systems serving millions of users. Alex is passionate about clean code, performance optimization, and teaching best practices for debugging complex systems.',
+            experience: 10,
+            mentees: 47,
+            rating: 4.9,
+            availability: 'High',
+            expertise: ['Node.js', 'Python', 'AWS', 'Docker', 'Kubernetes', 'MongoDB', 'Microservices']
+        },
+        sarah: {
+            name: 'Sarah Johnson',
+            role: 'Frontend Specialist',
+            image: 'https://img.freepik.com/free-vector/hand-drawn-life-coaching-illustration_23-2150279257.jpg?t=st=1744297814~exp=1744301414~hmac=3ebc605ef47faec129f34fc346ef9747c2fe348d974a72aa8692ae582fafef8b&w=1380',
+            bio: 'Sarah is a frontend expert with 8 years of experience building responsive, accessible and performant web applications. She specializes in React, Vue.js, and modern CSS frameworks. Previously working at Airbnb and Shopify, Sarah has developed an eye for detail that helps her identify even the most challenging UI bugs. She loves sharing her knowledge about debugging UI issues and improving user experiences.',
+            experience: 8,
+            mentees: 32,
+            rating: 4.8,
+            availability: 'Medium',
+            expertise: ['React', 'Vue.js', 'CSS/SASS', 'UI/UX', 'JavaScript', 'Performance Optimization', 'Accessibility']
+        },
+        miguel: {
+            name: 'Miguel Hernandez',
+            role: 'Full Stack Developer',
+            image: 'https://img.freepik.com/free-vector/male-team-concept-illustration_114360-20479.jpg?t=st=1744297965~exp=1744301565~hmac=26ce19b6a0f753c2c5d3395115e41badca2221cb54de94d53d380247229bcdbb&w=1380',
+            bio: 'Miguel is a versatile full stack developer with 12 years of experience across the entire development stack. He has founded two tech startups and currently leads engineering at a fintech company. Miguel excels at tracking down elusive bugs that span multiple system layers, and enjoys teaching systematic approaches to problem solving. His mentees praise his ability to explain complex concepts in simple terms.',
+            experience: 12,
+            mentees: 56,
+            rating: 4.7,
+            availability: 'Medium',
+            expertise: ['JavaScript', 'TypeScript', 'React', 'Node.js', 'SQL/NoSQL', 'System Architecture', 'DevOps']
+        },
+        priya: {
+            name: 'Priya Patel',
+            role: 'Security Expert',
+            image: 'https://img.freepik.com/premium-vector/vector-set-traditions-culture-items-thailand-icons-flag-palm-trees-with-hammock-auto-boat-mask-elephant-olives-isolated-white-background_812561-594.jpg?w=1380',
+            bio: 'Priya is a cybersecurity specialist with 9 years of experience in identifying and fixing security vulnerabilities. She has worked as a security consultant for major financial institutions and tech companies. Priya holds CISSP and CEH certifications and regularly speaks at security conferences. She is passionate about teaching developers how to write secure code and identify potential security issues early in the development cycle.',
+            experience: 9,
+            mentees: 28,
+            rating: 4.9,
+            availability: 'Limited',
+            expertise: ['Application Security', 'Penetration Testing', 'Cryptography', 'Java', 'Python', 'OWASP', 'Security Auditing']
+        }
+    };
+    
+    return mentors[mentorId];
+}
+
+// Testimonial slider functionality
+function initTestimonialSlider() {
+    let currentTestimonialIndex = 0;
+    const testimonials = [
+        {
+            text: "The mentoring program at BugSlay completely transformed my approach to debugging. I went from spending hours on simple bugs to efficiently tackling complex issues in minutes. My mentor was patient, knowledgeable, and truly invested in my growth.",
+            author: "Jamie Davis",
+            role: "Junior Developer",
+            initials: "JD"
+        },
+        {
+            text: "As a career switcher, I was struggling with understanding debugging methodologies. My BugSlay mentor provided clear guidance and practical exercises that helped me build confidence in my problem-solving abilities.",
+            author: "Alex Thompson",
+            role: "Frontend Developer",
+            initials: "AT"
+        },
+        {
+            text: "The enterprise plan was worth every penny. My mentor's expertise in security vulnerabilities helped me secure a promotion at work after implementing what I learned in our sessions.",
+            author: "Samira Khan",
+            role: "DevOps Engineer",
+            initials: "SK"
+        }
+    ];
+
+    function showTestimonial(index) {
+        const testimonialContainer = document.querySelector('.testimonial');
+        if (!testimonialContainer) return;
+        
+        const testimonial = testimonials[index];
+        testimonialContainer.innerHTML = `
+            <p>"${testimonial.text}"</p>
+            <div class="testimonial-author">
+                <div class="author-img">
+                    <span style="color: #25CD6B;">${testimonial.initials}</span>
+                </div>
+                <div class="author-name">
+                    <h4>${testimonial.author}</h4>
+                    <p>${testimonial.role}</p>
+                </div>
+            </div>
+        `;
+        
+        // Add fade-in effect
+        testimonialContainer.classList.remove('fade-in');
+        void testimonialContainer.offsetWidth; // Trigger reflow
+        testimonialContainer.classList.add('fade-in');
+    }
+
+    // Initialize first testimonial
+    showTestimonial(currentTestimonialIndex);
+
+    // Add navigation dots
+    const testimonialSlider = document.querySelector('.testimonial-slider');
+    if (testimonialSlider) {
+        const dotsContainer = document.createElement('div');
+        dotsContainer.className = 'testimonial-dots';
+        dotsContainer.style.cssText = 'display: flex; justify-content: center; margin-top: 20px; gap: 10px;';
+        
+        for (let i = 0; i < testimonials.length; i++) {
+            const dot = document.createElement('div');
+            dot.className = i === 0 ? 'dot active' : 'dot';
+            dot.style.cssText = 'width: 12px; height: 12px; border-radius: 50%; background-color: #555; cursor: pointer; transition: background-color 0.3s;';
+            if (i === 0) {
+                dot.style.backgroundColor = '#25CD6B';
+            }
+            
+            dot.addEventListener('click', function() {
+                currentTestimonialIndex = i;
+                showTestimonial(i);
+                
+                // Update active dot
+                document.querySelectorAll('.dot').forEach((d, index) => {
+                    if (index === i) {
+                        d.style.backgroundColor = '#25CD6B';
+                        d.classList.add('active');
+                    } else {
+                        d.style.backgroundColor = '#555';
+                        d.classList.remove('active');
+                    }
+                });
+            });
+            
+            dotsContainer.appendChild(dot);
+        }
+        
+        testimonialSlider.appendChild(dotsContainer);
+    }
+
+    // Auto change testimonial every 5 seconds
+    setInterval(function() {
+        currentTestimonialIndex = (currentTestimonialIndex + 1) % testimonials.length;
+        showTestimonial(currentTestimonialIndex);
+        
+        // Update active dot
+        document.querySelectorAll('.dot').forEach((dot, index) => {
+            if (index === currentTestimonialIndex) {
+                dot.style.backgroundColor = '#25CD6B';
+                dot.classList.add('active');
+            } else {
+                dot.style.backgroundColor = '#555';
+                dot.classList.remove('active');
+            }
+        });
+    }, 5000);
+}
+
+// Function to request a mentor
+function requestMentor(mentorName) {
+    // First we check if the application form exists
+    let preferredMentorSelect = document.getElementById('preferredMentor');
+    
+    // Open the application modal
+    openApplicationModal();
+    
+    // Pre-select the mentor in the dropdown if the select element exists
+    if (preferredMentorSelect) {
+        // Loop through options to find the matching mentor value
+        for (let i = 0; i < preferredMentorSelect.options.length; i++) {
+            if (preferredMentorSelect.options[i].value === mentorName) {
+                preferredMentorSelect.selectedIndex = i;
+                break;
+            }
+        }
+    }
+    
+    // Show a notification
+    const notification = document.createElement('div');
+    notification.className = 'notification';
+    notification.innerHTML = `You've selected ${getMentorProfileData(mentorName).name} as your preferred mentor!`;
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background-color: #25CD6B;
+        color: #000;
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        z-index: 1100;
+        animation: slideIn 0.5s forwards;
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Add animation style
+    const notificationStyle = document.createElement('style');
+    notificationStyle.textContent = `
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+    `;
+    document.head.appendChild(notificationStyle);
+    
+    // Remove notification after 3 seconds
+    setTimeout(() => {
+        notification.style.animation = 'slideOut 0.5s forwards';
+        setTimeout(() => {
+            notification.remove();
+        }, 500);
+    }, 3000);
+}
+
+// Function to select a pricing plan
+function selectPricingPlan(planName) {
+    // Map plan names to readable format
+    const planDisplayNames = {
+        'starter': 'Starter',
+        'professional': 'Professional',
+        'enterprise': 'Enterprise'
+    };
+    
+    // Create a modal for plan selection
+    const planModal = document.createElement('div');
+    planModal.className = 'modal';
+    planModal.style.display = 'block';
+    planModal.innerHTML = `
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>${planDisplayNames[planName]} Plan Selected</h2>
+            <p>You've selected the ${planDisplayNames[planName]} mentorship plan.</p>
+            <form id="planForm">
+                <div class="form-group">
+                    <label for="planName">Full Name</label>
+                    <input type="text" id="planName" name="planName" required>
+                </div>
+                <div class="form-group">
+                    <label for="planEmail">Email</label>
+                    <input type="email" id="planEmail" name="planEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="paymentMethod">Payment Method</label>
+                    <select id="paymentMethod" name="paymentMethod">
+                        <option value="creditCard">Credit Card</option>
+                        <option value="paypal">PayPal</option>
+                        <option value="bankTransfer">Bank Transfer</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="termsAgree" required>
+                        I agree to the terms and conditions
+                    </label>
+                </div>
+                <button type="submit" class="btn">Proceed to Payment</button>
+            </form>
+        </div>
+    `;
+    
+    document.body.appendChild(planModal);
+    
+    // Close button functionality
+    const closeModalBtn = planModal.querySelector('.close-modal');
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', function() {
+            planModal.remove();
+        });
+    }
+    
+    // Close when clicking outside the modal
+    planModal.addEventListener('click', function(event) {
+        if (event.target === planModal) {
+            planModal.remove();
+        }
+    });
+    
+    // Handle form submission
+    const planForm = document.getElementById('planForm');
+    if (planForm) {
+        planForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            // Simulate processing payment
+            planModal.querySelector('.modal-content').innerHTML = `
+                <h2>Processing Payment</h2>
+                <div class="loading-spinner" style="text-align: center; margin: 30px 0;">
+                    <div class="spinner" style="
+                        border: 4px solid rgba(255,255,255,0.1);
+                        border-radius: 50%;
+                        border-top: 4px solid #25CD6B;
+                        width: 50px;
+                        height: 50px;
+                        margin: 0 auto;
+                        animation: spin 1s linear infinite;
+                    "></div>
+                </div>
+                <p style="text-align: center;">Please wait while we process your payment...</p>
+            `;
+            
+            // Add spinner animation
+            const spinnerStyle = document.createElement('style');
+            spinnerStyle.textContent = `
+                @keyframes spin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                }
+            `;
+            document.head.appendChild(spinnerStyle);
+            
+            // Simulate payment process completion
+            setTimeout(function() {
+                planModal.remove();
+                showSuccessModal(`Thank you for subscribing to the ${planDisplayNames[planName]} mentorship plan! You will receive a confirmation email with further instructions to get started.`);
+            }, 2000);
+        });
+    }
+}
+</script>
+
+</html>    

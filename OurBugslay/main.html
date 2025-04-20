@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CyberPortfolio</title>
+    <!-- link to fontawesome for inserting social media icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  </head>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    :root {
+      --dark-bg: #0a0a0a;
+      --darker-bg: #050505;
+      --accent: #2ecc71;
+      --accent-glow: #2ecc7166;
+      --text: #ffffff;
+      /* Carousel variables */
+      --carousel-transition-duration: 250ms;
+      --carousel-transition-ease: ease-out;
+      --carousel-bg-color-rgb: 5, 5, 5;
+      --carousel-shadow-color-rgb: 128, 128, 128;
+      --carousel-item-width: 11.5rem;
+      --carousel-item-height: 17.5rem;
+      --carousel-item-hover-effect: 1.075;
+      --carousel-item-reflection-blur: 0.25rem;
+      --carousel-item-empty-color-rgb: 255, 255, 255;
+      --carousel-item-glow-color-rgb: 46, 204, 113;
+      --carousel-item-glow-size: 5rem;
+      --carousel-diameter: 50rem;
+      --carousel-3d-perspective: 1000px;
+      --carousel-3d-perspective-origin: 50% 20%;
+      --carousel-control-button-width: 1.25rem;
+      --carousel-control-button-height: 4rem;
+      --carousel-control-color-rgb: 46, 204, 113;
+      --carousel-animation-duration: 25s;
+      --carousel-animation-play-state: running;
+      --carousel-direction-animation-play-state: paused;
+    }
+
+    body {
+      background-color: var(--dark-bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Navigation */
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 1.5rem 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(10, 10, 10, 0.95);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-decoration: none;
+      position: relative;
+      padding-left: 2.5rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 12% 5%;
+      background: radial-gradient(
+        circle at 75% 30%,
+        var(--accent-glow) 0%,
+        transparent 30%
+      );
+      position: relative;
+    }
+
+    .hero-content {
+      flex: 1;
+      padding-right: 3rem;
+    }
+
+    .hero-image {
+      flex: 0.8;
+      text-align: center;
+      position: relative;
+    }
+
+    .profile-img {
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--accent);
+      box-shadow: 0 0 50px var(--accent-glow);
+      animation: float 3s ease-in-out infinite;
+      filter: grayscale(0.2) contrast(1.1);
+    }
+
+    @keyframes float {
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-20px);
+      }
+    }
+
+    .hero h1 {
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(45deg, var(--accent) 30%, #ffffff 70%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+      max-width: 600px;
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: 1rem 2rem;
+      background: linear-gradient(45deg, var(--accent), #27ae60);
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Skills Section */
+    .skills {
+      padding: 5rem 5%;
+      background: var(--darker-bg);
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .skill-card {
+      padding: 2rem;
+      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.05);
+      transition: all 0.3s ease;
+      border: 1px solid rgba(225, 225, 225, 0.05);
+      backdrop-filter: blur(5px);
+    }
+
+    .skill-card:hover {
+      transform: translateY(-10px);
+      border-color: var(--accent);
+      box-shadow: 0 10px 30px var(--accent-glow);
+    }
+
+    .skill-card i {
+      font-size: 2.5rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    /* Modified Carousel for Hero Section */
+    .hero-carousel {
+      position: relative;
+      flex: 1.2;
+      height: 500px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Carousel Styles - Modified for Hero */
+    .carousel {
+      --_diameter: calc(var(--carousel-diameter) * 0.6);
+      --_radius: calc(var(--_diameter) / 2);
+      --_item-width: calc(var(--carousel-item-width) * 0.6);
+      --_item-height: calc(var(--carousel-item-height) * 0.6);
+      perspective: var(--carousel-3d-perspective);
+      perspective-origin: var(--carousel-3d-perspective-origin);
+      width: var(--_diameter);
+      height: var(--_diameter);
+      margin: 0 auto;
+    }
+
+    @media only screen and (max-width: 64rem) {
+      .carousel {
+        --_diameter: calc(var(--carousel-diameter) * 0.4);
+        --_item-width: calc(var(--carousel-item-width) * 0.4);
+        --_item-height: calc(var(--carousel-item-height) * 0.4);
+      }
+    }
+
+    @media only screen and (max-width: 48rem) {
+      .carousel {
+        --_diameter: calc(var(--carousel-diameter) * 0.3);
+        --_item-width: calc(var(--carousel-item-width) * 0.3);
+        --_item-height: calc(var(--carousel-item-height) * 0.3);
+      }
+    }
+
+    @media only screen and (max-width: 32rem) {
+      .carousel {
+        --_diameter: calc(var(--carousel-diameter) * 0.25);
+        --_item-width: calc(var(--carousel-item-width) * 0.25);
+        --_item-height: calc(var(--carousel-item-height) * 0.25);
+      }
+    }
+
+    .carousel .carousel-control-button {
+      --_width: var(--carousel-control-button-width);
+      --_height: var(--carousel-control-button-height);
+      z-index: 1;
+      width: var(--_width);
+      height: var(--_height);
+      background-color: rgb(var(--carousel-control-color-rgb));
+      opacity: 0.2;
+      transition: opacity var(--carousel-transition-duration)
+        var(--carousel-transition-ease);
+      position: absolute;
+    }
+    .carousel .carousel-control-button:hover {
+      opacity: 0.4;
+    }
+    .carousel .carousel-control-button:has(input:checked) {
+      opacity: 0.8;
+    }
+
+    .carousel .carousel-control-button input {
+      -webkit-appearance: none;
+      appearance: none;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+
+    .carousel .carousel-control-button.left {
+      clip-path: polygon(0% 50%, 100% 0%, 100% 100%);
+      top: calc(var(--_radius) - var(--_height) / 2);
+      left: 0;
+    }
+    .carousel:has(.carousel-control-button.left input:checked) {
+      --carousel-direction-animation-play-state: running;
+    }
+
+    .carousel .carousel-control-button.right {
+      clip-path: polygon(0% 0%, 100% 50%, 0% 100%);
+      top: calc(var(--_radius) - var(--_height) / 2);
+      right: 0;
+    }
+    .carousel:has(.carousel-control-button.right input:checked) {
+      --carousel-direction-animation-play-state: paused;
+    }
+
+    .carousel .carousel-rotation-direction {
+      --_direction-animation-play-state: var(
+        --carousel-direction-animation-play-state
+      );
+      --_z: calc(var(--_radius) * -1);
+      transform: translateZ(var(--_z));
+      transform-style: preserve-3d;
+      animation: carousel-rotation-reverse
+        calc(var(--carousel-animation-duration) / 2) reverse linear infinite
+        var(--_direction-animation-play-state);
+      transition: all var(--carousel-transition-duration)
+        var(--carousel-transition-ease);
+    }
+
+    @keyframes carousel-rotation-reverse {
+      from {
+        transform: translateZ(var(--_z)) rotateY(0deg);
+      }
+      to {
+        transform: translateZ(var(--_z)) rotateY(360deg);
+      }
+    }
+
+    @keyframes carousel-rotation-normal {
+      from {
+        transform: rotateY(0deg);
+      }
+      to {
+        transform: rotateY(360deg);
+      }
+    }
+
+    .carousel .carousel-item-wrapper {
+      transform-style: inherit;
+      width: inherit;
+      height: inherit;
+      list-style-type: none;
+      position: relative;
+      animation: carousel-rotation-normal var(--carousel-animation-duration)
+        normal linear infinite var(--carousel-animation-play-state);
+      transition: all var(--carousel-transition-duration)
+        var(--carousel-transition-ease);
+    }
+
+    .carousel .carousel-rotation-direction:has(.carousel-item:hover) {
+      --carousel-animation-play-state: paused;
+      --_direction-animation-play-state: paused;
+    }
+
+    .carousel .carousel-item {
+      --_width: var(--_item-width);
+      --_height: var(--_item-height);
+      --_rotation: calc(360 / var(--_num-elements) * var(--_index) * 1deg);
+      left: calc(var(--_radius) - var(--_item-width) / 2);
+      top: calc(var(--_radius) - var(--_item-height) / 2);
+      transform: rotateY(var(--_rotation)) translateZ(var(--_radius));
+      transform-style: inherit;
+      width: var(--_width);
+      height: var(--_height);
+      transition: all var(--carousel-transition-duration)
+        var(--carousel-transition-ease);
+      box-shadow: 0 0 var(--carousel-item-glow-size) transparent;
+      position: absolute;
+    }
+
+    .carousel .carousel-item:hover {
+      box-shadow: 0 0 var(--carousel-item-glow-size)
+        rgb(var(--carousel-item-glow-color-rgb));
+      transform: rotateY(var(--_rotation))
+        translateZ(calc(var(--_radius) * var(--carousel-item-hover-effect)));
+    }
+
+    .carousel .carousel-item a {
+      display: block;
+      width: inherit;
+      height: inherit;
+      text-indent: -9999px;
+      background-color: rgba(var(--carousel-item-empty-color-rgb), 0.5);
+      background-image: var(--_image-url);
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      transition: filter var(--carousel-transition-duration)
+        var(--carousel-transition-ease);
+      filter: grayscale(100%);
+    }
+
+    .carousel .carousel-item:hover a {
+      filter: grayscale(0%);
+    }
+
+    .carousel .carousel-item::before {
+      content: "";
+      width: inherit;
+      height: inherit;
+      background-color: rgba(var(--carousel-item-empty-color-rgb), 0.5);
+      background-image: linear-gradient(
+          to top,
+          rgba(var(--carousel-bg-color-rgb), 0.25) 0%,
+          rgba(var(--carousel-bg-color-rgb), 1) 75%
+        ),
+        var(--_image-url);
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      pointer-events: none;
+      filter: blur(var(--carousel-item-reflection-blur)) grayscale(100%);
+      transition: filter var(--carousel-transition-duration)
+        var(--carousel-transition-ease);
+      transform-style: inherit;
+      transform-origin: center bottom;
+      transform: rotateX(90deg) rotateZ(180deg) rotateY(180deg);
+      position: absolute;
+    }
+
+    .carousel .carousel-item:hover::before {
+      filter: blur(var(--carousel-item-reflection-blur)) grayscale(0%);
+    }
+
+    .carousel .carousel-ground {
+      --_width: var(--_diameter);
+      --_height: var(--_diameter);
+      --_rotation: 90deg;
+      left: calc(var(--_radius) - var(--_width) / 2);
+      top: calc(var(--_radius) - var(--_height) / 2);
+      transform: rotateX(var(--_rotation))
+        translateZ(calc(var(--_item-height) / -2));
+      width: var(--_width);
+      height: var(--_height);
+      border-radius: 50%;
+      background: radial-gradient(
+        rgba(var(--carousel-shadow-color-rgb), 0.75) 15%,
+        rgba(var(--carousel-bg-color-rgb), 0) 60%
+      );
+      opacity: 0.5;
+      transition: opacity var(--carousel-transition-duration)
+        var(--carousel-transition-ease);
+      position: absolute;
+    }
+
+    .carousel
+      .carousel-item-wrapper:has(.carousel-item:hover)
+      .carousel-ground {
+      opacity: 0.75;
+    }
+
+    .features-list {
+      list-style-type: none;
+    }
+
+    .features-list li {
+      margin-bottom: 0.5rem;
+      position: relative;
+      padding-left: 1.5rem;
+    }
+
+    .features-list li:before {
+      content: "▹";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+    }
+
+    /* Footer */
+    footer {
+      background: var(--darker-bg);
+      padding: 3rem 5%;
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .social-links {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+    }
+
+    .social-links a {
+      color: var(--text);
+      font-size: 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .social-links a:hover {
+      color: var(--accent);
+      transform: translateY(-3px);
+    }
+
+    @media (max-width: 1200px) {
+      .hero {
+        padding-top: 10rem;
+      }
+
+      .hero-carousel {
+        transform: scale(0.85);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero {
+        flex-direction: column;
+        text-align: center;
+        padding-top: 8rem;
+      }
+
+      .hero-content {
+        padding-right: 0;
+        margin-bottom: 3rem;
+      }
+
+      .profile-img {
+        width: 280px;
+        height: 280px;
+      }
+
+      .hero-carousel {
+        margin-top: 2rem;
+        transform: scale(0.7);
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        padding-left: 2rem;
+      }
+
+      .features-list {
+        text-align: left;
+        margin-left: 1rem;
+      }
+    }
+
+    .chat-box {
+      box-shadow: 0px 5px 20px #25CD6B;
+      border-radius: 10px;
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      width: 320px;
+      background: #101010;
+      display: none;
+      flex-direction: column;
+      border: 2px solid #25CD6B;
+      font-family: "Courier New", Courier, monospace;
+      animation: fadeIn 0.5s ease-in-out;
+      z-index: 1001;
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    .chat-header {
+      background: #25CD6B;
+      color: #101010;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      font-weight: bold;
+    }
+    .chat-messages {
+      height: 250px;
+      overflow-y: auto;
+      padding: 10px;
+      background: #181818;
+      color: #25CD6B;
+      font-size: 14px;
+      border-bottom: 2px solid#00FFCC;
+    }
+    .chat-input {
+      display: flex;
+      padding: 10px;
+      border-top: 2px solid #25CD6B;
+      background: #101010;
+    }
+    .chat-input input {
+      flex: 1;
+      padding: 8px;
+      border: 2px solid #25CD6B;
+      border-radius: 5px;
+      background: #181818;
+      color: #25CD6B;
+      outline: none;
+    }
+    .chat-input button {
+      margin-left: 5px;
+      padding: 8px 12px;
+      border: none;
+      background: #25CD6B;
+      color: #101010;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    .chat-input button:hover {
+      background: white;
+    }
+    .chat-icon {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #25CD6B;
+      color: #101010;
+      padding: 15px;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0px 5px 15px #25CD6B;
+      font-size: 20px;
+      font-weight: bold;
+      transition: 0.3s;
+      animation: pulse 1.5s infinite;
+      z-index: 1001;
+    }
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+    
+  </style>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <img src="logo.png" alt="BugSlay Logo" height="100" width="200">
+      <ul class="nav-links">
+        <li><a href="main.html">Home</a></li>
+        <li><a href="code.html">Code</a></li>
+        <li><a href="forum.html">Community</a></li>
+        <li><a href="game2.html">Game</a></li>
+        <li><a href="mentor.html">Mentoring</a></li>
+        <li><a href="purchase.html">Subscription</a></li>
+        <li><a href="profile.html">Profile</a></li>
+        <li><a href="leaderboard.html">Leaderboard</a></li>
+        
+      </ul>
+    </nav>
+
+    <!-- Hero Section with Carousel integrated -->
+    <section id="home" class="hero">
+      <div class="hero-content">
+        <h1>Key Features</h1>
+        <ul class="features-list">
+          <li>Real-time AI debugging</li>
+          <li>Code Execution & Analysis</li>
+          <li>Interactive Quizzes & Games</li>
+          <li>AI-powered search</li>
+          <li>AI Mentor Mode</li>
+          <li>Live Coding Sessions</li>
+          <li>One-click Fix Button</li>
+        </ul>
+      </div>
+
+      <!-- Hero Carousel -->
+      <div class="hero-carousel">
+        <div class="carousel">
+          <div class="carousel-control-button left">
+            <input type="radio" name="carousel-control-input" />
+          </div>
+          <div class="carousel-control-button right">
+            <input type="radio" name="carousel-control-input" checked />
+          </div>
+
+          <div class="carousel-rotation-direction">
+            <ul class="carousel-item-wrapper" style="--_num-elements: 11">
+              <li
+                 class="carousel-item"
+                  style="
+                        --_index: 1;
+                         --_image-url: url('img1.jpg');
+                                   "
+                                >
+                      <a href="img1.jpg"></a>
+              </li>
+              <li
+                class="carousel-item"
+                style="
+                  --_index: 2;
+                  --_image-url: url('img2.jpg');
+                "
+              >
+                <a href="img2.jpg" ></a>
+              </li>
+              <li
+                class="carousel-item"
+                style="
+                  --_index: 3;
+                  --_image-url: url('img3.jpg');
+                "
+              >
+                <a href="img3.jpg" ></a>
+              </li>
+              <li
+                class="carousel-item"
+                style="
+                  --_index: 4;
+                  --_image-url: url('img4.jpg');
+                "
+              >
+                <a href="img4.jpg" ></a>
+              </li>
+              <li
+                class="carousel-item"
+                style="
+                  --_index: 5;
+                  --_image-url: url('img5.jpg');
+                "
+              >
+                <a href="img5.jpg" ></a>
+              </li>
+              <li
+                class="carousel-item"
+                style="
+                  --_index: 6;
+                  --_image-url: url('img6.jpg');
+                "
+              >
+                <a href="img6.jpg" ></a>
+              </li>
+              <li
+                class="carousel-item"
+                style="
+                  --_index: 7;
+                  --_image-url: url('img7.jpg');
+                "
+              >
+                <a href="img7.jpg" ></a>
+              </li>
+              <li
+                class="carousel-item"
+                style="
+                  --_index: 8;
+                  --_image-url: url('img8.jpg');
+                "
+              >
+                <a href="img8.jpg" ></a>
+              </li>
+              <li
+                class="carousel-item"
+                style="
+                  --_index: 9;
+                  --_image-url: url('img9.jpg');
+                "
+              >
+                <a href="img9.jpg" ></a>
+              </li>
+              <li
+                class="carousel-item"
+                style="
+                  --_index: 10;
+                  --_image-url: url('img10.jpg');
+                "
+              >
+                <a href="img10.jpg" >Project 10</a>
+              </li>
+              <li
+                class="carousel-item"
+                style="
+                  --_index: 11;
+                  --_image-url: url('img11.jpg');
+                "
+              >
+                <a href="img11.jpg" ></a>
+              </li>
+              <li class="carousel-ground"></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="skills">
+      <h2>Technical Expertise</h2>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <i class="fas fa-code"></i>
+          <h3>Frontend Development</h3>
+          <p>HTML, CSS, JavaScript,Tailwind CSS</p>
+        </div>
+        <div class="skill-card">
+          <i class="fas fa-server"></i>
+          <h3>Backend Development</h3>
+          <p>API</p>
+        </div>
+        <div class="skill-card">
+          <i class="fas fa-paint-brush"></i>
+          <h3>DevOps & Tools</h3>
+          <p>Vs.Code</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chat Box Icon -->
+    <div class="chat-icon" onclick="toggleChat()">🤖</div>
+
+    <!-- Chat Box with API Integration -->
+    <div class="chat-box" id="chatBox">
+      <div class="chat-header">
+        <span>🤖 AI Assistant</span>
+        <button onclick="toggleChat()">✖</button>
+      </div>
+      <div id="chat-content" class="chat-messages"></div>
+      <form id="chat-form" class="chat-input">
+        <input id="chatInput" type="text" placeholder="Type a message..." />
+        <button type="submit">Send</button>
+      </form>
+    </div>
+    <body>
+      <div class="container mx-auto px-4 py-16">
+         <h1 class="text-4xl text-green-400 mb-2">
+          🔧 Build with Confidence
+         </h1>
+         <h5 >
+          Stop juggling between chat apps and issue trackers.
+          <br>
+          <br> With Bugslay, everything happens in one focused, distraction-free hub. 
+          <br>Less noise, more problem-solving.
+         </h5>
+        </div>
+       
+      
+    <body class="bg-black text-white">
+        <div class="container mx-auto px-4 py-16">
+            <h1 class="text-4xl text-green-400 font-light mb-8">A complete solution for engineering teams of all sizes.</h1>
+            <div class="flex flex-wrap gap-4 mb-16">
+                <button class="flex items-center gap-2 px-4 py-2 border border-gray-700 rounded-full text-sm">
+                    <i></i> 🐞 Squash Bugs
+                </button>
+                <button class="flex items-center gap-2 px-4 py-2 border border-gray-700 rounded-full text-sm">
+                    <i></i> 🛠 Integrated Tools for Faster Fixes
+                </button>
+                <button class="flex items-center gap-2 px-4 py-2 border border-gray-700 rounded-full text-sm">
+                    <i ></i> 🛠 Cleaner Code
+                </button>
+                <button class="flex items-center gap-2 px-4 py-2 border border-gray-700 rounded-full text-sm">
+                    <i></i> Collaboration Meets Productivity
+                </button>
+                <button class="flex items-center gap-2 px-4 py-2 border border-gray-700 rounded-full text-sm">
+                    <i ></i> Built for Speed
+                </button>
+                <button class="flex items-center gap-2 px-4 py-2 border border-gray-700 rounded-full text-sm">
+                    <i></i> Designed for Teams.
+                </button>
+                <button class="flex items-center gap-2 px-4 py-2 border border-gray-700 rounded-full text-sm">
+                    <i class="fas fa-flag text-teal-400"></i> Notifications and alerts
+                </button>
+            </div>
+            <div>
+                <h1 class=" text-green-400 text-4xl mb-2">Cloud Development Environments</h2>
+                <h3 >Start coding.</h3>
+                <h3 >No setup required.</h3>
+            </div>
+        </div>
+         <div class="container mx-auto px-4 py-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-gray-900 rounded-lg p-6 text-center">
+                        <h2 class="text-xl font-bold mb-4">🧩 One Hub to Rule Your Code</h2>
+                        <p class="mb-4">Tired of bouncing between a dozen tools? With BugSlay, everything—code , artifacts , discussions , and workflows—lives in one sleek , central hub.</p>
+                        <img src="https://img.freepik.com/free-photo/programming-background-collage_23-2149901779.jpg?t=st=1744213643~exp=1744217243~hmac=3eadfec2be22d3f40647824bf060e7f6059b7a68f3c9ca6ba02faf69c79b3233&w=996" alt="A digital cube representing unified artifacts" class="mx-auto"/>
+                    </div>
+                    <div class="bg-gray-900 rounded-lg p-6 text-center">
+                        <h2 class="text-xl font-bold mb-4">⚡ Speed Mode: ON</h2>
+                        <p class="mb-4">Automate the boring stuff. BugSlay plugs right into your CI/CD pipeline to handle builds, tests, and deploys like a pro—so you can focus on the fun parts</p>
+                        <img src="https://img.freepik.com/free-vector/banner-speed-motion-background-with-fast-speedometer-car-racing-velocity-background_60438-2069.jpg?t=st=1744213923~exp=1744217523~hmac=87dc89ca59aec056de30e576a12a5fb52dbf2ca910d6b00ae00074ea8b853f8a&w=740" alt="A digital gauge showing 100% productivity" class="mx-auto"/>
+                    </div>
+                    <div class="bg-gray-900 rounded-lg p-6 text-center">
+                        <h2 class="text-xl font-bold mb-4">👾 Dev Together, Win Together</h2>
+                        <p class="mb-4">Whether you're slaying bugs solo or with a squad, BugSlay makes teamwork seamless. Share code, track issues, and celebrate clean builds—all in one place.</p>
+                        <img src="https://img.freepik.com/free-photo/side-view-friends-winning-videogame_23-2149349984.jpg?t=st=1744214051~exp=1744217651~hmac=d8678d77f5a4a6956d028cf9ed1a3495751b1d7e6c31e156a206341db2c8bd5c&w=996" alt="A digital representation of collaboration with the word 'Artifact'" class="mx-auto"/>
+                    </div>
+                </div>
+            </div>
+            <div class="min-h-screen flex flex-col justify-center items-start p-8">
+                <div class="max-w-4xl mx-auto">
+                 <h1 class="text-4xl text-green-400  leading-tight mb-4">
+                  Your code.
+                  <br/>
+                  Your language.
+                  <br/>
+                  Your platform.
+                 </h1>
+                 <p class="text-lg text-gray-400">
+                  BugSlay is a place where developers fix bugs, practice coding, and connect with others. No matter what language you use or what level you're at, you’ll find tools, challenges, and a community ready to help you grow.  </p>
+                </div>
+               
+    </body>
+    <body class="bg-black text-white">
+        <div class="container mx-auto px-4 py-16">
+         <h1 class="text-4xl text-green-400 mb-4">
+          Debug your way — in many language.
+         </h1>
+         <p class="text-lg  text-gray-400 mb-8">
+          BugSlay supports multiple popular programming languages . Whether you're fixing bugs, testing code, or just practicing, you can work in the language you're most comfortable with — no limits, no setup hassle.
+
+
+         </p>
+         <div class="flex justify-between items-center mb-8">
+          <button class="bg-transparent border border-white text-white py-2 px-4 rounded-full hover:bg-white hover:text-black transition">
+           Try it now
+          </button>
+         </div>
+         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div class="bg-gray-800 p-6 rounded-lg text-center">
+           <img alt="Java icon" class="mx-auto mb-4" height="64" src="https://cdn.worldvectorlogo.com/logos/java-4.svg" width="64"/>
+           <h2 class="text-xl font-bold mb-2">
+            Java
+           </h2>
+           
+           <button class="bg-transparent border border-white text-white py-2 px-4 rounded-full hover:bg-white hover:text-black transition">
+            <i class="fas fa-arrow-right">
+            </i>
+           </button>
+          </div>
+          <div class="bg-gray-800 p-6 rounded-lg text-center">
+           <img alt="Golang icon" class="mx-auto mb-4" height="64" src="https://cdn.worldvectorlogo.com/logos/c.svg" width="64"/>
+           <h2 class="text-xl font-bold mb-2">
+            C++
+           </h2>
+           
+           <button class="bg-transparent border border-white text-white py-2 px-4 rounded-full hover:bg-white hover:text-black transition">
+            <i class="fas fa-arrow-right">
+            </i>
+           </button>
+          </div>
+          <div class="bg-gray-800 p-6 rounded-lg text-center">
+           <img alt="Node icon" class="mx-auto mb-4" height="64" src="https://cdn.worldvectorlogo.com/logos/python-5.svg" width="64"/>
+           <h2 class="text-xl font-bold mb-2">
+            Python
+           </h2>
+           
+           <button class="bg-transparent border border-white text-white py-2 px-4 rounded-full hover:bg-white hover:text-black transition">
+            <i class="fas fa-arrow-right">
+            </i>
+           </button>
+          </div>
+          <div class="bg-gray-800 p-6 rounded-lg text-center">
+           <img alt="Rust icon" class="mx-auto mb-4" height="64" src="https://cdn.worldvectorlogo.com/logos/html-1.svg" width="64"/>
+           <h2 class="text-xl font-bold mb-2">
+            HTML
+           </h2>
+           
+           <button class="bg-transparent border border-white text-white py-2 px-4 rounded-full hover:bg-white hover:text-black transition">
+            <i class="fas fa-arrow-right">
+            </i>
+           </button>
+          </div>
+          <div class="bg-gray-800 p-6 rounded-lg text-center">
+           <img alt="Android icon" class="mx-auto mb-4" height="64" src="https://cdn.worldvectorlogo.com/logos/css-3.svg" width="64"/>
+           <h2 class="text-xl font-bold mb-2">
+            CSS
+           </h2>
+           
+           <button class="bg-transparent border border-white text-white py-2 px-4 rounded-full hover:bg-white hover:text-black transition">
+            <i class="fas fa-arrow-right">
+            </i>
+           </button>
+          </div>
+          <div class="bg-gray-800 p-6 rounded-lg text-center">
+           <img alt="Docker icon" class="mx-auto mb-4" height="64" src="https://cdn.worldvectorlogo.com/logos/javascript-2.svg" width="64"/>
+           <h2 class="text-xl font-bold mb-2">
+            Java Script
+           </h2>
+           
+           <button class="bg-transparent border border-white text-white py-2 px-4 rounded-full hover:bg-white hover:text-black transition">
+            <i class="fas fa-arrow-right">
+            </i>
+           </button>
+          </div>
+         </div>
+         <div class="mt-16 text-center">
+          <h2 class="text-2xl font-bold mb-4">
+           Get Started in 30 seconds
+          </h2>
+          <p>
+           Setup Bugslay Open Source in 30 seconds
+          </p>
+         </div>
+        </div>
+       </body>
+       <body class="bg-black text-white">
+        <div class="container mx-auto px-4 py-8">
+         <div class="text-center mb-8">
+          <img alt="BugSlay logo" class="mx-auto mb-4" height="100" src="logo.png" width="200"/>
+          <h2 class="text-xl font-semibold">
+           Sign up for BugSlay Updates
+          </h2>
+          <p class="mb-4">
+           Subscribe to our newsletter to receive the latest BugSlay updates in your inbox
+          </p>
+          <div class="flex justify-center">
+           <input class="p-2 text-black rounded-l-md" placeholder="Enter your email" type="email"/>
+           <button class="bg-white text-black p-2 rounded-r-md">
+            Submit
+           </button>
+          </div>
+          <p class="text-sm mt-2">
+         <br>  By submitting this form, you acknowledge and agree that BugSlay Inc will process your personal information in accordance with the Privacy Statement.
+         <br>
+          </p>
+         
+
+    <!-- Footer -->
+    <footer>
+      <p>© 2025 𝑩𝒖𝒈𝑺𝒍𝒂𝒚. All rights reserved.</p>
+      <p>
+        <a class="text-blue-500" href="#">
+         Subscription Terms
+        </a>
+        |
+        <a class="text-blue-500" href="#">
+         Website Terms of Use
+        </a>
+        |
+        <a class="text-blue-500" href="#">
+         Privacy Statement
+        </a>
+        |
+        <a class="text-blue-500" href="#">
+         Opt Out
+        </a>
+        |
+        <a class="text-blue-500" href="#">
+         Cookie Settings
+        </a>
+      <div class="social-links">
+        <a href="#"><i class="fab fa-github"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-whatsapp"></i></a>
+        <a href="#"><i class="fab fa-facebook"></i></a>
+      </div>
+    </footer>
+
+    <!-- link to javascript file -->
+    <script>
+      // Smooth scrolling
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          document.querySelector(this.getAttribute("href")).scrollIntoView({
+            behavior: "smooth",
+          });
+        });
+      });
+
+      // Navbar scroll effect
+      window.addEventListener("scroll", () => {
+        const navbar = document.querySelector(".navbar");
+        window.scrollY > 50
+          ? (navbar.style.backgroundColor = "rgba(10, 10, 10, 0.98)")
+          : (navbar.style.backgroundColor = "rgba(10, 10, 10, 0.95)");
+      });
+
+      const chatContent = document.getElementById("chat-content");
+      const chatForm = document.getElementById("chat-form");
+      const userInput = document.getElementById("chatInput");
+
+      function createMessageElement(message, fromUser) {
+        const messageElement = document.createElement("div");
+        messageElement.textContent = message;
+        messageElement.className = fromUser ? "user-message" : "bot-message";
+        chatContent.appendChild(messageElement);
+      }
+
+      async function fetchResponse(userMessage) {
+        try {
+          const response = await fetch(
+            "https://backend.buildpicoapps.com/aero/run/llm-api?pk=v1-Z0FBQUFBQm5IZkJDMlNyYUVUTjIyZVN3UWFNX3BFTU85SWpCM2NUMUk3T2dxejhLSzBhNWNMMXNzZlp3c09BSTR6YW1Sc1BmdGNTVk1GY0liT1RoWDZZX1lNZlZ0Z1dqd3c9PQ==",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ prompt: userMessage }),
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error(`Error: ${response.statusText}`);
+          }
+
+          const data = await response.json();
+          return data.status === "success"
+            ? data.text
+            : "Error: Could not process the request.";
+        } catch (error) {
+          console.error("Error:", error);
+          return "There was an error. Please try again.";
+        }
+      }
+
+      chatForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const userMessage = userInput.value.trim();
+        if (!userMessage) return;
+
+        createMessageElement(userMessage, true);
+        userInput.value = "";
+
+        const botResponse = await fetchResponse(userMessage);
+        createMessageElement(botResponse, false);
+      });
+
+      function toggleChat() {
+        const chatBox = document.getElementById("chatBox");
+        chatBox.style.display =
+          chatBox.style.display === "none" || chatBox.style.display === ""
+            ? "flex"
+            : "none";
+      }
+    </script>
+  </body>
+</html>
